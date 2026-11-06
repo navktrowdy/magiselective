@@ -56,3 +56,17 @@ node tools/gencheck.mjs     # stress-tests every question generator
 ```
 
 This checks IDs, answers, option counts and topics. To run the app locally, use `python3 -m http.server` and open http://localhost:8000.
+
+## Weekly summary email (parents)
+
+**Quick option:** add your email addresses in ⚙️ Settings → *Parent emails*. The 📧 **Email us** button on the Parent page then opens your email app with the summary ready to send.
+
+**Automatic option, every Sunday at about 7 pm Sydney time:** a GitHub Action (`.github/workflows/weekly-email.yml`) reads the saved results and emails a formatted summary. One-time setup:
+1. Use a Gmail account to send from. Turn on 2-Step Verification, then create an **App password** at <https://myaccount.google.com/apppasswords>.
+2. In the repo, go to *Settings → Secrets and variables → Actions → New repository secret* and add:
+   - `SMTP_USER`: the Gmail address
+   - `SMTP_PASS`: the 16-character app password
+   - `EMAIL_TO`: both parent addresses, separated by a comma
+3. Test it: *Actions → Weekly parent summary email → Run workflow*.
+
+Addresses and passwords stay in GitHub secrets and never appear in the (public) code. No email is sent during holiday weeks when there was no practice. The email only includes results saved to GitHub, so set up the token in Settings first.

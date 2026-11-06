@@ -734,6 +734,7 @@ function settingsView() {
       <h2>👤 About</h2>
       <label>Nickname (shown in the app and saved with results; avoid full names because the repo is public)<input id="nick" value="${esc(s.nickname)}"></label>
       <label>Selective test date<input id="exam" type="date" value="${esc(s.examDate)}"></label>
+      <label>Parent emails (for the 📧 Email us button; separate with commas; stored only in this browser)<input id="pemails" type="text" placeholder="you@example.com, partner@example.com" value="${esc(s.parentEmails || '')}"></label>
       <h2>Save results to GitHub</h2>
       <p class="muted">Results are saved as files in <code>${esc(s.github.path)}/</code> of the repository, so progress follows ${esc(s.nickname)} to any computer. Set this up once on each computer.</p>
       <details><summary><b>How to create the access token (parent, one time)</b></summary><ol>
@@ -751,7 +752,7 @@ function settingsView() {
     </div>`;
   const val = id => document.getElementById(id).value.trim();
   const save = () => {
-    store.saveSettings({ nickname: val('nick') || 'Magi', examDate: val('exam'),
+    store.saveSettings({ nickname: val('nick') || 'Potalien', examDate: val('exam'), parentEmails: val('pemails'),
       github: { ...s.github, owner: val('owner'), repo: val('repo'), branch: val('branch') || 'main', token: val('token') } });
   };
   const msg = (t, ok) => { const m = document.getElementById('msg'); m.textContent = t; m.className = ok ? 'ok' : 'warn'; };
