@@ -48,7 +48,8 @@ export const THEMES = [
 
 // Family breaks built into the app (no study planned). More can be added in Settings.
 export const BREAKS = [
-  { name: 'India trip', start: '2026-12-23', end: '2027-01-25', builtIn: true },
+  { name: 'India trip', start: '2026-12-23', end: '2027-01-24', builtIn: true },
+  { name: 'Jet-lag rest day', start: '2027-01-25', end: '2027-01-25', builtIn: true, recovery: true },
 ];
 
 export const SUBJECT_ORDER = ['reading', 'maths', 'thinking', 'writing'];

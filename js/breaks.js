@@ -17,8 +17,10 @@ const ownBreaks = () => store.getProfile()?.breaks || [];
 export const breakOn = iso => getBreaks().find(b => iso >= b.start && iso <= b.end) || null;
 export const isBreakDay = iso => Boolean(breakOn(iso));
 export const activeBreak = () => breakOn(today());
-export const nextBreak = () => getBreaks().find(b => b.start > today()) || null;
-export const lastEndedBreak = () => [...getBreaks()].reverse().find(b => b.end < today()) || null;
+export const nextBreak = () => getBreaks().find(b => b.start > today() && !b.recovery) || null;
+/** Last day of a break including any recovery day straight after it. */
+export const breakEndWithRecovery = b => { let e = b.end; for (const r of getBreaks()) if (r.recovery && r.start === addDays(e, 1)) e = r.end; return e; };
+export const lastEndedBreak = () => [...getBreaks()].reverse().find(b => b.end < today() && !b.recovery) || null;
 
 /** Calendar days from today to the exam that are NOT break days. */
 export function studyDaysUntil(examDate) {

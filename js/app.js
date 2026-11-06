@@ -1,5 +1,5 @@
 import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS, ROUTINE, THEMES } from './data/config.js';
-import { activeBreak, nextBreak, lastEndedBreak, breakOn, studyDaysUntil, getBreaks, saveBreaks, addDays, daysBetween, today as todayLocal, fmtShort } from './breaks.js';
+import { activeBreak, nextBreak, lastEndedBreak, breakEndWithRecovery, breakOn, studyDaysUntil, getBreaks, saveBreaks, addDays, daysBetween, today as todayLocal, fmtShort } from './breaks.js';
 import CONCEPTS from './data/concepts.js';
 import { RUBRIC, RUBRIC_TOTAL, TIPS } from './data/writing.js';
 import * as store from './store.js';
@@ -84,7 +84,7 @@ function weeklyPlan(days) {
   const REST_CS = [{ subject: 'rest', label: 'No app today. CS tuition counts! 💪', mins: 0, href: '#/pet' }];
   let plan;
   const ended = lastEndedBreak();
-  const backWeek = ended && daysBetween(ended.end, todayLocal()) <= 7;
+  const backWeek = ended && daysBetween(ended.end, todayLocal()) <= 8;
   if (backWeek) plan = { // gentle restart after a holiday
     Mon: [P('maths', 'all', 'Welcome back: easy mixed Maths (5–10 Qs)', 15)],
     Tue: [P('thinking', 'all', 'Easy mixed Thinking (5–10 Qs)', 15)],
@@ -132,14 +132,16 @@ function dashboard() {
   const dateOf = d => addDays(monday, ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(d));
   const studyDays = studyDaysUntil(s.examDate);
   const brk = activeBreak(), upcoming = nextBreak(), ended = lastEndedBreak();
-  const justBack = ended && daysBetween(ended.end, todayLocal()) <= 7 && !results.some(r => r.finishedAt.slice(0, 10) > ended.end);
+  const justBack = ended && !brk && daysBetween(ended.end, todayLocal()) <= 8 && !results.some(r => r.finishedAt.slice(0, 10) > ended.end);
   const petMsg = brk ? say('holiday', { nick: s.nickname }) : justBack ? say('welcome', { nick: s.nickname }) : say(pr.mood, { nick: s.nickname });
-  const holidayBanner = brk
+  const holidayBanner = brk?.recovery
+    ? `<div class="banner">😴 <b>Jet-lag rest day.</b> Sleep, unpack and relax. No study today! We restart gently on <b>${fmtShort(addDays(brk.end, 1))}</b>.</div>`
+    : brk
     ? `<section class="holidaybanner">${petWidget({ mood: 'holiday', size: 90 })}<div><h2>🇮🇳 ${esc(brk.name)}: holiday mode!</h2>
-        <p>No study until you're back on <b>${fmtShort(addDays(brk.end, 1))}</b>. Enjoy the family time, the food and the adventures!</p>
+        <p>No study until <b>${fmtShort(addDays(breakEndWithRecovery(brk), 1))}</b> (you get a jet-lag rest day after landing). Enjoy the family time, the food and the adventures!</p>
         <p class="muted">Your 🔥 streak is safe and ${esc(store.getProfile().pet.name)} is on holiday too.</p></div></section>`
     : upcoming && daysBetween(todayLocal(), upcoming.start) <= 21
-      ? `<div class="banner">✈️ <b>${esc(upcoming.name)}</b> starts in ${daysBetween(todayLocal(), upcoming.start)} day${daysBetween(todayLocal(), upcoming.start) === 1 ? '' : 's'} (${fmtShort(upcoming.start)} – ${fmtShort(upcoming.end)}). No study during the trip, so your streak will be paused, not lost.</div>`
+      ? `<div class="banner">✈️ <b>${esc(upcoming.name)}</b> starts in ${daysBetween(todayLocal(), upcoming.start)} day${daysBetween(todayLocal(), upcoming.start) === 1 ? '' : 's'} (${fmtShort(upcoming.start)} – ${fmtShort(upcoming.end)}, plus a rest day after). No study during the trip, so your streak will be paused, not lost.</div>`
       : justBack ? `<div class="banner">🌱 <b>Welcome back from ${esc(ended.name)}!</b> Start gently: one short drill a day this week is plenty.</div>` : '';
   const doneToday = new Set(results.filter(r => r.finishedAt.slice(0, 10) === todayStr()).map(r => r.subject));
 
@@ -199,7 +201,7 @@ function dashboard() {
     <section class="card">
       <h2>📅 This week's plan <small class="muted">· about ${Math.round(plan.filter(([d]) => !breakOn(dateOf(d))).flatMap(([, t]) => t).reduce((a, t) => a + t.mins, 0) / 5) * 5} min of app time this week</small></h2>
       <p class="muted">Fits around CS tuition, boxing and Tamil school. Skip a day if school homework is heavy; Potalien will understand 💛</p>
-      <div class="plan">${plan.map(([d, tasks]) => breakOn(dateOf(d)) ? `<div class="day holidayday ${d === dow ? 'today' : ''}"><h4>${d}${d === dow ? ' · today' : ''}</h4><div class="busy">🇮🇳 ${esc(breakOn(dateOf(d)).name)}</div><span class="task">Holiday: no study! 🥭</span></div>` : `<div class="day ${d === dow ? 'today' : ''} ${ROUTINE[d].mins ? '' : 'restday'}"><h4>${d}${d === dow ? ' · today' : ''}</h4>
+      <div class="plan">${plan.map(([d, tasks]) => breakOn(dateOf(d)) ? `<div class="day holidayday ${d === dow ? 'today' : ''}"><h4>${d}${d === dow ? ' · today' : ''}</h4><div class="busy">${breakOn(dateOf(d)).recovery ? '😴' : '🇮🇳'} ${esc(breakOn(dateOf(d)).name)}</div><span class="task">${breakOn(dateOf(d)).recovery ? 'Rest and beat the jet lag 😴' : 'Holiday: no study! 🥭'}</span></div>` : `<div class="day ${d === dow ? 'today' : ''} ${ROUTINE[d].mins ? '' : 'restday'}"><h4>${d}${d === dow ? ' · today' : ''}</h4>
         <div class="busy">${ROUTINE[d].icon} ${esc(ROUTINE[d].busy)}</div>${tasks.map(t =>
         `<a href="${t.href}" class="task">${d === dow && doneToday.has(t.subject) ? '✅ ' : ''}${esc(t.label)}${t.mins ? ` <small>· ${t.mins}m</small>` : ''}</a>`).join('')}
         ${ROUTINE[d].when ? `<div class="busy">⏰ ${esc(ROUTINE[d].when)}</div>` : ''}</div>`).join('')}</div>
