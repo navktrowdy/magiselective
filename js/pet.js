@@ -3,6 +3,7 @@
 
 import { SPECIES, STAGES, SHOP, BADGES, TALK } from './data/pets.js';
 import { BASELINE, ROUTINE } from './data/config.js';
+import { isBreakDay, today as todayLocal } from './breaks.js';
 
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 export const speciesById = id => SPECIES.find(s => s.id === id) || SPECIES[0];
@@ -13,7 +14,7 @@ const dayKey = iso => iso.slice(0, 10);
 const addDays = (d, n) => { const x = new Date(d + 'T00:00:00'); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); };
 const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 // Planned rest days (e.g. CS tuition days) never break a streak or make the pet sad.
-const isRestDay = d => ROUTINE[DOW[new Date(d + 'T00:00:00').getDay()]]?.mins === 0;
+const isRestDay = d => ROUTINE[DOW[new Date(d + 'T00:00:00').getDay()]]?.mins === 0 || isBreakDay(d);
 const prevPlanned = d => { let x = addDays(d, -1); for (let i = 0; i < 7 && isRestDay(x); i++) x = addDays(x, -1); return x; };
 const localToday = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
 
@@ -81,7 +82,7 @@ export function computeProgress(results, profile) {
   // gap counted in planned practice days only
   let gap = 99;
   if (lastDay) { gap = 0; let x = today; while (x > lastDay && gap < 99) { if (!isRestDay(x)) gap++; x = addDays(x, -1); } }
-  const mood = !lastDay || gap === 0 ? 'happy' : gap === 1 ? 'content' : gap <= 3 ? 'missing' : 'sleepy';
+  const mood = isBreakDay(todayLocal()) ? 'holiday' : !lastDay || gap === 0 ? 'happy' : gap === 1 ? 'content' : gap <= 3 ? 'missing' : 'sleepy';
 
   let stageIdx = 0;
   STAGES.forEach((s, i) => { if (xp >= s.xp) stageIdx = i; });
@@ -111,6 +112,7 @@ const STARS = [[20, 30], [45, 70], [170, 60], [150, 20], [30, 120], [180, 130], 
 const EYE_POS = { 1: [[100, 100, 21]], 2: [[82, 100, 13], [118, 100, 13]], 3: [[78, 100, 10], [100, 86, 10], [122, 100, 10]] };
 
 function eyes(n, mood) {
+  if (mood === 'holiday') return '';
   return EYE_POS[n].map(([x, y, r]) => {
     if (mood === 'sleepy') return `<path d="M${x - r} ${y} q${r} ${r * 0.8} ${2 * r} 0" stroke="#3b2a1a" stroke-width="3" fill="none" stroke-linecap="round"/>`;
     const p = mood === 'excited' ? r * 0.62 : r * 0.5;
@@ -174,6 +176,7 @@ export function petSvg({ species = 'spudnik', stage = 0, mood = 'happy', equippe
   parts.push(eyes(sp.eyes, mood));
   parts.push('<ellipse cx="66" cy="122" rx="8" ry="5" fill="#ff8a80" opacity=".55"/><ellipse cx="134" cy="122" rx="8" ry="5" fill="#ff8a80" opacity=".55"/>');
   parts.push(MOUTHS[mood] || MOUTHS.happy);
+  if (mood === 'holiday') parts.push('<g><rect x="62" y="88" width="34" height="22" rx="9" fill="#1d1d1d"/><rect x="104" y="88" width="34" height="22" rx="9" fill="#1d1d1d"/><path d="M96 96 h8" stroke="#1d1d1d" stroke-width="4"/><path d="M68 93 l8 -3" stroke="#fff" stroke-width="3" opacity=".6"/><path d="M60 58 q40 -30 80 0 q-40 -12 -80 0" fill="#ffcc4d" stroke="#c79a00" stroke-width="2"/><ellipse cx="100" cy="58" rx="52" ry="9" fill="#ffd966" stroke="#c79a00" stroke-width="2"/></g>');
   if (stage >= 3) parts.push('<polygon points="100,140 104,150 115,150 106,157 109,168 100,161 91,168 94,157 85,150 96,150" fill="#ffd54f" stroke="#c79a00" stroke-width="1.5"/>');
   for (const slot of ['neck', 'face', 'head']) if (equipped[slot] && ACC[equipped[slot]]) parts.push(ACC[equipped[slot]]);
   if (stage >= 5) parts.push('<g fill="#fff59d"><text x="30" y="70" font-size="16">✦</text><text x="160" y="90" font-size="14">✦</text><text x="150" y="170" font-size="12">✦</text><text x="28" y="165" font-size="12">✦</text></g>');

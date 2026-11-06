@@ -12,3 +12,5 @@ export function toast(msg, kind = 'info') {
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 5000);
 }
+
+export function applyTheme(id) { document.documentElement.dataset.theme = id || 'sand'; }

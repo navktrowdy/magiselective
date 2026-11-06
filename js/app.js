@@ -1,4 +1,5 @@
-import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS, ROUTINE } from './data/config.js';
+import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS, ROUTINE, THEMES } from './data/config.js';
+import { activeBreak, nextBreak, lastEndedBreak, breakOn, studyDaysUntil, getBreaks, saveBreaks, addDays, daysBetween, today as todayLocal, fmtShort } from './breaks.js';
 import CONCEPTS from './data/concepts.js';
 import { RUBRIC, RUBRIC_TOTAL, TIPS } from './data/writing.js';
 import * as store from './store.js';
@@ -7,7 +8,7 @@ import {
   topicsFor, mistakesCount,
 } from './bank.js';
 import { lineChart } from './charts.js';
-import { esc, pct, fmtTime, fmtDate, todayStr, toast } from './util.js';
+import { esc, pct, fmtTime, fmtDate, todayStr, toast, applyTheme } from './util.js';
 import { adoptView, petView, skillsView, examsView, petWidget, celebrate, progressNow } from './views.js';
 import { say, computeProgress } from './pet.js';
 
@@ -116,6 +117,19 @@ function dashboard() {
   const pending = store.pendingCount();
   const plan = weeklyPlan(days);
   const dow = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date().getDay()];
+  const monday = addDays(todayLocal(), -((new Date().getDay() + 6) % 7));
+  const dateOf = d => addDays(monday, ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].indexOf(d));
+  const studyDays = studyDaysUntil(s.examDate);
+  const brk = activeBreak(), upcoming = nextBreak(), ended = lastEndedBreak();
+  const justBack = ended && daysBetween(ended.end, todayLocal()) <= 7 && !results.some(r => r.finishedAt.slice(0, 10) > ended.end);
+  const petMsg = brk ? say('holiday', { nick: s.nickname }) : justBack ? say('welcome', { nick: s.nickname }) : say(pr.mood, { nick: s.nickname });
+  const holidayBanner = brk
+    ? `<section class="holidaybanner">${petWidget({ mood: 'holiday', size: 90 })}<div><h2>🇮🇳 ${esc(brk.name)}: holiday mode!</h2>
+        <p>No study until you're back on <b>${fmtShort(addDays(brk.end, 1))}</b>. Enjoy the family time, the food and the adventures!</p>
+        <p class="muted">Your 🔥 streak is safe and ${esc(store.getProfile().pet.name)} is on holiday too.</p></div></section>`
+    : upcoming && daysBetween(todayLocal(), upcoming.start) <= 21
+      ? `<div class="banner">✈️ <b>${esc(upcoming.name)}</b> starts in ${daysBetween(todayLocal(), upcoming.start)} day${daysBetween(todayLocal(), upcoming.start) === 1 ? '' : 's'} (${fmtShort(upcoming.start)} – ${fmtShort(upcoming.end)}). No study during the trip, so your streak will be paused, not lost.</div>`
+      : justBack ? `<div class="banner">🌱 <b>Welcome back from ${esc(ended.name)}!</b> Start gently: one short drill a day this week is plenty.</div>` : '';
   const doneToday = new Set(results.filter(r => r.finishedAt.slice(0, 10) === todayStr()).map(r => r.subject));
 
   const card = (subj) => {
@@ -152,13 +166,13 @@ function dashboard() {
     <section class="hero">
       <div>
         <h1>Hi ${esc(s.nickname)} 👽🥔</h1>
-        <p>${days > 0 ? `<b>${days}</b> days until the Selective test (${fmtDate(s.examDate)})` : 'Exam day has passed. Update the date in Settings.'}</p>
+        <p>${days > 0 ? `<b>${days}</b> days until the Selective test (${fmtDate(s.examDate)})${studyDays < days ? ` · <b>${studyDays}</b> study days after holidays` : ''}` : 'Exam day has passed. Update the date in Settings.'}</p>
         <p class="phase"><b>${phase.name} phase:</b> ${phase.desc}</p>
       </div>
       <div class="countdown"><span>${Math.max(days, 0)}</span>days</div>
     </section>
     <section class="card petbar">
-      <a href="#/pet" class="petlink">${petWidget({ size: 110, message: esc(say(pr.mood, { nick: s.nickname })) })}</a>
+      <a href="#/pet" class="petlink">${petWidget({ size: 110, message: esc(petMsg) })}</a>
       <div class="petstats">
         <div><b>🔥 ${pr.streak}</b><span>day streak${pr.practisedToday ? ' ✔ today' : ''}</span></div>
         <div><b>✨ ${pr.coins}</b><span>stardust</span></div>
@@ -167,13 +181,14 @@ function dashboard() {
       </div>
       <div class="btns col"><a class="btn primary" href="#/pet">Visit ${esc(store.getProfile().pet.name)}</a><a class="btn" href="#/skills">My Skills</a></div>
     </section>
+    ${holidayBanner}
     ${inprog ? `<div class="banner">You have an unfinished ${esc(subjName(inprog.subject))} ${MODE_LABEL[inprog.mode].toLowerCase()}. <a class="btn primary" href="${inprog.subject === 'writing' ? `#/writing/${inprog.promptId}` : '#/run'}">Resume</a> <button class="btn" id="discard">Discard</button></div>` : ''}
     ${pending ? `<div class="banner warn">${pending} result${pending > 1 ? 's are' : ' is'} saved only on this device. <button class="btn" id="syncnow">Save to GitHub now</button> <a href="#/settings">Settings</a></div>` : ''}
     <section class="grid4">${SUBJECT_ORDER.map(card).join('')}</section>
     <section class="card">
-      <h2>📅 This week's plan <small class="muted">· about ${Math.round(plan.flatMap(([, t]) => t).reduce((a, t) => a + t.mins, 0) / 5) * 5} min of app time this week</small></h2>
+      <h2>📅 This week's plan <small class="muted">· about ${Math.round(plan.filter(([d]) => !breakOn(dateOf(d))).flatMap(([, t]) => t).reduce((a, t) => a + t.mins, 0) / 5) * 5} min of app time this week</small></h2>
       <p class="muted">Fits around CS tuition, boxing and Tamil school. Skip a day if school homework is heavy; Potalien will understand 💛</p>
-      <div class="plan">${plan.map(([d, tasks]) => `<div class="day ${d === dow ? 'today' : ''} ${ROUTINE[d].mins ? '' : 'restday'}"><h4>${d}${d === dow ? ' · today' : ''}</h4>
+      <div class="plan">${plan.map(([d, tasks]) => breakOn(dateOf(d)) ? `<div class="day holidayday ${d === dow ? 'today' : ''}"><h4>${d}${d === dow ? ' · today' : ''}</h4><div class="busy">🇮🇳 ${esc(breakOn(dateOf(d)).name)}</div><span class="task">Holiday: no study! 🥭</span></div>` : `<div class="day ${d === dow ? 'today' : ''} ${ROUTINE[d].mins ? '' : 'restday'}"><h4>${d}${d === dow ? ' · today' : ''}</h4>
         <div class="busy">${ROUTINE[d].icon} ${esc(ROUTINE[d].busy)}</div>${tasks.map(t =>
         `<a href="${t.href}" class="task">${d === dow && doneToday.has(t.subject) ? '✅ ' : ''}${esc(t.label)}${t.mins ? ` <small>· ${t.mins}m</small>` : ''}</a>`).join('')}
         ${ROUTINE[d].when ? `<div class="busy">⏰ ${esc(ROUTINE[d].when)}</div>` : ''}</div>`).join('')}</div>
@@ -677,10 +692,31 @@ function conceptsView() {
         ${s !== 'reading' ? `<a class="btn" href="#/practice/${s}?topic=${encodeURIComponent(t)}">Practise this</a>` : ''}</details>`).join('')}</div></div>`).join('')}`;
 }
 
+export function themePicker() {
+  const cur = store.getProfile()?.theme || document.documentElement.dataset.theme || 'sand';
+  return `<div class="themes">${THEMES.map(t => `<button class="themeopt ${t.id === cur ? 'on' : ''}" data-theme-pick="${t.id}">
+    <span class="sw">${t.sw.map(c => `<i style="background:${c}"></i>`).join('')}</span><b>${esc(t.name)}</b><small>${esc(t.blurb)}</small></button>`).join('')}</div>`;
+}
+export function wireThemePicker(rerender) {
+  document.querySelectorAll('[data-theme-pick]').forEach(b => b.onclick = async () => {
+    const id = b.dataset.themePick; applyTheme(id);
+    const p = store.getProfile(); if (p) { p.theme = id; await store.saveProfile(p); } else localStorage.setItem('ms.theme', id);
+    rerender();
+  });
+}
+
 function settingsView() {
   const s = store.getSettings();
   $app.innerHTML = `
     <div class="card narrow"><h1>⚙️ Settings</h1>
+      <h2>🎨 Look and feel</h2><p class="muted">Pick a theme. It changes straight away and follows you to other computers.</p>
+      ${themePicker()}
+      <h2>✈️ Holidays and breaks</h2>
+      <p class="muted">No study is planned on these days, the 🔥 streak is protected and the Potalien goes on holiday too.</p>
+      <ul class="breaklist">${getBreaks().map((b, i) => `<li><b>${esc(b.name)}</b>: ${fmtShort(b.start)} → ${fmtShort(b.end)} (${daysBetween(b.start, b.end) + 1} days) <button class="btn small" data-delbreak="${i}">Remove</button></li>`).join('') || '<li class="muted">No breaks added yet.</li>'}</ul>
+      <div class="row3"><label>Name<input id="bname" value="India trip"></label><label>First day<input id="bstart" type="date"></label><label>Last day<input id="bend" type="date"></label></div>
+      <div class="btns"><button class="btn" id="addbreak">Add break</button></div>
+      <h2>👤 About</h2>
       <label>Nickname (shown in the app and saved with results; avoid full names because the repo is public)<input id="nick" value="${esc(s.nickname)}"></label>
       <label>Selective test date<input id="exam" type="date" value="${esc(s.examDate)}"></label>
       <h2>Save results to GitHub</h2>
@@ -705,6 +741,18 @@ function settingsView() {
   };
   const msg = (t, ok) => { const m = document.getElementById('msg'); m.textContent = t; m.className = ok ? 'ok' : 'warn'; };
   document.getElementById('save').onclick = () => { save(); msg('Saved ✔', true); };
+  wireThemePicker(settingsView);
+  document.getElementById('addbreak').onclick = async () => {
+    const name = val('bname') || 'Holiday', start = val('bstart'), end = val('bend');
+    if (!start || !end || end < start) return toast('Please choose a first and last day (last day on or after the first).', 'error');
+    if (!store.getProfile()) return toast('Adopt a Potalien first.', 'error');
+    await saveBreaks([...getBreaks(), { name, start, end }]); toast(`Added ${esc(name)} ✈️`, 'ok'); settingsView();
+  };
+  document.querySelectorAll('[data-delbreak]').forEach(b => b.onclick = async () => {
+    const list = getBreaks(); const x = list[Number(b.dataset.delbreak)];
+    if (!confirm(`Remove ${x.name}?`)) return;
+    list.splice(Number(b.dataset.delbreak), 1); await saveBreaks(list); settingsView();
+  });
   document.getElementById('test').onclick = async () => { save(); msg('Testing…'); try { const r = await store.testConnection(); msg(r.message, r.ok); } catch (e) { msg(e.message); } };
   document.getElementById('sync').onclick = async () => { save(); await doSync(); };
   document.getElementById('export').onclick = () => {
@@ -724,4 +772,5 @@ function settingsView() {
 window.addEventListener('beforeunload', (e) => { if (location.hash === '#/run' && session?.limitSec) { e.preventDefault(); } });
 route();
 // Pull results made on other devices in the background.
-store.syncAll().then(r => { if (r.downloaded) { toast(`Loaded ${r.downloaded} result(s) from GitHub`, 'ok'); if (['', '#/', '#/history'].includes(location.hash)) route(); } }).catch(() => {});
+applyTheme(store.getProfile()?.theme || localStorage.getItem('ms.theme') || 'sand');
+store.syncAll().then(r => { applyTheme(store.getProfile()?.theme || 'sand'); if (r.downloaded) { toast(`Loaded ${r.downloaded} result(s) from GitHub`, 'ok'); if (['', '#/', '#/history'].includes(location.hash)) route(); } }).catch(() => {});

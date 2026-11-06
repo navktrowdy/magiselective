@@ -75,7 +75,7 @@ export function adoptView() {
     });
     document.getElementById('adopt').onclick = async () => {
       const name = document.getElementById('petname').value.trim() || speciesById(chosen).name;
-      const p = prof || { owned: [], spent: 0, seenBadges: [], seenStage: 0, pet: { equipped: { bg: 'moon' } } };
+      const p = prof || { owned: [], spent: 0, seenBadges: [], seenStage: 0, theme: localStorage.getItem('ms.theme') || 'sand', pet: { equipped: { bg: 'moon' } } };
       p.pet = { ...p.pet, species: chosen, name };
       if (!prof) {
         const pr = computeProgress(store.getResults(), p);
@@ -131,11 +131,13 @@ export function petView() {
           return `<div class="item ${on ? 'on' : ''}">${prev}<b>${esc(it.name)}</b>${btn}</div>`;
         }).join('')}</div>`).join('')}
       </div>
+      <div class="card"><h2>🎨 Paint your spaceship</h2><p class="muted">Choose how the whole app looks.</p><div id="themeslot"></div></div>
       <div class="card"><h2>🏅 Badges <small class="muted">${pr.badges.filter(b => b.earned).length}/${pr.badges.length}</small></h2><div class="badges">${pr.badges.map(badgeHtml).join('')}</div></div>
       <div class="card"><h2>🧬 Evolution path</h2><div class="evo">${STAGES.map((s, i) => `<div class="evostep ${i <= pr.stageIdx ? 'done' : ''}">
         ${petSvg({ species: prof.pet.species, stage: i, mood: 'happy', size: 84, bg: false })}<b>${esc(s.name)}</b><small>${s.xp} XP</small></div>`).join('')}</div></div>
     </div>`;
 
+  import('./app.js').then(m => { const slot = document.getElementById('themeslot'); if (slot) { slot.innerHTML = m.themePicker(); m.wireThemePicker(petView); } });
   // Always edit the latest stored profile (celebrate() may have updated it since render).
   const edit = async (fn, msg) => { const p = store.getProfile(); fn(p); await store.saveProfile(p); if (msg) toast(msg, 'ok'); petView(); };
   $app().querySelectorAll('[data-buy]').forEach(b => b.onclick = () => {
