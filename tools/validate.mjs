@@ -1,7 +1,11 @@
 // Checks the question banks for structural mistakes. Run: node tools/validate.mjs
 import maths from '../js/data/maths.js';
-import thinking from '../js/data/thinking.js';
-import reading from '../js/data/reading.js';
+import thinking1 from '../js/data/thinking.js';
+import thinking2 from '../js/data/thinking2.js';
+const thinking = [...thinking1, ...thinking2];
+import reading1 from '../js/data/reading.js';
+import reading2 from '../js/data/reading2.js';
+const reading = [...reading1, ...reading2];
 import writing, { RUBRIC } from '../js/data/writing.js';
 import concepts from '../js/data/concepts.js';
 import { TOPIC_STRANDS, SUBJECTS } from '../js/data/config.js';

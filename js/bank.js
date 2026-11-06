@@ -1,13 +1,18 @@
 // Question bank access, test assembly and progress analytics.
 
 import maths from './data/maths.js';
-import thinking from './data/thinking.js';
-import reading from './data/reading.js';
+import thinking1 from './data/thinking.js';
+import thinking2 from './data/thinking2.js';
+import reading1 from './data/reading.js';
+import reading2 from './data/reading2.js';
 import writing from './data/writing.js';
 import { SUBJECTS, TOPIC_STRANDS, BASELINE } from './data/config.js';
 import { getResults } from './store.js';
 import { balance } from './balance.js';
+import { allGenerated, fromId } from './gen/index.js';
 
+const reading = [...reading1, ...reading2];
+const thinking = [...thinking1, ...thinking2];
 const LETTERS = 'ABCDEFG';
 export const letter = i => (i === null || i === undefined ? '–' : LETTERS[i]);
 
@@ -17,6 +22,10 @@ const banks = { maths: [], thinking: [], reading: [] };
 
 for (const q of balance(maths)) { const x = { ...q, subject: 'maths', strand: TOPIC_STRANDS.maths[q.topic] }; banks.maths.push(x); index.set(q.id, x); }
 for (const q of balance(thinking)) { const x = { ...q, subject: 'thinking', strand: TOPIC_STRANDS.thinking[q.topic] }; banks.thinking.push(x); index.set(q.id, x); }
+// Generated questions (fresh numbers each version; answers computed in code)
+for (const subject of ['maths', 'thinking']) {
+  for (const q of allGenerated(subject)) { const x = { ...q, subject, strand: TOPIC_STRANDS[subject][q.topic] }; banks[subject].push(x); index.set(q.id, x); }
+}
 for (const p of reading) {
   p.questions = balance(p.questions);
   for (const q of p.questions) {
@@ -26,7 +35,13 @@ for (const p of reading) {
 }
 export const passages = new Map(reading.map(p => [p.id, p]));
 export const writingTasks = writing;
-export const getQuestion = id => index.get(id);
+export const getQuestion = id => {
+  if (index.has(id)) return index.get(id);
+  if (id.startsWith('g:')) { // a generated version outside the current pool (e.g. from an older app version)
+    try { const q = fromId(id); const subject = id.split(':')[1]; const x = { ...q, subject, strand: TOPIC_STRANDS[subject][q.topic] }; index.set(id, x); return x; } catch { return null; }
+  }
+  return null;
+};
 export const bankFor = subject => banks[subject] || [];
 export const topicsFor = subject => [...new Set(bankFor(subject).map(q => q.topic))];
 
@@ -113,36 +128,40 @@ function stratifiedPickTopics(pool, n, seen) {
   return shuffle(out);
 }
 
+// Official NSW Reading test: 17 questions in 45 minutes. 14 single questions on
+// passages + 3 multi-part sets (word meaning in context, gapped text, short thematic texts).
+export const MULTI_PART = ['Word Meaning in Context', 'Gapped Text', 'Comparing Texts'];
+
 function buildReading(mode, opts, seen) {
   const all = [...passages.values()];
-  const pSeen = p => p.questions.reduce((s, q) => s + (seen.get(q.id) || 0), 0);
+  const pSeen = p => p.questions.reduce((s, q) => s + (seen.get(q.id) || 0), 0) / p.questions.length;
   const ordered = shuffle(all).sort((a, b) => pSeen(a) - pSeen(b));
-  const target = mode === 'practice' ? (opts.count || 12) : SUBJECTS.reading[mode].questions;
+  const std = ordered.filter(p => !MULTI_PART.includes(p.type));
+  const multi = ordered.filter(p => MULTI_PART.includes(p.type));
+  const ids = ps => ps.flatMap(p => p.questions.map(q => q.id));
 
-  if (mode === 'practice' && opts.topic && !['all', 'focus', 'mistakes'].includes(opts.topic)) {
-    const ps = ordered.filter(p => p.type === opts.topic);
-    return ps.flatMap(p => p.questions.map(q => q.id));
-  }
   if (mode === 'practice' && opts.topic === 'mistakes') {
     const { last } = questionHistory();
-    const wrong = banks.reading.filter(q => last.get(q.id) === false);
-    // keep passage order so the text shows correctly
-    return wrong.map(q => q.id);
+    return banks.reading.filter(q => last.get(q.id) === false).map(q => q.id);
   }
-  const chosen = []; let total = 0; const types = new Set();
-  // one passage of each text type first (least seen), then fill up
-  for (const p of ordered) {
-    if (types.has(p.type)) continue;
-    if (total > 0 && total + p.questions.length > target + 2) continue;
-    chosen.push(p); types.add(p.type); total += p.questions.length;
-    if (total >= target) break;
+  if (mode === 'practice' && opts.topic && !['all', 'focus'].includes(opts.topic)) {
+    const ps = ordered.filter(p => p.type === opts.topic);
+    return ids(ps.slice(0, ps[0]?.questions.length < 5 ? 2 : 1));
   }
-  for (const p of ordered) {
-    if (total >= target - 1) break;
-    if (chosen.includes(p) || total + p.questions.length > target + 2) continue;
-    chosen.push(p); total += p.questions.length;
+  if (mode === 'practice' || mode === 'mini') {
+    // one passage + one multi-part set (least seen first)
+    return ids([std[0], multi[0]].filter(Boolean));
   }
-  return chosen.flatMap(p => p.questions.map(q => q.id));
+  // full mock: 14 passage questions, then one of each multi-part set
+  const out = []; const types = new Set();
+  for (const p of std) {
+    if (out.length >= 14) break;
+    if (types.has(p.type) && std.some(x => !types.has(x.type) && !out.includes(x.questions[0].id))) continue;
+    types.add(p.type);
+    out.push(...p.questions.slice(0, 14 - out.length).map(q => q.id));
+  }
+  for (const t of MULTI_PART) { const p = multi.find(x => x.type === t); if (p) out.push(...p.questions.map(q => q.id)); }
+  return out;
 }
 
 // ---------- scoring & analytics ----------

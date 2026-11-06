@@ -6,7 +6,7 @@ A practice app for the **NSW Selective High School Placement Test**. It runs on 
 
 | Module | Practice (untimed) | Mini mock | Full timed test (official format) |
 |---|---|---|---|
-| 📖 Reading | ✔ explanation after every question | 16 min | 40 min, ~30 questions |
+| 📖 Reading | ✔ explanation after every question | 20 min (1 text + 1 multi-part set) | 45 min, 17 questions: 14 on passages + 3 multi-part sets (word meaning, cloze, short texts) |
 | 🔢 Mathematical Reasoning | ✔ | 15 min, 13 Qs | 40 min, 35 questions |
 | 🧠 Thinking Skills | ✔ | 15 min, 15 Qs | 40 min, 40 questions |
 | ✍️ Writing | – | – | 30 min, 1 task, rubric + model answer |
@@ -20,6 +20,17 @@ A practice app for the **NSW Selective High School Placement Test**. It runs on 
 - **Drills:** her full drill history. She can open any drill to review every answer and worked solution.
 - **Exams:** log named monthly exams (score, class average, rank) and chart them against the class average. The CS Selective No. 17 results are already included.
 - Correct answers are spread evenly across A–E, so there is no letter pattern to guess from.
+
+Test formats follow the [NSW Department of Education](https://education.nsw.gov.au/schooling/parents-and-carers/choosing-a-school-setting/selective-high-schools/placement-test/selective-high-school-practice-tests) guidelines.
+
+### Question bank
+- **Maths:** 73 hand-written questions plus 46 question generators × 6 versions (about 350 questions). Generators create fresh numbers and compute the answer and worked explanation in code, so they are always correct.
+- **Thinking Skills:** 101 hand-written questions (critical thinking and logic puzzles) plus 14 problem-solving generators × 6 versions (about 185).
+- **Reading:** 16 original texts (97 marks) across narrative, poetry, informational/persuasive, word meaning in context, gapped text (cloze) and short thematic texts.
+- **Writing:** 11 tasks across narrative, persuasive, speech, newspaper report, diary, advice letter, descriptive and discussion. Each has a model answer and is marked with the 7 CS criteria (out of 25).
+
+### Weekly plan
+The plan fits around Magizhini's routine (CS tuition Wed/Thu, boxing Fri, Tamil school Sat afternoon). That's about 2¼ hours of app time a week, with no app work on CS days. Planned rest days never break the 🔥 streak. To change the routine, edit `ROUTINE` in `js/data/config.js`.
 
 ## One-time setup (parent)
 
@@ -40,7 +51,8 @@ Each finished test is committed as a file in `data/results/`, and the pet's prof
 Questions live in `js/data/` (`maths.js`, `thinking.js`, `reading.js`, `writing.js`), and the concept notes are in `concepts.js`. After editing, run:
 
 ```bash
-node tools/validate.mjs
+node tools/validate.mjs     # checks the hand-written banks
+node tools/gencheck.mjs     # stress-tests every question generator
 ```
 
 This checks IDs, answers, option counts and topics. To run the app locally, use `python3 -m http.server` and open http://localhost:8000.

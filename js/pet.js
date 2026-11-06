@@ -2,7 +2,7 @@
 // Progress is derived from saved results, so it is identical on every device.
 
 import { SPECIES, STAGES, SHOP, BADGES, TALK } from './data/pets.js';
-import { BASELINE } from './data/config.js';
+import { BASELINE, ROUTINE } from './data/config.js';
 
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 export const speciesById = id => SPECIES.find(s => s.id === id) || SPECIES[0];
@@ -11,6 +11,10 @@ export const say = (kind, vars = {}) => pick(TALK[kind]).replace(/\{(\w+)\}/g, (
 // ------------------------------------------------------------------ progress
 const dayKey = iso => iso.slice(0, 10);
 const addDays = (d, n) => { const x = new Date(d + 'T00:00:00'); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); };
+const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// Planned rest days (e.g. CS tuition days) never break a streak or make the pet sad.
+const isRestDay = d => ROUTINE[DOW[new Date(d + 'T00:00:00').getDay()]]?.mins === 0;
+const prevPlanned = d => { let x = addDays(d, -1); for (let i = 0; i < 7 && isRestDay(x); i++) x = addDays(x, -1); return x; };
 const localToday = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
 
 export function xpForResult(r, lastOutcome) {
@@ -66,15 +70,18 @@ export function computeProgress(results, profile) {
   // streak of consecutive days with practice (today or yesterday counts as "alive")
   const days = new Set(rs.filter(r => r.mode !== 'exam').map(r => dayKey(new Date(new Date(r.finishedAt).getTime() - new Date().getTimezoneOffset() * 60000).toISOString())));
   const today = localToday();
-  let streak = 0; let d = days.has(today) ? today : addDays(today, -1);
-  while (days.has(d)) { streak++; d = addDays(d, -1); }
+  let streak = 0; let d = days.has(today) || isRestDay(today) ? today : prevPlanned(today);
+  if (!days.has(d)) d = prevPlanned(d);
+  while (days.has(d)) { streak++; d = prevPlanned(d); }
   let best = 0, run = 0, prev = null;
-  for (const day of [...days].sort()) { run = prev && addDays(prev, 1) === day ? run + 1 : 1; best = Math.max(best, run); prev = day; }
+  for (const day of [...days].sort()) { run = prev && (prevPlanned(day) === prev || addDays(prev, 1) === day) ? run + 1 : 1; best = Math.max(best, run); prev = day; }
   if (best >= 3) earned.add('streak3'); if (best >= 7) earned.add('streak7'); if (best >= 14) earned.add('streak14');
 
   const lastDay = [...days].sort().pop();
-  const gap = lastDay ? Math.round((new Date(today) - new Date(lastDay)) / 86400000) : 99;
-  const mood = gap === 0 ? 'happy' : gap === 1 ? 'content' : gap <= 3 ? 'missing' : 'sleepy';
+  // gap counted in planned practice days only
+  let gap = 99;
+  if (lastDay) { gap = 0; let x = today; while (x > lastDay && gap < 99) { if (!isRestDay(x)) gap++; x = addDays(x, -1); } }
+  const mood = !lastDay || gap === 0 ? 'happy' : gap === 1 ? 'content' : gap <= 3 ? 'missing' : 'sleepy';
 
   let stageIdx = 0;
   STAGES.forEach((s, i) => { if (xp >= s.xp) stageIdx = i; });

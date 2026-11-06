@@ -12,8 +12,8 @@ export const DEFAULT_SETTINGS = {
 export const SUBJECTS = {
   reading: {
     id: 'reading', name: 'Reading', icon: '📖', options: 4,
-    mock: { questions: 30, minutes: 40 },
-    mini: { questions: 12, minutes: 16 },
+    mock: { questions: 17, minutes: 45, note: '14 passage questions + 3 multi-part sets' },
+    mini: { questions: 2, minutes: 20, note: '1 passage + 1 multi-part set' },
     strands: ['Narrative', 'Poetry', 'Informational & Persuasive', 'Gapped Text', 'Comparing Texts', 'Word Meaning in Context'],
   },
   maths: {
@@ -37,6 +37,18 @@ export const SUBJECTS = {
 };
 
 export const SUBJECT_ORDER = ['reading', 'maths', 'thinking', 'writing'];
+
+// Magizhini's weekly routine. The plan only puts app work on lighter days and keeps
+// the total to about 2¼ hours a week, so it adds to (not replaces) CS homework and school work.
+export const ROUTINE = {
+  Mon: { icon: '🏠', busy: 'School homework & CS books', mins: 25 },
+  Tue: { icon: '🏠', busy: 'School homework & CS books', mins: 25 },
+  Wed: { icon: '📚', busy: 'CS tuition 4:30–8 pm', mins: 0 },
+  Thu: { icon: '📚', busy: 'CS tuition 4:30–8 pm', mins: 0 },
+  Fri: { icon: '🥊', busy: 'Boxing 4–5:30 pm', mins: 15 },
+  Sat: { icon: '🪔', busy: 'Tamil school 1–5 pm', mins: 30, when: 'in the morning' },
+  Sun: { icon: '🌤️', busy: 'Tamil homework', mins: 45 },
+};
 
 // CS Education exam results (entered from the PDF reports).
 // topics: { appTopic: [correct, attempted] } — CS topic names mapped onto the app's topics.

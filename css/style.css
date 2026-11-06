@@ -201,3 +201,6 @@ kbd { background: #eee; border: 1px solid #ccc; border-radius: 4px; padding: 0 5
 .dicon { font-size: 1.5rem; } .dmain { flex: 1; display: flex; flex-direction: column; } .dmain small { color: var(--muted); } .go { color: var(--pri); font-weight: 700; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } @media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
 .checklist { list-style: none; padding-left: 4px; } .checklist li { margin: 4px 0; }
+.day .busy { font-size: .75rem; color: var(--muted); margin-bottom: 6px; }
+.day.restday { background: #f3f6f1; } .day.restday .task { background: transparent; border-style: dashed; }
+.task small { color: var(--muted); }

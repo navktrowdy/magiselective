@@ -1,4 +1,4 @@
-import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS } from './data/config.js';
+import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS, ROUTINE } from './data/config.js';
 import CONCEPTS from './data/concepts.js';
 import { RUBRIC, RUBRIC_TOTAL, TIPS } from './data/writing.js';
 import * as store from './store.js';
@@ -62,46 +62,47 @@ function daysToExam() {
 }
 
 function phaseFor(days) {
-  if (days > 140) return { name: 'Foundation', desc: 'Learn the concepts. Lots of untimed practice on weak topics, with one mini mock per subject each week.' };
-  if (days > 56) return { name: 'Build', desc: 'Mix practice with timed tests. One full test each week, rotating subjects.' };
-  if (days > 0) return { name: 'Exam mode', desc: 'Full timed tests, review every mistake, and practise pacing.' };
+  if (days > 140) return { name: 'Foundation', desc: 'Learn the concepts: short untimed practice on weak topics during the week, mini mocks on Sundays.' };
+  if (days > 56) return { name: 'Build', desc: 'One full timed test every Sunday (rotating subjects), with weak-topic practice on Mondays and Tuesdays.' };
+  if (days > 0) return { name: 'Exam mode', desc: 'A full test every Sunday, mistake reviews during the week, and lots of rest before the big day.' };
   return { name: 'Exam done', desc: 'Well done! Update the exam date in Settings if needed.' };
 }
 
 function weeklyPlan(days) {
+  // Rotates weekly so every subject gets its turn; topics follow her weakest skills.
   const w = s => weakTopics(s, 3).map(t => t.topic);
   const wm = w('maths'), wt = w('thinking');
   const phase = phaseFor(days).name;
-  const P = (s, topic, label) => ({ subject: s, label, href: `#/practice/${s}${topic ? `?topic=${encodeURIComponent(topic)}` : ''}` });
-  const T = (s, mode, label) => ({ subject: s, label, href: `#/test/${s}/${mode}` });
-  const W = { subject: 'writing', label: '30-min writing task + self-mark', href: '#/writing' };
-  if (phase === 'Exam mode') return [
-    ['Mon', [T('maths', 'mock', 'Full Maths test (40 min)')]],
-    ['Tue', [P('maths', 'mistakes', 'Re-try Maths mistakes'), P('reading', 'all', 'Reading practice')]],
-    ['Wed', [T('thinking', 'mock', 'Full Thinking Skills test (40 min)')]],
-    ['Thu', [P('thinking', 'mistakes', 'Re-try Thinking mistakes'), W]],
-    ['Fri', [T('reading', 'mock', 'Full Reading test (40 min)')]],
-    ['Sat', [W, P('maths', 'focus', 'Maths: weak topics')]],
-    ['Sun', [{ subject: 'rest', label: 'Rest day. Read a book you enjoy 📚', href: '#/' }]],
-  ];
-  if (phase === 'Build') return [
-    ['Mon', [P('maths', wm[0], `Maths practice: ${wm[0]}`)]],
-    ['Tue', [P('thinking', wt[0], `Thinking practice: ${wt[0]}`)]],
-    ['Wed', [P('reading', 'all', 'Reading practice (mixed)'), W]],
-    ['Thu', [P('maths', 'focus', 'Maths: weak topics mix')]],
-    ['Fri', [P('thinking', 'focus', 'Thinking: weak topics mix')]],
-    ['Sat', [T(['maths', 'thinking', 'reading'][Math.floor(days / 7) % 3], 'mock', 'Full timed test (rotating subject)')]],
-    ['Sun', [{ subject: 'rest', label: 'Rest day. Review last week\'s mistakes if you like', href: '#/' }]],
-  ];
-  return [
-    ['Mon', [P('maths', wm[0], `Maths: ${wm[0]} (untimed)`)]],
-    ['Tue', [P('thinking', wt[0], `Thinking: ${wt[0]} (untimed)`)]],
-    ['Wed', [P('reading', 'all', 'Reading practice'), P('maths', wm[1], `Maths: ${wm[1]}`)]],
-    ['Thu', [P('thinking', wt[1], `Thinking: ${wt[1]}`)]],
-    ['Fri', [W]],
-    ['Sat', [T('maths', 'mini', 'Maths mini mock (15 min)'), T('thinking', 'mini', 'Thinking mini mock (15 min)')]],
-    ['Sun', [T('reading', 'mini', 'Reading mini mock (16 min)')]],
-  ];
+  const week = Math.floor(Date.now() / (7 * 86400000));
+  const alt = week % 2; const rot = ['maths', 'thinking', 'reading'][week % 3];
+  const P = (s, topic, label, m) => ({ subject: s, label, mins: m, href: `#/practice/${s}${topic ? `?topic=${encodeURIComponent(topic)}` : ''}` });
+  const T = (s, mode, label, m) => ({ subject: s, label, mins: m, href: `#/test/${s}/${mode}` });
+  const W = { subject: 'writing', label: 'Writing task + self-mark', mins: 30, href: '#/writing' };
+  const REST_CS = [{ subject: 'rest', label: 'No app today. CS tuition counts! 💪', mins: 0, href: '#/pet' }];
+  let plan;
+  if (phase === 'Exam mode') plan = {
+    Mon: [P(rot, 'mistakes', `Review last test's ${subjName(rot)} mistakes`, 25)],
+    Tue: [P(alt ? 'thinking' : 'maths', 'focus', `${alt ? 'Thinking' : 'Maths'}: weak-topic drill`, 25)],
+    Fri: [P('reading', 'Word Meaning in Context', 'Word meaning set (quick)', 15)],
+    Sat: [W],
+    Sun: [T(rot, 'mock', `Full ${subjName(rot)} test (${SUBJECTS[rot].mock.minutes} min)`, 45)],
+  };
+  else if (phase === 'Build') plan = {
+    Mon: [P('maths', wm[0], `Maths: ${wm[0]}`, 25)],
+    Tue: [P('thinking', wt[0], `Thinking: ${wt[0]}`, 25)],
+    Fri: [P(alt ? 'maths' : 'thinking', 'mistakes', `Re-try ${alt ? 'Maths' : 'Thinking'} mistakes`, 15)],
+    Sat: [alt ? W : P('reading', 'all', 'Reading: 1 text + 1 multi-part set', 30)],
+    Sun: [T(rot, 'mock', `Full ${subjName(rot)} test (${SUBJECTS[rot].mock.minutes} min)`, 45)],
+  };
+  else plan = {
+    Mon: [P('maths', wm[0], `Maths: ${wm[0]} (untimed, 10 Qs)`, 25)],
+    Tue: [P('thinking', wt[0], `Thinking: ${wt[0]} (untimed, 10 Qs)`, 25)],
+    Fri: [P('reading', alt ? 'Word Meaning in Context' : 'Gapped Text', alt ? 'Word meaning set' : 'Gapped-text (cloze) set', 15)],
+    Sat: [alt ? W : P('maths', wm[1] || 'focus', `Maths: ${wm[1] || 'weak topics'}`, 30)],
+    Sun: alt ? [T('thinking', 'mini', 'Thinking mini mock', 15), T('reading', 'mini', 'Reading mini mock', 20)]
+      : [T('maths', 'mini', 'Maths mini mock', 15), P('thinking', 'mistakes', 'Re-try Thinking mistakes', 20)],
+  };
+  return Object.keys(ROUTINE).map(d => [d, ROUTINE[d].mins ? (plan[d] || []) : REST_CS]);
 }
 
 function dashboard() {
@@ -170,9 +171,12 @@ function dashboard() {
     ${pending ? `<div class="banner warn">${pending} result${pending > 1 ? 's are' : ' is'} saved only on this device. <button class="btn" id="syncnow">Save to GitHub now</button> <a href="#/settings">Settings</a></div>` : ''}
     <section class="grid4">${SUBJECT_ORDER.map(card).join('')}</section>
     <section class="card">
-      <h2>📅 This week's plan</h2>
-      <div class="plan">${plan.map(([d, tasks]) => `<div class="day ${d === dow ? 'today' : ''}"><h4>${d}${d === dow ? ' · today' : ''}</h4>${tasks.map(t =>
-        `<a href="${t.href}" class="task">${d === dow && doneToday.has(t.subject) ? '✅ ' : ''}${esc(t.label)}</a>`).join('')}</div>`).join('')}</div>
+      <h2>📅 This week's plan <small class="muted">· about ${Math.round(plan.flatMap(([, t]) => t).reduce((a, t) => a + t.mins, 0) / 5) * 5} min of app time this week</small></h2>
+      <p class="muted">Fits around CS tuition, boxing and Tamil school. Skip a day if school homework is heavy; Potalien will understand 💛</p>
+      <div class="plan">${plan.map(([d, tasks]) => `<div class="day ${d === dow ? 'today' : ''} ${ROUTINE[d].mins ? '' : 'restday'}"><h4>${d}${d === dow ? ' · today' : ''}</h4>
+        <div class="busy">${ROUTINE[d].icon} ${esc(ROUTINE[d].busy)}</div>${tasks.map(t =>
+        `<a href="${t.href}" class="task">${d === dow && doneToday.has(t.subject) ? '✅ ' : ''}${esc(t.label)}${t.mins ? ` <small>· ${t.mins}m</small>` : ''}</a>`).join('')}
+        ${ROUTINE[d].when ? `<div class="busy">⏰ ${esc(ROUTINE[d].when)}</div>` : ''}</div>`).join('')}</div>
     </section>
     <section class="two">
       <div class="card"><h2>🎯 Focus topics</h2><p class="muted">Lowest accuracy so far (includes your CS exams). Click to practise.</p><div class="focusgrid">${focus}</div></div>
@@ -256,14 +260,16 @@ function testIntro(subj, mode) {
     <div class="card narrow">
       <h1>${S.icon} ${S.name}: ${MODE_LABEL[mode]}</h1>
       <ul class="rules">
-        <li><b>${qids.length} questions · ${f.minutes} minutes</b>${mode === 'mock' ? (qids.length === f.questions ? ' (same as the real NSW Selective test)' : ` (real test: ${f.questions} questions in ${f.minutes} minutes; whole texts are kept together)`) : ''}</li>
+        <li>${subj === 'reading'
+          ? `<b>${mode === 'mock' ? '17 questions' : '2 texts'} (${f.note}) · ${qids.length} marks · ${f.minutes} minutes</b>${mode === 'mock' ? ' (same format as the real NSW Selective test)' : ''}`
+          : `<b>${qids.length} questions · ${f.minutes} minutes</b>${mode === 'mock' && qids.length === f.questions ? ' (same as the real NSW Selective test)' : ''}`}</li>
         <li>Covers every category: ${S.strands.join(', ')}${subj === 'reading' && mode === 'mini' ? ' (a few text types each time)' : ''}.</li>
         <li>You can move between questions and <b>flag</b> ones to come back to.</li>
         <li>There is <b>no penalty for wrong answers</b>, so never leave a question blank. Guess if time is running out!</li>
         <li>The test submits automatically when time runs out. You'll get full explanations afterwards.</li>
         <li>Keyboard: <kbd>A</kbd>–<kbd>E</kbd> choose · <kbd>←</kbd> <kbd>→</kbd> move · <kbd>F</kbd> flag.</li>
       </ul>
-      <p class="muted">Pacing guide: about ${Math.round((f.minutes * 60) / qids.length)} seconds per question.</p>
+      <p class="muted">Pacing guide: about ${Math.round((f.minutes * 60) / qids.length)} seconds per ${subj === 'reading' ? 'mark' : 'question'}.</p>
       <div class="btns"><button class="btn primary" id="go">Start the clock ⏱</button> <a class="btn" href="#/">Back</a></div>
     </div>`;
   document.getElementById('go').onclick = () => startSession({ subject: subj, mode, qids, limitSec: f.minutes * 60 });
