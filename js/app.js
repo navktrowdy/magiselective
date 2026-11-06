@@ -1,6 +1,6 @@
-import { SUBJECTS, SUBJECT_ORDER, BASELINE } from './data/config.js';
+import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS } from './data/config.js';
 import CONCEPTS from './data/concepts.js';
-import { RUBRIC, TIPS } from './data/writing.js';
+import { RUBRIC, RUBRIC_TOTAL, TIPS } from './data/writing.js';
 import * as store from './store.js';
 import {
   buildTest, getQuestion, passages, writingTasks, letter, scoreItems, topicMastery, weakTopics,
@@ -41,6 +41,7 @@ const routes = [
 
 function route() {
   stopTimer();
+  document.querySelectorAll('.modal').forEach(m => m.remove());
   const h = location.hash || '#/';
   const seg = h.split(/[/?]/)[1] || '';
   document.querySelectorAll('nav a:not(.brand)').forEach(a => a.classList.toggle('active', (a.getAttribute('href').split('/')[1] || '') === seg));
@@ -123,9 +124,9 @@ function dashboard() {
     const base = BASELINE[subj];
     const scoreLine = lastTest
       ? `Last test: <b>${pct(lastTest.score, lastTest.total)}%</b> <span class="muted">(${fmtDate(lastTest.finishedAt)})</span>`
-      : base ? `Starting point: <b>${Math.round(base.score)}%</b> <span class="muted">(CS test, Sep)</span>` : '<span class="muted">No tests yet</span>';
+      : base ? `Latest CS test: <b>${Math.round(base.score)}%</b> <span class="muted">(${fmtDate(base.date)})</span>` : '<span class="muted">No tests yet</span>';
     if (subj === 'writing') {
-      return `<div class="card subj"><h3>${S.icon} ${S.name}</h3><p>${lastTest ? `Last task: <b>${lastTest.score}/20</b> <span class="muted">(${fmtDate(lastTest.finishedAt)})</span>` : '<span class="muted">No tasks yet</span>'}</p>
+      return `<div class="card subj"><h3>${S.icon} ${S.name}</h3><p>${lastTest ? `Last task: <b>${lastTest.score}/${lastTest.total}</b> <span class="muted">(${fmtDate(lastTest.finishedAt)})</span>` : '<span class="muted">No tasks yet</span>'}</p>
         <p class="muted">1 task · 30 minutes · marked with a rubric</p>
         <div class="btns"><a class="btn primary" href="#/writing">Start a writing task</a></div></div>`;
     }
@@ -174,7 +175,7 @@ function dashboard() {
         `<a href="${t.href}" class="task">${d === dow && doneToday.has(t.subject) ? '✅ ' : ''}${esc(t.label)}</a>`).join('')}</div>`).join('')}</div>
     </section>
     <section class="two">
-      <div class="card"><h2>🎯 Focus topics</h2><p class="muted">Lowest accuracy so far (includes the Sep CS test). Click to practise.</p><div class="focusgrid">${focus}</div></div>
+      <div class="card"><h2>🎯 Focus topics</h2><p class="muted">Lowest accuracy so far (includes your CS exams). Click to practise.</p><div class="focusgrid">${focus}</div></div>
       <div class="card"><h2>📈 Progress</h2>${progressChart(results)}</div>
     </section>`;
 
@@ -187,7 +188,7 @@ function progressChart(results) {
   const colors = { maths: '#1e88e5', thinking: '#8e24aa', reading: '#43a047', writing: '#fb8c00' };
   const series = SUBJECT_ORDER.map(subj => {
     const pts = [];
-    if (BASELINE[subj]) pts.push({ x: BASELINE.date, y: BASELINE[subj].score, label: 'CS test' });
+    CS_EXAMS.filter(e => e.subject === subj).forEach(e => pts.push({ x: e.date, y: pct(e.score, e.total), label: e.name }));
     results.filter(r => r.subject === subj && r.mode !== 'practice')
       .forEach(r => pts.push({ x: r.finishedAt.slice(0, 10), y: pct(r.score, r.total), label: MODE_LABEL[r.mode] }));
     return { name: subjName(subj), color: colors[subj], points: pts };
@@ -480,7 +481,7 @@ function resultView(id) {
   const strands = Object.entries(r.byStrand).map(([st, v]) => {
     const bp = base?.strands?.[st];
     return `<tr><td>${esc(st)}</td><td>${v.correct}/${v.total}</td><td>${bar(pct(v.correct, v.total), pct(v.correct, v.total) < 50 ? 'bad' : pct(v.correct, v.total) < 75 ? 'mid' : 'good')}</td>
-      <td>${pct(v.correct, v.total)}%</td><td class="muted">${bp ? `${Math.round(bp[0])}% in Sep CS test` : ''}</td></tr>`;
+      <td>${pct(v.correct, v.total)}%</td><td class="muted">${bp ? `${Math.round(bp[0])}% in CS test (${fmtDate(base.date)})` : ''}</td></tr>`;
   }).join('');
   const topics = Object.entries(r.byTopic).sort((a, b) => pct(a[1].correct, a[1].total) - pct(b[1].correct, b[1].total))
     .map(([t, v]) => `<tr><td>${esc(t)}</td><td>${v.correct}/${v.total}</td><td>${bar(pct(v.correct, v.total), pct(v.correct, v.total) < 50 ? 'bad' : pct(v.correct, v.total) < 75 ? 'mid' : 'good')}</td></tr>`).join('');
@@ -510,7 +511,7 @@ function resultView(id) {
       <div class="scorebox">
         <div class="big ${p < 50 ? 'bad' : p < 75 ? 'mid' : 'good'}">${p}%</div>
         <div><b>${r.score} / ${r.total}</b> correct<br>${blanks ? `<span class="warn">${blanks} left blank</span>. Always guess, there's no penalty!` : 'No blanks. Great!'}
-        ${base && r.mode !== 'practice' ? `<br><span class="muted">Sep CS test: ${Math.round(base.score)}% (class average ${Math.round(base.cohortAverage)}%)</span>` : ''}</div>
+        ${base && r.mode !== 'practice' ? `<br><span class="muted">Latest CS test: ${Math.round(base.score)}% (class average ${Math.round(base.cohortAverage)}%)</span>` : ''}</div>
       </div>
       ${xpGain(r)}
       <div class="btns"><a class="btn" href="#/">Dashboard</a>
@@ -534,6 +535,15 @@ function resultView(id) {
 // =====================================================================
 // Writing
 // =====================================================================
+function coachCard() {
+  const cs = [...CS_EXAMS].filter(e => e.subject === 'writing').pop();
+  if (!cs) return '';
+  return `<div class="card coach"><h2>🧑‍🏫 Coach notes from ${esc(cs.name)}: ${cs.score}/${cs.total}</h2>
+    <p class="muted">Your CS teacher's advice. Tick these off in every piece of writing.</p>
+    <ul class="checklist">${cs.feedback.map(f => `<li>☐ ${esc(f)}</li>`).join('')}</ul>
+    <table class="tbl">${RUBRIC.map(c => `<tr><td>${esc(c.name)}</td><td>${cs.rubric[c.key]}/${c.max}</td><td>${bar(pct(cs.rubric[c.key], c.max), pct(cs.rubric[c.key], c.max) < 60 ? 'bad' : pct(cs.rubric[c.key], c.max) < 80 ? 'mid' : 'good')}</td></tr>`).join('')}</table></div>`;
+}
+
 function writingList() {
   const results = store.getResults().filter(r => r.subject === 'writing');
   $app.innerHTML = `
@@ -542,10 +552,11 @@ function writingList() {
       <p>One task, <b>30 minutes</b>, as in the real test. When you finish, mark your writing with the rubric and compare it with a model answer.</p>
       <details><summary><b>Tips for a high score</b></summary><ul>${TIPS.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>
     </div>
+    ${coachCard()}
     <div class="grid3">${writingTasks.map(w => {
       const done = results.filter(r => r.promptId === w.id);
       return `<div class="card"><span class="pill">${esc(w.type)}</span><h3>${esc(w.title)}</h3><p>${esc(w.prompt)}</p>
-        ${done.length ? `<p class="muted">Done ${done.length}× · best ${Math.max(...done.map(d => d.score))}/20</p>` : ''}
+        ${done.length ? `<p class="muted">Done ${done.length}× · best ${Math.max(...done.map(d => d.score))}/${RUBRIC_TOTAL}</p>` : ''}
         <a class="btn primary" href="#/writing/${w.id}">Start (30 min)</a></div>`;
     }).join('')}</div>`;
 }
@@ -590,11 +601,12 @@ function writingTask(id) {
 function writingMark(w, st) {
   const words = (st.text.trim().match(/\S+/g) || []).length;
   $app.innerHTML = `
-    <div class="card"><h1>✍️ Mark your writing</h1><p class="muted">${words} words${st.timeUp ? ' · time ran out' : ''}. Read your writing, then the model answer, then choose a level (1–5) for each criterion. A parent can help mark.</p></div>
+    <div class="card"><h1>✍️ Mark your writing</h1><p class="muted">${words} words${st.timeUp ? ' · time ran out' : ''}. Read your writing, then the model answer, then choose a score for each of the 7 CS criteria (total 25). A parent can help mark.</p></div>
     <div class="two">
       <div class="card"><h2>Your writing</h2><div class="mywriting">${esc(st.text).replace(/\n/g, '<br>') || '<i>(empty)</i>'}</div></div>
       <div class="card"><h2>Model answer</h2><div class="model">${w.model}</div><p class="notes"><b>${esc(w.notes)}</b></p></div>
     </div>
+    ${coachCard()}
     <div class="card"><h2>Rubric</h2>
       ${RUBRIC.map(c => `<fieldset class="rubric"><legend>${esc(c.name)}</legend>${c.levels.map((l, i) =>
         `<label><input type="radio" name="${c.key}" value="${i + 1}"> <b>${i + 1}</b> · ${esc(l)}</label>`).join('')}</fieldset>`).join('')}
@@ -609,7 +621,7 @@ function writingMark(w, st) {
       id: st.id, subject: 'writing', mode: 'mock', promptId: w.id, title: w.title, type: w.type, nickname: store.getSettings().nickname,
       startedAt: new Date(st.startedAt).toISOString(), finishedAt: new Date(st.finishedAt || Date.now()).toISOString(),
       durationSec: Math.round(((st.finishedAt || Date.now()) - st.startedAt) / 1000), limitSec: st.limitSec, timeUp: !!st.timeUp,
-      text: st.text, words, rubric: rub, notes: document.getElementById('notes').value, score: total, total: 20, items: [],
+      text: st.text, words, rubric: rub, notes: document.getElementById('notes').value, score: Math.round(total * 100) / 100, total: RUBRIC_TOTAL, items: [],
     };
     store.clearInProgress();
     location.hash = `#/result/${result.id}`;
@@ -622,9 +634,9 @@ function writingResult(r) {
   const w = writingTasks.find(x => x.id === r.promptId);
   $app.innerHTML = `
     <div class="card"><h1>✍️ ${esc(r.title)}</h1><p class="muted">${fmtDate(r.finishedAt)} · ${r.words} words · ${fmtTime(r.durationSec)}</p>
-      <div class="scorebox"><div class="big ${r.score < 10 ? 'bad' : r.score < 15 ? 'mid' : 'good'}">${r.score}/20</div>
-      <table class="tbl">${RUBRIC.map(c => `<tr><td>${esc(c.name)}</td><td>${r.rubric[c.key]}/5</td><td class="muted">${esc(c.levels[r.rubric[c.key] - 1])}</td></tr>`).join('')}</table></div>
-      ${r.notes ? `<p><b>Notes:</b> ${esc(r.notes)}</p>` : ''}${xpGain({ ...r, score: r.score, total: 20 })}</div>
+      <div class="scorebox"><div class="big ${r.score / r.total < 0.5 ? 'bad' : r.score / r.total < 0.75 ? 'mid' : 'good'}">${r.score}/${r.total}</div>
+      <table class="tbl">${RUBRIC.map(c => `<tr><td>${esc(c.name)}</td><td>${r.rubric[c.key]}/${c.max}</td><td class="muted">${esc(c.levels[r.rubric[c.key] - 1])}</td></tr>`).join('')}</table></div>
+      ${r.notes ? `<p><b>Notes:</b> ${esc(r.notes)}</p>` : ''}${xpGain(r)}</div>
     <div class="two"><div class="card"><h2>Your writing</h2><div class="mywriting">${esc(r.text).replace(/\n/g, '<br>')}</div></div>
       <div class="card"><h2>Model answer</h2>${w ? `<div class="model">${w.model}</div><p class="notes"><b>${esc(w.notes)}</b></p>` : ''}</div></div>`;
   celebrate();

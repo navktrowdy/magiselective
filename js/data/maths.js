@@ -341,4 +341,17 @@ export default [
     q: '40 students chose their favourite sport: Soccer 14, Cricket 8, Swimming 6, and the rest chose Netball. If the results are shown in a pie chart, what angle is the Netball sector?',
     opts: ['72°', '90°', '108°', '120°', '144°'], a: 2,
     exp: `Netball = 40 − 14 − 8 − 6 = 12 students.<br>A pie chart is 360°, so each student = 360 ÷ 40 = 9°.<br>Netball = 12 × 9° = <b>108°</b>.` },
+  // ---------------- Mass ----------------
+  { id: 'm71', topic: 'Mass', diff: 1,
+    q: 'What is 1.25 kg + 750 g?',
+    opts: ['1.325 kg', '2 kg', '7.625 kg', '875 g', '2.5 kg'], a: 1,
+    exp: `Change to the same unit first: 1.25 kg = 1250 g.<br>1250 g + 750 g = 2000 g = <b>2 kg</b>.<br><b>Remember:</b> 1 kg = 1000 g.<br><b>Trap:</b> 1.25 + 750 adds kilograms to grams.` },
+  { id: 'm72', topic: 'Mass', diff: 2,
+    q: '8 identical apples have a total mass of 1.2 kg. What is the mass of one apple?',
+    opts: ['100 g', '120 g', '150 g', '160 g', '960 g'], a: 2,
+    exp: `1.2 kg = 1200 g.<br>1200 g ÷ 8 = <b>150 g</b>.<br>Check: 8 × 150 = 1200 ✔` },
+  { id: 'm73', topic: 'Mass', diff: 3,
+    q: 'A box holding 6 identical tins has a mass of 2.7 kg. The empty box has a mass of 300 g. What is the mass of one tin?',
+    opts: ['350 g', '400 g', '450 g', '500 g', '2.4 kg'], a: 1,
+    exp: `Total = 2.7 kg = 2700 g.<br>Take away the box: 2700 − 300 = 2400 g for 6 tins.<br>One tin = 2400 ÷ 6 = <b>400 g</b>.<br><b>Trap:</b> 450 g (2700 ÷ 6) forgets to remove the box first.` },
 ];

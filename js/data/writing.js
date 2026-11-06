@@ -1,37 +1,45 @@
 // Writing tasks: 30-minute prompts, a marking rubric and model responses.
 
+// Same 7 criteria (total 25) used by CS Education's writing reports, so scores compare directly.
+// levels[i] describes a score of i + 1.
 export const RUBRIC = [
-  { key: 'ideas', name: 'Ideas & Content', levels: [
-    'Ideas are very limited or off-topic.',
-    'Simple ideas that relate to the prompt, with little development.',
-    'Relevant ideas with some detail; suits the audience and purpose.',
-    'Well-developed, interesting ideas with good supporting detail.',
-    'Original, thoughtful ideas, developed with rich, well-chosen detail.',
-  ] },
-  { key: 'structure', name: 'Structure & Organisation', levels: [
-    'No clear beginning, middle or end.',
-    'Some attempt at structure; ideas may jump around.',
-    'Clear beginning, middle and end; mostly logical paragraphs.',
-    'Well-organised paragraphs that link smoothly; effective opening and ending.',
-    'Skilful structure that builds the reader\'s interest (e.g. strong hook, tension or argument building to a powerful close).',
-  ] },
-  { key: 'language', name: 'Language & Vocabulary', levels: [
-    'Very basic words; repetitive.',
-    'Simple vocabulary with occasional interesting words.',
-    'Some precise vocabulary and varied sentence beginnings.',
-    'Precise, vivid vocabulary; varied sentence types; some techniques (e.g. imagery, rhetorical questions).',
-    'Sophisticated, deliberate word choices and techniques that create a strong effect on the reader.',
-  ] },
-  { key: 'conventions', name: 'Grammar, Punctuation & Spelling', levels: [
-    'Many errors make it hard to read.',
-    'Frequent errors, but meaning is mostly clear.',
-    'Mostly correct sentences and punctuation; some errors with harder words.',
-    'Accurate grammar and punctuation, including dialogue or complex sentences; few spelling errors.',
-    'Almost error-free, with a confident range of punctuation (e.g. commas in complex sentences, semicolons, dialogue).',
-  ] },
+  { key: 'content', name: 'Content / Relevant details', max: 4, levels: [
+    'Few ideas; some are off-topic or missing key task requirements.',
+    'Relevant ideas but little detail; some task requirements missing.',
+    'Relevant, detailed ideas that meet the task requirements.',
+    'Rich, specific and original details that fully meet the task and engage the reader.'] },
+  { key: 'form', name: 'Form / Structure', max: 4, levels: [
+    'Does not follow the text type (e.g. story written as a report).',
+    'Some features of the text type; beginning or ending is weak.',
+    'Clear structure with the main features of the text type (e.g. headline, lead, quotes for a report).',
+    'Skilful use of the text type with a strong hook and a satisfying conclusion.'] },
+  { key: 'organising', name: 'Organising ideas / Paragraphs / Devices', max: 4, levels: [
+    'Ideas are jumbled; no paragraphs.',
+    'Some paragraphs; ideas jump around; few linking words.',
+    'Logical paragraphs with linking words and some language devices.',
+    'Ideas flow smoothly; paragraphs build effectively; devices used for effect.'] },
+  { key: 'style', name: 'Style / Vocabulary', max: 3, levels: [
+    'Simple, repetitive words.',
+    'Some precise or interesting words; some figurative or persuasive language.',
+    'Precise, vivid and varied vocabulary that suits the audience and purpose.'] },
+  { key: 'sentences', name: 'Sentences', max: 4, levels: [
+    'Many incomplete or run-on sentences.',
+    'Mostly simple sentences; some errors in construction.',
+    'Correct sentences with some variety, including complex sentences.',
+    'Confident variety of sentence types and lengths used for effect.'] },
+  { key: 'spelling', name: 'Spelling / Grammar', max: 3, levels: [
+    'Frequent errors make it hard to read.',
+    'Some errors, mainly with harder words or tense.',
+    'Accurate spelling and grammar, including difficult words.'] },
+  { key: 'punctuation', name: 'Punctuation', max: 3, levels: [
+    'Basic punctuation often missing.',
+    'Full stops and capitals correct; some errors with commas, apostrophes or speech marks.',
+    'Accurate, varied punctuation including quotation marks and apostrophes.'] },
 ];
+export const RUBRIC_TOTAL = RUBRIC.reduce((a, c) => a + c.max, 0);
 
 export const TIPS = [
+  'Newspaper report: headline → lead paragraph (who, what, when, where, why) → details → quotes from witnesses/officials → what happens next.',
   'Spend 3–4 minutes planning: jot down your idea, 3 main points or story events, and your ending.',
   'Hook the reader in the first sentence: a question, a surprising fact, dialogue or a vivid image.',
   'Use paragraphs. Each one should have ONE main idea or ONE scene.',
@@ -41,6 +49,17 @@ export const TIPS = [
 ];
 
 export default [
+  { id: 'w7', type: 'Newspaper Report', title: 'Mystery at the Museum',
+    prompt: 'Overnight, a famous dinosaur skeleton went missing from the town museum. Write a newspaper report about the event for your local paper. Include what happened, who was involved, comments from different people, and what will happen next.',
+    model: `<h4 style="margin:0">DINOSAUR VANISHES FROM TOWN MUSEUM</h4><p><i>By Potalien, Junior Reporter, The Riverbend Times</i></p>
+<p>Riverbend residents woke to a prehistoric puzzle yesterday after the museum's prized <i>Tyrannosaurus</i> skeleton disappeared overnight, leaving nothing behind but a single muddy footprint and a trail of sawdust.</p>
+<p>The theft was discovered at 7.30 am on Tuesday by cleaner Mrs Rosa Bianchi, who arrived to find the main hall eerily empty. "I've dusted that dinosaur every morning for twenty years," she said, still visibly shaken. "When I switched on the lights, there was just an enormous gap where he used to stand. My heart nearly stopped."</p>
+<p>Police believe the thieves entered through a skylight on the roof between midnight and 4 am. Detective Sergeant Ken Okafor described the crime as "carefully planned and extremely unusual". "Moving a twelve-metre skeleton is no small task," he explained. "Whoever did this needed a large truck, several helpers and a great deal of patience."</p>
+<p>Neighbour Arjun Patel reported hearing "a loud rumbling and the beeping of a reversing truck" at around 2 am, but assumed it was a late delivery.</p>
+<p>The skeleton, nicknamed "Rex" by local schoolchildren, has been the museum's star attraction since 1998. Museum director Dr Helen Wu said the loss was "devastating for the whole community" and urged anyone with information to contact police immediately.</p>
+<p>The museum will remain closed until further notice while detectives examine the scene. Meanwhile, Year 5 students at Riverbend Public School have already started a poster campaign titled "Bring Rex Home". Riverbend, it seems, is not ready to let its favourite dinosaur become history.</p>`,
+    notes: 'Why it scores well: a punchy headline; a lead paragraph that answers who, what, when and where; quotes from FOUR different people (cleaner, detective, neighbour, director), which your CS teacher asked for; specific details (times, measurements); formal but vivid vocabulary ("eerily", "devastating"); and a closing line with a clever play on words.' },
+
   { id: 'w1', type: 'Narrative', title: 'The Door That Wasn\'t There Yesterday',
     prompt: 'Write a story that begins with a character discovering a door that was not there the day before. Think about where the door leads, how your character feels and what changes for them.',
     model: `<p>The door appeared on a Tuesday, which annoyed Maya, because nothing interesting ever happened on Tuesdays.</p>

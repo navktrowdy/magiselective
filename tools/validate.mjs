@@ -31,7 +31,8 @@ const rq = reading.flatMap(p => p.questions.map(q => ({ ...q, type: p.type })));
 reading.forEach(p => { if (!SUBJECTS.reading.strands.includes(p.type)) err(`${p.id}: unknown type ${p.type}`); });
 rq.forEach(q => check(q, 'reading', null));
 writing.forEach(w => { if (!w.prompt || !w.model) err(`${w.id}: incomplete`); });
-if (RUBRIC.some(r => r.levels.length !== 5)) err('rubric levels must be 5');
+if (RUBRIC.some(r => r.levels.length !== r.max)) err('rubric levels must match max');
+if (RUBRIC.reduce((a, c) => a + c.max, 0) !== 25) err('rubric must total 25');
 
 console.log(`Maths: ${maths.length} questions`, count(maths, q => TOPIC_STRANDS.maths[q.topic]), 'answers', dist(maths));
 console.log(`Thinking: ${thinking.length} questions`, count(thinking, q => TOPIC_STRANDS.thinking[q.topic]), 'answers', dist(thinking));

@@ -200,3 +200,4 @@ kbd { background: #eee; border: 1px solid #ccc; border-radius: 4px; padding: 0 5
 .drill:hover { border-color: var(--gold); background: #fffcf6; }
 .dicon { font-size: 1.5rem; } .dmain { flex: 1; display: flex; flex-direction: column; } .dmain small { color: var(--muted); } .go { color: var(--pri); font-weight: 700; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } @media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
+.checklist { list-style: none; padding-left: 4px; } .checklist li { margin: 4px 0; }

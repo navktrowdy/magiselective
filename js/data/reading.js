@@ -10,6 +10,17 @@ const gapOpts = [
   'F. These burns reduce the build-up of dry fuel, so that when bushfires do come, they are less intense.',
   'G. Koalas are often harmed by bushfires because they move slowly.',
 ];
+const gapOpts2 = [
+  'A. Tightly packed feathers, overlapping like roof tiles, form a windproof and waterproof layer.',
+  'B. Warm blood flowing down to the feet passes close to cold blood returning to the body, so heat is passed back before it can escape.',
+  'C. Unlike many other birds, they cannot simply fly north to escape the cold.',
+  'D. Penguins on the cold outer edge gradually work their way inwards, while those in the middle drift outwards.',
+  'E. A huddle is so effective that it can become surprisingly warm.',
+  'F. It is a reminder that in nature, working together can be just as important as being strong.',
+  'G. Penguins catch fish and squid by diving deep beneath the ice.',
+];
+const vq = (id, n, word, opts, a, exp, diff = 2) => ({ id, topic: 'Vocabulary in Context', diff,
+  q: `Which word or phrase is closest in meaning to <b>${word}</b> (word ${n}) as it is used in the text?`, opts, a, exp });
 const gap = n => `<span class="gap">[${n}]</span>`;
 
 export default [
@@ -196,5 +207,49 @@ I oil the chain. I pump the tyre.<br>I wipe the frame to bring back fire.<br>And
       { id: 'r7q5', topic: 'Character and Theme', diff: 3, q: 'Which statement best describes a <b>theme</b> of the story?',
         opts: ['Markets are busy places.', 'Babies often arrive early.', 'People can discover hidden confidence when they are needed.', 'Spices are expensive.'], a: 2,
         exp: `A <b>theme</b> is a big idea about life. Dev changes from avoiding customers to chatting happily, because the situation needed him.<br>A, B and D are just details from the story, not life lessons.` },
+    ] },
+  // ------------------------------------------------------------------
+  { id: 'r8', type: 'Word Meaning in Context', title: 'The Girl Who Painted the Reef',
+    text: `<p class="hint">Read the text. The numbered words in bold are used in the questions.</p>
+<p>Ever since she was small, Lina had been <b>captivated (1)</b> by the ocean. While other children built sandcastles, she would wade into the shallows and peer at the darting fish. Her grandmother, a marine biologist, <b>nurtured (2)</b> this curiosity, lending her books and old snorkels.</p>
+<p>At twelve, Lina noticed that the coral near her town looked pale and <b>fragile (3)</b>. Her grandmother explained that warming seas were causing the coral to lose the tiny algae that give it colour. Lina was <b>determined (4)</b> to do something. She began painting large murals of healthy reefs on the walls of local shops, each with a short message about protecting the ocean.</p>
+<p>At first, some shop owners were <b>reluctant (5)</b> to let a child paint their walls. But when the first mural attracted crowds of tourists taking photographs, the owners changed their minds. Within a year, Lina's paintings had <b>transformed (6)</b> the main street into an outdoor gallery, and the town council had begun a program to monitor the reef.</p>`,
+    questions: [
+      vq('r8q1', 1, 'captivated', ['fascinated', 'trapped', 'frightened', 'bored'], 0,
+        `Lina spends her time staring at fish instead of building sandcastles, so the ocean holds her attention. <b>Captivated = fascinated</b>.<br><b>Trap:</b> "trapped" is related to "captive" but doesn't fit the sentence. Always choose the meaning that fits HERE.`, 1),
+      vq('r8q2', 2, 'nurtured', ['ignored', 'encouraged', 'fed', 'punished'], 1,
+        `Her grandmother lends her books and snorkels, which helps the curiosity grow. <b>Nurtured = encouraged / helped to develop</b>.<br>"Fed" is the literal meaning for a baby or animal, but here it is curiosity being nurtured.`),
+      vq('r8q3', 3, 'fragile', ['colourful', 'enormous', 'easily damaged', 'ancient'], 2,
+        `Clue: "pale" and losing its colour because of warming seas, which suggests weakness. <b>Fragile = easily damaged or broken</b>.`),
+      vq('r8q4', 4, 'determined', ['worried', 'unsure', 'excited', 'firmly decided'], 3,
+        `"Lina was determined to do something. She began painting…" She acted straight away, so she had <b>firmly decided</b>.<br>"Unsure" is the opposite.`),
+      vq('r8q5', 5, 'reluctant', ['unwilling', 'eager', 'unable', 'angry'], 0,
+        `"At first… reluctant… But… the owners changed their minds." The contrast word <b>But</b> shows they first did NOT want to. <b>Reluctant = unwilling</b>.<br><b>Strategy:</b> contrast words (but, however) tell you the word means the opposite of what comes after.`, 3),
+      vq('r8q6', 6, 'transformed', ['damaged', 'changed completely', 'cleaned', 'decorated slightly'], 1,
+        `The street became "an outdoor gallery", which is a total change. <b>Transformed = changed completely</b>.<br>"Decorated slightly" is too weak for "transformed".`),
+    ] },
+
+  // ------------------------------------------------------------------
+  { id: 'r9', type: 'Gapped Text', title: 'Surviving the Antarctic Winter',
+    text: `<p class="hint">Six sentences have been removed from the text. Choose the sentence (A–G) that best fits each gap. There is one extra sentence you do not need.</p>
+<p>Emperor penguins live through the harshest winters on Earth, when temperatures in Antarctica can drop below minus 40 degrees Celsius. ${gap(1)} Instead, they rely on a remarkable combination of body features and teamwork.</p>
+<p>Their first line of defence is their coat. ${gap(2)} Beneath the feathers, a thick layer of fat stores energy and traps heat inside the body.</p>
+<p>Penguins also have a clever trick in their feet. ${gap(3)} As a result, their feet stay just above freezing, which saves heat without letting the feet freeze solid.</p>
+<p>The most famous strategy, however, is the huddle. Thousands of penguins crowd together, shuffling slowly in a giant moving mass. ${gap(4)} This means that every penguin, sooner or later, gets a turn in the warm centre.</p>
+<p>${gap(5)} Temperatures in the middle of a huddle can rise above 30 degrees Celsius. In fact, penguins sometimes become too hot and have to break away to cool down. ${gap(6)}</p>
+<div class="gapopts">${gapOpts2.map(o => `<div>${o}</div>`).join('')}</div>`,
+    questions: [
+      { id: 'r9q1', topic: 'Text Structure', diff: 2, q: 'Which sentence best fits gap <b>[1]</b>?', opts: gapOpts2, a: 2,
+        exp: `The next sentence begins "<b>Instead</b>, they rely on…". "Instead" needs something they CAN'T or DON'T do. C ("cannot simply fly north") sets this up.<br><b>Strategy:</b> look at the linking word straight after the gap.` },
+      { id: 'r9q2', topic: 'Text Structure', diff: 1, q: 'Which sentence best fits gap <b>[2]</b>?', opts: gapOpts2, a: 0,
+        exp: `"Their first line of defence is their <b>coat</b>" → A describes the coat (feathers). The next sentence says "Beneath the <b>feathers</b>", so the feathers must have just been mentioned.` },
+      { id: 'r9q3', topic: 'Text Structure', diff: 2, q: 'Which sentence best fits gap <b>[3]</b>?', opts: gapOpts2, a: 1,
+        exp: `The paragraph is about the <b>feet</b>, and the next sentence starts "As a result, their feet stay just above freezing". B explains the cause (blood passing heat back), so "As a result" follows logically.<br><b>Cause → effect</b> links are a common cloze clue.` },
+      { id: 'r9q4', topic: 'Text Structure', diff: 2, q: 'Which sentence best fits gap <b>[4]</b>?', opts: gapOpts2, a: 3,
+        exp: `The following sentence says "This means that every penguin… gets a turn in the warm centre". D explains the movement from edge to middle that makes this true.` },
+      { id: 'r9q5', topic: 'Text Structure', diff: 2, q: 'Which sentence best fits gap <b>[5]</b>?', opts: gapOpts2, a: 4,
+        exp: `The paragraph is about the huddle being <b>hot</b> (above 30 °C, penguins too hot). E introduces that idea: "surprisingly warm". Starting a paragraph with its main idea (a topic sentence) is very common.` },
+      { id: 'r9q6', topic: 'Text Structure', diff: 3, q: 'Which sentence best fits gap <b>[6]</b>?', opts: gapOpts2, a: 5,
+        exp: `The final gap usually wraps up the whole text. F gives a concluding lesson about <b>teamwork</b>, linking back to "body features and teamwork" in paragraph 1.<br>G (catching fish) is the extra sentence. It isn't about keeping warm.` },
     ] },
 ];

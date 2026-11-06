@@ -1,6 +1,6 @@
 // Engagement screens: Potalien adoption & home, My Skills dashboard, Monthly exams.
 
-import { SUBJECTS, BASELINE } from './data/config.js';
+import { SUBJECTS, BASELINE, CS_EXAMS } from './data/config.js';
 import { SPECIES, STAGES, SHOP, FREE_BG } from './data/pets.js';
 import * as store from './store.js';
 import { topicMastery, topicsFor } from './bank.js';
@@ -214,7 +214,7 @@ export function skillsView(subj = 'maths') {
           <div class="tile"><b>${fmtDuration(time)}</b><span>Time spent</span></div>
         </div>
         <div class="radarwrap">${radarChart(axes, { size: 400 })}</div>
-        ${base ? `<p class="muted center">Dots start from your CS exam (Sep) and update as you practise.</p>` : ''}
+        ${base ? `<p class="muted center">Dots start from your CS exams and update as you practise.</p>` : ''}
         <div class="titlebadge"><span>${esc(title)}</span></div>
       </div>
       <div class="two">
@@ -235,10 +235,8 @@ const shortTopic = t => ({
 // ======================================================================
 export function examsView() {
   const entries = [
-    ...['maths', 'thinking'].filter(s => BASELINE[s]).map(s => ({
-      id: null, subject: s, topicLabel: `${BASELINE.label}`, finishedAt: BASELINE.date + 'T12:00:00Z',
-      pctScore: BASELINE[s].score, avg: BASELINE[s].cohortAverage, rank: BASELINE[s].rank, rankOf: BASELINE[s].rankOf, builtIn: true,
-      score: BASELINE[s].raw, total: BASELINE[s].rawTotal })),
+    ...CS_EXAMS.map(e => ({ id: null, subject: e.subject, topicLabel: e.name, finishedAt: e.date + 'T12:00:00Z',
+      pctScore: pct(e.score, e.total), avg: e.avg, rank: e.rank, rankOf: e.rankOf, builtIn: true, score: e.score, total: e.total })),
     ...store.getResults().filter(r => r.mode === 'exam').map(r => ({ ...r, pctScore: pct(r.score, r.total) })),
   ].sort((a, b) => b.finishedAt.localeCompare(a.finishedAt));
 
