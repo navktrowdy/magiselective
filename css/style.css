@@ -5,12 +5,12 @@
   --soft: #f7f2ea; --soft2: #fffaf0; --paper: #fffdf6; --dark: #2b2620; --on-dark: #c9a55c;
   --nav-bg: #2b2620; --nav-ink: #e9dfcc; --brand: #c9a55c;
   --hero: linear-gradient(120deg, #c9a55c, #5a8a64); --ring: linear-gradient(160deg, #c9a55c, #5a8a64 55%, #cfe3ee);
-  --font: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; --font-head: var(--font);
+  --font: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif; --font-head: "Space Grotesk", "Lexend", system-ui, sans-serif;
   --radius: 22px; --shadow: 0 1px 3px rgba(0,0,0,.06);
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; font: 16px/1.55 var(--font); background: var(--bg); color: var(--ink); }
+body { margin: 0; font: 16px/1.6 var(--font); font-weight: 400; -webkit-font-smoothing: antialiased; background: var(--bg); color: var(--ink); }
 nav { display: flex; gap: 4px; align-items: center; padding: 10px 20px; background: var(--nav-bg); position: sticky; top: 0; z-index: 10; flex-wrap: wrap; }
 nav a { color: var(--nav-ink); text-decoration: none; padding: 6px 12px; border-radius: 8px; font-weight: 500; }
 nav a.active, nav a:hover { background: rgba(255,255,255,.18); color: #fff; }
@@ -73,7 +73,7 @@ kbd { background: var(--soft); border: 1px solid var(--line2); border-radius: 4p
 .passage { background: var(--paper); border: 1px solid var(--line2); border-radius: 12px; padding: 16px 20px; max-height: calc(100vh - 150px); overflow: auto; position: sticky; top: 120px; line-height: 1.7; }
 .passage-review .passage { position: static; max-height: 420px; }
 .ptype { font-size: .8em; color: var(--muted); margin-top: -6px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .05em; }
-.poem { font-family: Georgia, serif; font-size: 1.05rem; }
+.poem { font-size: 1.05rem; line-height: 1.8; font-weight: 300; letter-spacing: .01em; }
 .gap { display: inline-block; background: #fff59d; padding: 0 6px; border-radius: 4px; font-weight: 700; }
 .gapopts { margin-top: 12px; padding: 10px; background: var(--soft2); border-radius: 8px; font-size: .92em; } .gapopts div { margin: 4px 0; }
 .hint { font-style: italic; color: var(--muted); }
@@ -120,9 +120,9 @@ kbd { background: var(--soft); border: 1px solid var(--line2); border-radius: 4p
 .rules li { margin: 6px 0; }
 
 /* Writing */
-.writing textarea { min-height: 420px; font: 1.05rem/1.7 Georgia, serif; }
+.writing textarea { min-height: 420px; font: 1.05rem/1.75 var(--font); }
 .prompt { font-size: 1.08rem; background: var(--soft); padding: 12px 16px; border-radius: 10px; border-left: 4px solid var(--pri); }
-.mywriting, .model { font: 1rem/1.7 Georgia, serif; white-space: normal; }
+.mywriting, .model { font: 1rem/1.75 var(--font); white-space: normal; }
 .notes { background: var(--soft2); padding: 10px 12px; border-radius: 8px; font-size: .92em; }
 .rubric { border: 1px solid var(--line); border-radius: 10px; margin: 10px 0; padding: 8px 14px; }
 .rubric legend { font-weight: 800; padding: 0 6px; }
@@ -224,7 +224,7 @@ input, select, textarea, .opt, .btn { color: var(--ink); }
   --soft: #232b5a; --soft2: #202857; --paper: #1d2550; --dark: #ffd166; --on-dark: #0f1430;
   --nav-bg: #090d22; --nav-ink: #c7cbf2; --brand: #ffd166;
   --hero: linear-gradient(120deg, #6d5bd0, #1fb5c9); --ring: linear-gradient(160deg, #8b7cf6, #1fb5c9 55%, #ffd166);
-  --font: "Nunito", system-ui, sans-serif; --font-head: "Fredoka", "Nunito", sans-serif;
+  --font: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif; --font-head: "Space Grotesk", "Lexend", system-ui, sans-serif;
   --radius: 20px; --shadow: 0 6px 24px rgba(0,0,0,.35);
 }
 [data-theme="cosmic"] body { background: radial-gradient(circle at 20% 10%, #1b2457 0, transparent 40%), radial-gradient(circle at 80% 60%, #26195a 0, transparent 45%), #0f1430; background-attachment: fixed; }
@@ -240,7 +240,7 @@ input, select, textarea, .opt, .btn { color: var(--ink); }
   --soft: #ffe8f1; --soft2: #fff7fb; --paper: #fffafc; --dark: #3a2240; --on-dark: #ffd23f;
   --nav-bg: #e8578f; --nav-ink: #ffe6f0; --brand: #fff;
   --hero: linear-gradient(120deg, #ff8fab, #ffb347); --ring: linear-gradient(160deg, #ff8fab, #2ec4b6 55%, #ffd23f);
-  --font: "Nunito", system-ui, sans-serif; --font-head: "Baloo 2", "Nunito", sans-serif;
+  --font: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif; --font-head: "Space Grotesk", "Lexend", system-ui, sans-serif;
   --radius: 26px; --shadow: 0 4px 0 #f6d9e6;
 }
 
@@ -252,7 +252,7 @@ input, select, textarea, .opt, .btn { color: var(--ink); }
   --soft: #e4f1f8; --soft2: #f4fafd; --paper: #f9fdff; --dark: #12334a; --on-dark: #7fdbff;
   --nav-bg: #0f4c6e; --nav-ink: #cfeaf7; --brand: #7fdbff;
   --hero: linear-gradient(120deg, #1f7aa8, #2ec4b6); --ring: linear-gradient(160deg, #1f7aa8, #2ec4b6 55%, #ff7f5c);
-  --font: "Nunito", system-ui, sans-serif; --font-head: "Nunito", system-ui, sans-serif;
+  --font: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif; --font-head: "Space Grotesk", "Lexend", system-ui, sans-serif;
   --radius: 18px; --shadow: 0 2px 10px rgba(18,51,74,.08);
 }
 
@@ -264,7 +264,7 @@ input, select, textarea, .opt, .btn { color: var(--ink); }
   --soft: #e8f0db; --soft2: #f7faef; --paper: #fdfdf4; --dark: #1f3a1f; --on-dark: #ffcf5c;
   --nav-bg: #1f3a1f; --nav-ink: #d8e8c4; --brand: #ffcf5c;
   --hero: linear-gradient(120deg, #2f7d32, #8bc34a 60%, #f39c12); --ring: linear-gradient(160deg, #2f7d32, #8bc34a 55%, #f39c12);
-  --font: "Quicksand", system-ui, sans-serif; --font-head: "Baloo 2", "Quicksand", sans-serif;
+  --font: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif; --font-head: "Space Grotesk", "Lexend", system-ui, sans-serif;
   --radius: 16px; --shadow: 0 2px 0 #dbe6c9;
 }
 
@@ -276,7 +276,7 @@ input, select, textarea, .opt, .btn { color: var(--ink); }
   --soft: #ece6ff; --soft2: #f8f5ff; --paper: #fcfaff; --dark: #2a1f4d; --on-dark: #b8f04a;
   --nav-bg: #2a1f4d; --nav-ink: #d9d0ff; --brand: #b8f04a;
   --hero: linear-gradient(120deg, #6c4ad1, #b56ce0 55%, #9ccc3d); --ring: linear-gradient(160deg, #6c4ad1, #b8f04a 55%, #f0a6ca);
-  --font: "Nunito", system-ui, sans-serif; --font-head: "Fredoka", "Nunito", sans-serif;
+  --font: "Lexend", system-ui, -apple-system, "Segoe UI", sans-serif; --font-head: "Space Grotesk", "Lexend", system-ui, sans-serif;
   --radius: 24px; --shadow: 0 4px 14px rgba(108,74,209,.10);
 }
 
@@ -293,3 +293,12 @@ input, select, textarea, .opt, .btn { color: var(--ink); }
 .holidaybanner h2 { margin: 0 0 4px; } .holidaybanner p { margin: 2px 0; }
 .day.holidayday { background: #fff7ec; border-color: #ffd2a1; } .day.holidayday .task { border-style: dashed; background: transparent; }
 .breaklist li { margin: 6px 0; }
+
+/* ===== Typography: Lexend (made for easy reading) + Space Grotesk (cool headings & numbers) ===== */
+h1, h2, h3 { letter-spacing: -.02em; font-weight: 700; }
+h1 { font-size: 1.75rem; }
+.qtext, .passage, .exp { font-size: 1.06rem; line-height: 1.75; }
+.passage { font-weight: 300; } .passage b, .exp b, .qtext b { font-weight: 600; }
+.opt .L, .timer, .countdown span, .big, .tile b, .pct, .navgrid button, .gain b, .petstats b { font-family: var(--font-head); font-variant-numeric: tabular-nums; }
+.btn, nav a { font-family: var(--font-head); letter-spacing: .01em; }
+nav .brand { letter-spacing: -.01em; }

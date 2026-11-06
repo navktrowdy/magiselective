@@ -46,6 +46,11 @@ export const THEMES = [
   { id: 'jungle', name: 'Jungle Explorer', blurb: 'Leafy greens and mango orange', sw: ['#f1f6e9', '#2f7d32', '#8bc34a', '#f39c12'] },
 ];
 
+// Family breaks built into the app (no study planned). More can be added in Settings.
+export const BREAKS = [
+  { name: 'India trip', start: '2026-12-23', end: '2027-01-25', builtIn: true },
+];
+
 export const SUBJECT_ORDER = ['reading', 'maths', 'thinking', 'writing'];
 
 // Magizhini's weekly routine. The plan only puts app work on lighter days and keeps

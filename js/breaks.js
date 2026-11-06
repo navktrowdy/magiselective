@@ -1,13 +1,19 @@
 // Holidays / breaks (e.g. the family trip to India). Stored in the synced Potalien profile.
 // During a break: no study is planned, streaks are protected and the Potalien goes on holiday too.
 import * as store from './store.js';
+import { BREAKS } from './data/config.js';
 
 const localDate = (d = new Date()) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 export const today = () => localDate();
 export const addDays = (iso, n) => { const x = new Date(iso + 'T00:00:00'); x.setDate(x.getDate() + n); return localDate(x); };
 export const daysBetween = (a, b) => Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 86400000);
 
-export const getBreaks = () => [...(store.getProfile()?.breaks || [])].sort((a, b) => a.start.localeCompare(b.start));
+export const getBreaks = () => {
+  const own = store.getProfile()?.breaks || [];
+  const all = [...BREAKS, ...own.filter(b => !BREAKS.some(x => x.start === b.start && x.end === b.end))];
+  return all.sort((a, b) => a.start.localeCompare(b.start));
+};
+const ownBreaks = () => store.getProfile()?.breaks || [];
 export const breakOn = iso => getBreaks().find(b => iso >= b.start && iso <= b.end) || null;
 export const isBreakDay = iso => Boolean(breakOn(iso));
 export const activeBreak = () => breakOn(today());

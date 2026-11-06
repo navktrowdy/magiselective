@@ -63,10 +63,12 @@ function daysToExam() {
 }
 
 function phaseFor(days) {
-  if (days > 140) return { name: 'Foundation', desc: 'Learn the concepts: short untimed practice on weak topics during the week, mini mocks on Sundays.' };
-  if (days > 56) return { name: 'Build', desc: 'One full timed test every Sunday (rotating subjects), with weak-topic practice on Mondays and Tuesdays.' };
-  if (days > 0) return { name: 'Exam mode', desc: 'A full test every Sunday, mistake reviews during the week, and lots of rest before the big day.' };
-  return { name: 'Exam done', desc: 'Well done! Update the exam date in Settings if needed.' };
+  // Phases follow STUDY days left (holidays like the India trip don't count).
+  const sd = studyDaysUntil(store.getSettings().examDate);
+  if (days <= 0) return { name: 'Exam done', desc: 'Well done! Update the exam date in Settings if needed.' };
+  if (sd > 95) return { name: 'Foundation', desc: 'Learn the concepts: short untimed practice on weak topics during the week, mini mocks on Sundays.' };
+  if (sd > 56) return { name: 'Build', desc: 'One full timed test every Sunday (rotating subjects), with weak-topic practice on Mondays and Tuesdays.' };
+  return { name: 'Exam mode', desc: 'A full test every Sunday, mistake reviews during the week, and plenty of rest before the big day.' };
 }
 
 function weeklyPlan(days) {
@@ -81,7 +83,16 @@ function weeklyPlan(days) {
   const W = { subject: 'writing', label: 'Writing task + self-mark', mins: 30, href: '#/writing' };
   const REST_CS = [{ subject: 'rest', label: 'No app today. CS tuition counts! 💪', mins: 0, href: '#/pet' }];
   let plan;
-  if (phase === 'Exam mode') plan = {
+  const ended = lastEndedBreak();
+  const backWeek = ended && daysBetween(ended.end, todayLocal()) <= 7;
+  if (backWeek) plan = { // gentle restart after a holiday
+    Mon: [P('maths', 'all', 'Welcome back: easy mixed Maths (5–10 Qs)', 15)],
+    Tue: [P('thinking', 'all', 'Easy mixed Thinking (5–10 Qs)', 15)],
+    Fri: [P('reading', 'all', 'One reading text', 15)],
+    Sat: [{ subject: 'rest', label: 'Free morning: settle back in 🌱', mins: 0, href: '#/pet' }],
+    Sun: [T('maths', 'mini', 'Maths mini mock', 15)],
+  };
+  else if (phase === 'Exam mode') plan = {
     Mon: [P(rot, 'mistakes', `Review last test's ${subjName(rot)} mistakes`, 25)],
     Tue: [P(alt ? 'thinking' : 'maths', 'focus', `${alt ? 'Thinking' : 'Maths'}: weak-topic drill`, 25)],
     Fri: [P('reading', 'Word Meaning in Context', 'Word meaning set (quick)', 15)],
@@ -713,7 +724,7 @@ function settingsView() {
       ${themePicker()}
       <h2>✈️ Holidays and breaks</h2>
       <p class="muted">No study is planned on these days, the 🔥 streak is protected and the Potalien goes on holiday too.</p>
-      <ul class="breaklist">${getBreaks().map((b, i) => `<li><b>${esc(b.name)}</b>: ${fmtShort(b.start)} → ${fmtShort(b.end)} (${daysBetween(b.start, b.end) + 1} days) <button class="btn small" data-delbreak="${i}">Remove</button></li>`).join('') || '<li class="muted">No breaks added yet.</li>'}</ul>
+      <ul class="breaklist">${getBreaks().map((b, i) => `<li><b>${esc(b.name)}</b>: ${fmtShort(b.start)} → ${fmtShort(b.end)} (${daysBetween(b.start, b.end) + 1} days) ${b.builtIn ? '<span class="chip">built in</span>' : `<button class="btn small" data-delbreak="${i}">Remove</button>`}</li>`).join('') || '<li class="muted">No breaks added yet.</li>'}</ul>
       <div class="row3"><label>Name<input id="bname" value="India trip"></label><label>First day<input id="bstart" type="date"></label><label>Last day<input id="bend" type="date"></label></div>
       <div class="btns"><button class="btn" id="addbreak">Add break</button></div>
       <h2>👤 About</h2>
@@ -746,12 +757,12 @@ function settingsView() {
     const name = val('bname') || 'Holiday', start = val('bstart'), end = val('bend');
     if (!start || !end || end < start) return toast('Please choose a first and last day (last day on or after the first).', 'error');
     if (!store.getProfile()) return toast('Adopt a Potalien first.', 'error');
-    await saveBreaks([...getBreaks(), { name, start, end }]); toast(`Added ${esc(name)} ✈️`, 'ok'); settingsView();
+    await saveBreaks([...(store.getProfile()?.breaks || []), { name, start, end }]); toast(`Added ${esc(name)} ✈️`, 'ok'); settingsView();
   };
   document.querySelectorAll('[data-delbreak]').forEach(b => b.onclick = async () => {
-    const list = getBreaks(); const x = list[Number(b.dataset.delbreak)];
+    const x = getBreaks()[Number(b.dataset.delbreak)];
     if (!confirm(`Remove ${x.name}?`)) return;
-    list.splice(Number(b.dataset.delbreak), 1); await saveBreaks(list); settingsView();
+    await saveBreaks((store.getProfile()?.breaks || []).filter(y => !(y.start === x.start && y.end === x.end && y.name === x.name))); settingsView();
   });
   document.getElementById('test').onclick = async () => { save(); msg('Testing…'); try { const r = await store.testConnection(); msg(r.message, r.ok); } catch (e) { msg(e.message); } };
   document.getElementById('sync').onclick = async () => { save(); await doSync(); };
