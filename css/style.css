@@ -302,3 +302,30 @@ h1 { font-size: 1.75rem; }
 .opt .L, .timer, .countdown span, .big, .tile b, .pct, .navgrid button, .gain b, .petstats b { font-family: var(--font-head); font-variant-numeric: tabular-nums; }
 .btn, nav a { font-family: var(--font-head); letter-spacing: .01em; }
 nav .brand { letter-spacing: -.01em; }
+
+/* ===== Parent summary ===== */
+.ps-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.ps-head h1 { margin: 0; }
+.ps-tiles { grid-template-columns: repeat(6, 1fr); margin: 0 0 18px; }
+@media (max-width: 1000px) { .ps-tiles { grid-template-columns: repeat(3, 1fr); } }
+.ps-tiles .tile b { font-size: 1.5rem; }
+.tips li { margin: 6px 0; line-height: 1.6; }
+.up { color: var(--good); font-weight: 700; font-size: .85em; } .down { color: var(--bad); font-weight: 700; font-size: .85em; } .flat { color: var(--muted); }
+.heat { display: flex; gap: 4px; align-items: flex-start; }
+.hmlabels { display: flex; flex-direction: column; gap: 4px; margin-right: 4px; } .hmlabels span { height: 22px; font-size: .7rem; color: var(--muted); line-height: 22px; }
+.hmcol { display: flex; flex-direction: column; gap: 4px; }
+.heat i, .hmlegend i { display: block; width: 22px; height: 22px; border-radius: 5px; background: var(--soft); }
+.hmlegend { margin-top: 10px; } .hmlegend span { display: inline-flex; align-items: center; gap: 4px; } .hmlegend i { width: 12px; height: 12px; display: inline-block; }
+.heat .l1, .hmlegend .l1 { background: color-mix(in srgb, var(--pri) 35%, transparent); }
+.heat .l2, .hmlegend .l2 { background: color-mix(in srgb, var(--pri) 65%, transparent); }
+.heat .l3, .hmlegend .l3 { background: var(--pri); }
+.heat .miss, .hmlegend .miss { background: transparent; border: 2px dashed var(--line2); }
+.heat .rest, .hmlegend .rest { background: var(--soft); }
+.heat .brk, .hmlegend .brk { background: #ffc98a; }
+.heat .future { background: transparent; }
+@media print {
+  nav, .noprint, .toast, .modal { display: none !important; }
+  body { background: #fff; } main { max-width: none; padding: 0; }
+  .card { box-shadow: none; break-inside: avoid; border-color: #ddd; }
+  .two { grid-template-columns: 1fr 1fr; }
+}

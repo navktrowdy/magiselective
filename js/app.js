@@ -8,6 +8,7 @@ import {
   topicsFor, mistakesCount,
 } from './bank.js';
 import { lineChart } from './charts.js';
+import { parentView } from './parent.js';
 import { esc, pct, fmtTime, fmtDate, todayStr, toast, applyTheme } from './util.js';
 import { adoptView, petView, skillsView, examsView, petWidget, celebrate, progressNow } from './views.js';
 import { say, computeProgress } from './pet.js';
@@ -38,6 +39,7 @@ const routes = [
   [/^#\/pet$/, petView],
   [/^#\/skills(?:\/(\w+))?$/, skillsView],
   [/^#\/exams$/, examsView],
+  [/^#\/parent$/, parentView],
 ];
 
 function route() {
