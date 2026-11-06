@@ -21,3 +21,22 @@ export function lineChart(series, { width = 560, height = 240 } = {}) {
   const legend = series.map(s => `<span class="lg"><i style="background:${s.color}"></i>${s.name}</span>`).join('');
   return `<svg viewBox="0 0 ${width} ${height}" class="chart" role="img" aria-label="Progress chart">${grid}${xl}${lines}</svg><div class="legend">${legend}</div>`;
 }
+
+/** Radar ("progress map") chart. axes: [{label, value: 0–100 or null}] */
+export function radarChart(axes, { size = 340, color = '#c9a55c' } = {}) {
+  const n = axes.length; if (n < 3) return '';
+  const cx = size / 2, cy = size / 2, R = size / 2 - 62;
+  const pt = (i, r) => { const a = -Math.PI / 2 + (i * 2 * Math.PI) / n; return [cx + r * Math.cos(a), cy + r * Math.sin(a)]; };
+  const ring = f => axes.map((_, i) => pt(i, R * f).map(v => v.toFixed(1)).join(',')).join(' ');
+  const grid = [1 / 3, 2 / 3, 1].map(f => `<polygon points="${ring(f)}" fill="none" stroke="#e6ddd0"/>`).join('') +
+    axes.map((_, i) => { const [x, y] = pt(i, R); return `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e6ddd0"/>`; }).join('');
+  const vals = axes.map(a => (a.value ?? 0) / 100);
+  const shape = vals.map((v, i) => pt(i, R * Math.max(v, 0.03)).map(x => x.toFixed(1)).join(',')).join(' ');
+  const dots = vals.map((v, i) => { const [x, y] = pt(i, R * Math.max(v, 0.03)); return `<circle cx="${x}" cy="${y}" r="5.5" fill="${color}" stroke="#fff" stroke-width="2"><title>${axes[i].label}: ${axes[i].value ?? 'not tried'}${axes[i].value === null ? '' : '%'}</title></circle>`; }).join('');
+  const labels = axes.map((a, i) => {
+    const [x, y] = pt(i, R + 22); const anchor = Math.abs(x - cx) < 8 ? 'middle' : x > cx ? 'start' : 'end';
+    const words = a.label.split(' '); const lines = words.length > 2 ? [words.slice(0, Math.ceil(words.length / 2)).join(' '), words.slice(Math.ceil(words.length / 2)).join(' ')] : [a.label];
+    return `<text x="${x}" y="${y - (lines.length - 1) * 6}" font-size="11.5" fill="#7a6f62" font-weight="600" text-anchor="${anchor}" dominant-baseline="middle">${lines.map((l, k) => `<tspan x="${x}" dy="${k ? 13 : 0}">${l}</tspan>`).join('')}</text>`;
+  }).join('');
+  return `<svg viewBox="-70 0 ${size + 140} ${size}" class="radar" role="img" aria-label="Progress map">${grid}<polygon points="${shape}" fill="${color}" fill-opacity=".18" stroke="${color}" stroke-width="2.5" stroke-linejoin="round"/>${dots}${labels}</svg>`;
+}

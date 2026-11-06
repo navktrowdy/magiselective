@@ -2,7 +2,7 @@
 // Edit DEFAULT_SETTINGS.examDate in the app's Settings page rather than here.
 
 export const DEFAULT_SETTINGS = {
-  nickname: 'Magi',
+  nickname: 'Potalien',
   examDate: '2027-05-01',
   github: { owner: 'navktrowdy', repo: 'magiselective', branch: 'main', path: 'data/results', token: '' },
 };
@@ -42,9 +42,9 @@ export const SUBJECT_ORDER = ['reading', 'maths', 'thinking', 'writing'];
 // Used to seed "focus topics" and as the first point on the progress chart.
 export const BASELINE = {
   date: '2026-09-03',
-  label: 'CS Education Test 17',
+  label: 'CS Selective No. 17',
   maths: {
-    score: 42.86, cohortAverage: 70.46,
+    score: 42.86, cohortAverage: 70.46, raw: 15, rawTotal: 35, rank: 216, rankOf: 241,
     strands: {
       'Number and Algebra': [50.0, 74.03],
       'Measurement and Geometry': [33.33, 66.18],
@@ -62,7 +62,7 @@ export const BASELINE = {
     },
   },
   thinking: {
-    score: 55.0, cohortAverage: 66.7,
+    score: 55.0, cohortAverage: 66.7, raw: 22, rawTotal: 40, rank: 179, rankOf: 240,
     strands: { 'Problem Solving': [42.11, 65.53], 'Critical Thinking': [66.67, 67.76] },
     topics: {
       'Finding Procedures': [3, 10], 'Finding the Main Conclusion': [2, 4], 'Relevant Selection': [4, 7],

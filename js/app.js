@@ -7,26 +7,17 @@ import {
   topicsFor, mistakesCount,
 } from './bank.js';
 import { lineChart } from './charts.js';
+import { esc, pct, fmtTime, fmtDate, todayStr, toast } from './util.js';
+import { adoptView, petView, skillsView, examsView, petWidget, celebrate, progressNow } from './views.js';
+import { say, computeProgress } from './pet.js';
 
 const $app = document.getElementById('app');
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
-const fmtTime = s => { s = Math.max(0, Math.round(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
-const fmtDate = iso => new Date(iso).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
-const todayStr = () => new Date().toISOString().slice(0, 10);
 const subjName = s => SUBJECTS[s].short || SUBJECTS[s].name;
-const MODE_LABEL = { mock: 'Full timed test', mini: 'Mini mock', practice: 'Practice' };
+const MODE_LABEL = { mock: 'Full timed test', mini: 'Mini mock', practice: 'Practice', exam: 'Monthly exam' };
 
 let timer = null;
 let session = null; // active test/practice session
 const stopTimer = () => { if (timer) clearInterval(timer); timer = null; };
-
-function toast(msg, kind = 'info') {
-  const t = document.createElement('div');
-  t.className = `toast ${kind}`; t.innerHTML = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 5000);
-}
 
 // =====================================================================
 // Router
@@ -39,15 +30,20 @@ const routes = [
   [/^#\/result\/(.+)$/, resultView],
   [/^#\/writing$/, writingList],
   [/^#\/writing\/(\w+)$/, writingTask],
-  [/^#\/history$/, historyView],
+  [/^#\/history(?:\?.*)?$/, historyView],
   [/^#\/concepts$/, conceptsView],
   [/^#\/settings$/, settingsView],
+  [/^#\/adopt$/, adoptView],
+  [/^#\/pet$/, petView],
+  [/^#\/skills(?:\/(\w+))?$/, skillsView],
+  [/^#\/exams$/, examsView],
 ];
 
 function route() {
   stopTimer();
   const h = location.hash || '#/';
-  document.querySelectorAll('nav a').forEach(a => a.classList.toggle('active', h.startsWith(a.getAttribute('href')) && (a.getAttribute('href') !== '#/' || h === '#/')));
+  const seg = h.split(/[/?]/)[1] || '';
+  document.querySelectorAll('nav a:not(.brand)').forEach(a => a.classList.toggle('active', (a.getAttribute('href').split('/')[1] || '') === seg));
   for (const [re, fn] of routes) {
     const m = h.match(re);
     if (m) { window.scrollTo(0, 0); return fn(...m.slice(1)); }
@@ -108,7 +104,9 @@ function weeklyPlan(days) {
 }
 
 function dashboard() {
+  if (!store.getProfile()) { location.hash = '#/adopt'; return; }
   const s = store.getSettings();
+  const pr = progressNow();
   const results = store.getResults();
   const days = daysToExam();
   const phase = phaseFor(days);
@@ -151,11 +149,21 @@ function dashboard() {
   $app.innerHTML = `
     <section class="hero">
       <div>
-        <h1>Hi ${esc(s.nickname)} 👋</h1>
+        <h1>Hi ${esc(s.nickname)} 👽🥔</h1>
         <p>${days > 0 ? `<b>${days}</b> days until the Selective test (${fmtDate(s.examDate)})` : 'Exam day has passed. Update the date in Settings.'}</p>
         <p class="phase"><b>${phase.name} phase:</b> ${phase.desc}</p>
       </div>
       <div class="countdown"><span>${Math.max(days, 0)}</span>days</div>
+    </section>
+    <section class="card petbar">
+      <a href="#/pet" class="petlink">${petWidget({ size: 110, message: esc(say(pr.mood, { nick: s.nickname })) })}</a>
+      <div class="petstats">
+        <div><b>🔥 ${pr.streak}</b><span>day streak${pr.practisedToday ? ' ✔ today' : ''}</span></div>
+        <div><b>✨ ${pr.coins}</b><span>stardust</span></div>
+        <div><b>${esc(pr.stage.name)}</b><span>${pr.next ? `${pr.next.xp - pr.xp} XP to evolve` : 'fully evolved'}</span><div class="xpbar"><span style="width:${pr.stagePct}%"></span></div></div>
+        <div><b>🏅 ${pr.badges.filter(b => b.earned).length}/${pr.badges.length}</b><span>badges</span></div>
+      </div>
+      <div class="btns col"><a class="btn primary" href="#/pet">Visit ${esc(store.getProfile().pet.name)}</a><a class="btn" href="#/skills">My Skills</a></div>
     </section>
     ${inprog ? `<div class="banner">You have an unfinished ${esc(subjName(inprog.subject))} ${MODE_LABEL[inprog.mode].toLowerCase()}. <a class="btn primary" href="${inprog.subject === 'writing' ? `#/writing/${inprog.promptId}` : '#/run'}">Resume</a> <button class="btn" id="discard">Discard</button></div>` : ''}
     ${pending ? `<div class="banner warn">${pending} result${pending > 1 ? 's are' : ' is'} saved only on this device. <button class="btn" id="syncnow">Save to GitHub now</button> <a href="#/settings">Settings</a></div>` : ''}
@@ -172,6 +180,7 @@ function dashboard() {
 
   document.getElementById('discard')?.addEventListener('click', () => { if (confirm('Discard the unfinished test?')) { store.clearInProgress(); dashboard(); } });
   document.getElementById('syncnow')?.addEventListener('click', doSync);
+  celebrate();
 }
 
 function progressChart(results) {
@@ -318,7 +327,9 @@ function renderQuestion() {
   const concept = CONCEPTS[q.topic];
   const feedback = checked ? `
     <div class="feedback ${chosen === q.a ? 'ok' : 'no'}">
-      <h3>${chosen === q.a ? '✅ Correct!' : `❌ Not quite. The answer is ${letter(q.a)}.`}</h3>
+      <div class="fbhead">${petWidget({ mood: chosen === q.a ? 'excited' : 'oops', size: 70, cls: 'mini' })}
+      <div><h3>${chosen === q.a ? '✅ Correct!' : `❌ Not quite. The answer is ${letter(q.a)}.`}</h3>
+      <p class="petsay">${esc(say(chosen === q.a ? 'correct' : 'wrong'))}</p></div></div>
       <div class="exp">${q.exp}</div>
       ${concept ? `<details class="concept"><summary>📘 Concept: ${esc(q.topic)}</summary>${conceptHtml(q.topic)}</details>` : ''}
     </div>` : '';
@@ -439,9 +450,24 @@ function conceptHtml(topic) {
 
 const bar = (p, cls = '') => `<div class="bar ${cls}"><span style="width:${p}%"></span></div>`;
 
+function xpGain(r) {
+  const prof = store.getProfile(); if (!prof) return '';
+  const all = store.getResults();
+  const before = computeProgress(all.filter(x => x.id !== r.id), prof);
+  const after = computeProgress(all, prof);
+  const p = pct(r.score, r.total);
+  const nick = store.getSettings().nickname;
+  const msg = p >= 85 ? `WOW, ${nick}! That was out of this world! 🌟` : p >= 70 ? 'Great work! My antennae are glowing with pride ✨'
+    : p >= 50 ? 'Nice effort! Read the concept cards below and we\'ll smash it next time 💪'
+    : 'Tough one! Every mistake below is a clue. Let\'s learn them together 🔍';
+  return `<div class="xpgain">${petWidget({ mood: p >= 50 ? 'excited' : 'content', size: 90, message: esc(msg) })}
+    <div class="gain"><b>+${after.xp - before.xp} XP</b><span>+${Math.floor(after.xp / 4) - Math.floor(before.xp / 4)} ✨ stardust</span></div></div>`;
+}
+
 function resultView(id) {
   const r = store.getResult(decodeURIComponent(id));
   if (!r) { $app.innerHTML = '<div class="card">Result not found. <a href="#/history">Back to history</a></div>'; return; }
+  if (r.mode === 'exam') { location.hash = '#/exams'; return; }
   if (r.subject === 'writing') return writingResult(r);
   const p = pct(r.score, r.total);
   const blanks = r.items.filter(i => i.chosen === null).length;
@@ -486,6 +512,7 @@ function resultView(id) {
         <div><b>${r.score} / ${r.total}</b> correct<br>${blanks ? `<span class="warn">${blanks} left blank</span>. Always guess, there's no penalty!` : 'No blanks. Great!'}
         ${base && r.mode !== 'practice' ? `<br><span class="muted">Sep CS test: ${Math.round(base.score)}% (class average ${Math.round(base.cohortAverage)}%)</span>` : ''}</div>
       </div>
+      ${xpGain(r)}
       <div class="btns"><a class="btn" href="#/">Dashboard</a>
         ${wrongTopics.length ? `<a class="btn primary" href="#/practice/${r.subject}?topic=mistakes">Re-try these mistakes</a>` : ''}</div>
     </div>
@@ -501,6 +528,7 @@ function resultView(id) {
     ${wrongTopics.length ? `<div class="card"><h2>📘 Concepts to review</h2><p class="muted">Based on the questions you missed. Read these before your next practice.</p>
       <div class="concepts">${wrongTopics.map(t => `<div class="concept-card"><h3>${esc(t)}</h3>${conceptHtml(t)}</div>`).join('')}</div></div>` : ''}
     <div class="card"><h2>Question-by-question explanations</h2><p class="muted">Wrong and blank answers are opened for you.</p>${review}</div>`;
+  celebrate();
 }
 
 // =====================================================================
@@ -596,24 +624,31 @@ function writingResult(r) {
     <div class="card"><h1>✍️ ${esc(r.title)}</h1><p class="muted">${fmtDate(r.finishedAt)} · ${r.words} words · ${fmtTime(r.durationSec)}</p>
       <div class="scorebox"><div class="big ${r.score < 10 ? 'bad' : r.score < 15 ? 'mid' : 'good'}">${r.score}/20</div>
       <table class="tbl">${RUBRIC.map(c => `<tr><td>${esc(c.name)}</td><td>${r.rubric[c.key]}/5</td><td class="muted">${esc(c.levels[r.rubric[c.key] - 1])}</td></tr>`).join('')}</table></div>
-      ${r.notes ? `<p><b>Notes:</b> ${esc(r.notes)}</p>` : ''}</div>
+      ${r.notes ? `<p><b>Notes:</b> ${esc(r.notes)}</p>` : ''}${xpGain({ ...r, score: r.score, total: 20 })}</div>
     <div class="two"><div class="card"><h2>Your writing</h2><div class="mywriting">${esc(r.text).replace(/\n/g, '<br>')}</div></div>
       <div class="card"><h2>Model answer</h2>${w ? `<div class="model">${w.model}</div><p class="notes"><b>${esc(w.notes)}</b></p>` : ''}</div></div>`;
+  celebrate();
 }
 
 // =====================================================================
 // History, concepts, settings
 // =====================================================================
 function historyView() {
-  const rs = [...store.getResults()].reverse();
-  $app.innerHTML = `<div class="card"><h1>🗂 History</h1>
-    ${rs.length ? `<table class="tbl hist"><thead><tr><th>Date</th><th>Subject</th><th>Type</th><th>Score</th><th></th></tr></thead><tbody>
-    ${rs.map(r => `<tr><td>${fmtDate(r.finishedAt)}</td><td>${SUBJECTS[r.subject].icon} ${esc(subjName(r.subject))}</td>
-      <td>${MODE_LABEL[r.mode]}${r.topicLabel ? ` · ${esc(r.topicLabel)}` : ''}${r.title ? ` · ${esc(r.title)}` : ''}</td>
-      <td><b>${r.score}/${r.total}</b> (${pct(r.score, r.total)}%)</td><td><a href="#/result/${encodeURIComponent(r.id)}">Review →</a></td></tr>`).join('')}
-    </tbody></table>` : '<p>No results yet. Start with a practice session from the dashboard!</p>'}</div>
-    <div class="card"><h2>📊 Topic mastery (all time)</h2><div class="three">${['maths', 'thinking', 'reading'].map(s => `<div><h3>${SUBJECTS[s].icon} ${subjName(s)}</h3><table class="tbl">${
-      topicMastery(s).sort((a, b) => (a.pct ?? 101) - (b.pct ?? 101)).map(t => `<tr><td>${esc(t.topic)}</td><td>${t.total ? `${t.correct}/${t.total}` : '–'}</td><td>${t.pct === null ? '<span class="muted">new</span>' : bar(t.pct, t.pct < 50 ? 'bad' : t.pct < 75 ? 'mid' : 'good')}</td></tr>`).join('')}</table></div>`).join('')}</div></div>`;
+  const f = new URLSearchParams(location.hash.split('?')[1] || '').get('s') || 'all';
+  const rs = [...store.getResults()].reverse().filter(r => r.mode !== 'exam' && (f === 'all' || r.subject === f));
+  const tabs = ['all', ...SUBJECT_ORDER].map(k => `<a href="#/history${k === 'all' ? '' : `?s=${k}`}" class="${k === f ? 'on' : ''}">${k === 'all' ? 'All' : `${SUBJECTS[k].icon} ${subjName(k)}`}</a>`).join('');
+  $app.innerHTML = `<div class="card"><h1>🗂 Drill history</h1>
+    <p class="muted">Open any finished drill to review every answer and its worked solution. Monthly exams are on the <a href="#/exams">Exams</a> page.</p>
+    <div class="tabs">${tabs}</div>
+    ${rs.length ? `<div class="drills">${rs.map(r => {
+      const p = pct(r.score, r.total);
+      const blanks = (r.items || []).filter(i => i.chosen === null).length;
+      return `<a class="drill" href="#/result/${encodeURIComponent(r.id)}">
+        <span class="dicon">${SUBJECTS[r.subject].icon}</span>
+        <span class="dmain"><b>${esc(subjName(r.subject))} · ${MODE_LABEL[r.mode]}</b>
+          <small>${fmtDate(r.finishedAt)}${r.topicLabel ? ` · ${esc(r.topicLabel)}` : ''}${r.title ? ` · ${esc(r.title)}` : ''} · ${fmtTime(r.durationSec || 0)}${blanks ? ` · ${blanks} blank` : ''}</small></span>
+        <span class="pct ${p < 50 ? 'bad' : p < 75 ? 'mid' : 'good'}">${r.score}/${r.total}</span><span class="go">Review →</span></a>`;
+    }).join('')}</div>` : '<p>No drills here yet. Start one from the dashboard!</p>'}</div>`;
 }
 
 function conceptsView() {

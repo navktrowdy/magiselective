@@ -57,19 +57,52 @@ export function syncConfigured() {
   return Boolean(github.owner && github.repo && github.token);
 }
 
-async function uploadResult(result) {
+async function putJson(file, obj, message) {
   const { github } = getSettings();
-  const file = `${github.path}/${result.id}.json`;
-  const body = {
-    message: `Result: ${result.subject} ${result.mode} ${result.score}/${result.total}`,
-    content: b64(JSON.stringify(result, null, 2)),
-    branch: github.branch,
-  };
-  // If the file already exists (e.g. re-marked writing), include its sha.
+  const body = { message, content: b64(JSON.stringify(obj, null, 2)), branch: github.branch };
+  // If the file already exists, GitHub needs its sha to replace it.
   const existing = await gh(`/contents/${file}?ref=${github.branch}`);
   if (existing.ok) body.sha = (await existing.json()).sha;
   const res = await gh(`/contents/${file}`, { method: 'PUT', body: JSON.stringify(body) });
   if (!res.ok) throw new Error(`GitHub save failed (${res.status}): ${(await res.text()).slice(0, 200)}`);
+}
+
+async function getJson(file) {
+  const { github } = getSettings();
+  const res = await gh(`/contents/${file}?ref=${github.branch}`);
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error(`GitHub read failed (${res.status})`);
+  return JSON.parse(unb64((await res.json()).content));
+}
+
+const profileFile = () => `${getSettings().github.path.replace(/\/[^/]*$/, '')}/profile.json`;
+
+function uploadResult(result) {
+  const { github } = getSettings();
+  return putJson(`${github.path}/${result.id}.json`, result, `Result: ${result.subject} ${result.mode} ${result.score}/${result.total}`);
+}
+
+// ---- Potalien profile (pet choice, outfits, purchases) ----
+const K_PROFILE = 'ms.profile';
+const K_PROFILE_PENDING = 'ms.profilePending';
+export const getProfile = () => read(K_PROFILE, null);
+export async function saveProfile(p) {
+  p.updatedAt = new Date().toISOString();
+  write(K_PROFILE, p);
+  if (!syncConfigured()) { write(K_PROFILE_PENDING, true); return; }
+  try { await putJson(profileFile(), p, 'Update Potalien profile'); localStorage.removeItem(K_PROFILE_PENDING); }
+  catch { write(K_PROFILE_PENDING, true); }
+}
+
+async function syncProfile(report) {
+  try {
+    const remote = await getJson(profileFile());
+    const local = getProfile();
+    if (remote && (!local || remote.updatedAt > local.updatedAt)) { write(K_PROFILE, remote); localStorage.removeItem(K_PROFILE_PENDING); report.profile = 'downloaded'; }
+    else if (local && syncConfigured() && (read(K_PROFILE_PENDING, false) || !remote || local.updatedAt > remote.updatedAt)) {
+      await putJson(profileFile(), local, 'Update Potalien profile'); localStorage.removeItem(K_PROFILE_PENDING); report.profile = 'uploaded';
+    }
+  } catch (e) { report.errors.push(e.message); }
 }
 
 /** Save a finished attempt locally, then try GitHub. Returns {synced, error}. */
@@ -107,7 +140,7 @@ export async function syncAll() {
   if (!github.owner || !github.repo) return report;
   try {
     const res = await gh(`/contents/${github.path}?ref=${github.branch}`);
-    if (res.status === 404) return report; // no results folder yet
+    if (res.status === 404) { await syncProfile(report); return report; } // no results folder yet
     if (!res.ok) throw new Error(`GitHub list failed (${res.status})`);
     const files = (await res.json()).filter(f => f.name.endsWith('.json'));
     const have = new Set(read(K_RESULTS, []).map(r => r.id));
@@ -120,6 +153,7 @@ export async function syncAll() {
       report.downloaded++;
     }
   } catch (e) { report.errors.push(e.message); }
+  await syncProfile(report);
   return report;
 }
 
@@ -133,10 +167,11 @@ export async function testConnection() {
 
 // ---- backup ----
 export function exportAll() {
-  return JSON.stringify({ exportedAt: new Date().toISOString(), results: read(K_RESULTS, []) }, null, 2);
+  return JSON.stringify({ exportedAt: new Date().toISOString(), results: read(K_RESULTS, []), profile: getProfile() }, null, 2);
 }
 export function importAll(json) {
   const data = JSON.parse(json);
   (data.results || []).forEach(putLocal);
+  if (data.profile) write(K_PROFILE, data.profile);
   return (data.results || []).length;
 }
