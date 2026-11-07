@@ -59,6 +59,10 @@ node tools/answer-key.mjs   # independent answer key for every hand-written Math
 
 This checks IDs, answers, option counts and topics. The same four checks run automatically on GitHub for every push and pull request (`.github/workflows/quality.yml`); a red ✘ means a question or answer is wrong, so don't merge until it's green. A new hand-written Maths question needs its own line in `tools/answer-key.mjs`, or the check fails.
 
+### 🤖 AI writing marker
+
+With a Claude API key in ⚙️ Settings (stored only in that browser), a finished writing piece is marked automatically by Claude (`js/marker.js`) against the same 7-criterion rubric (total 25) as the external writing reports. She gets a score and comment for each criterion, strengths, next steps and one of her sentences rewritten. The scores fill in the rubric, and a parent can change any of them before saving. Older saved pieces have a **Get AI feedback** button. Costs about 5 US cents per piece. The SDK is bundled in `js/vendor/anthropic.mjs`, so there's no build step and no CDN.
+
 ### 🚩 Reported questions
 
 If a question ever looks wrong, Magizhini can press **🚩 Something looks wrong with this question** (after checking an answer in practice, or in a test's review). It is taken out of every future test at once (for a generated question, the whole question type is paused) and listed on the 👪 Parent page and in the weekly email, with her note. Press **It's fine, bring it back** if it was OK, or get it fixed first. To run the app locally, use `python3 -m http.server` and open http://localhost:8000.

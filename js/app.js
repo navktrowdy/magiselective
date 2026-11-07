@@ -13,6 +13,7 @@ import { parentView } from './parent.js';
 import { esc, pct, fmtTime, fmtDate, todayStr, toast, applyTheme } from './util.js';
 import { adoptView, petView, skillsView, examsView, petWidget, celebrate, progressNow } from './views.js';
 import { say, computeProgress } from './pet.js';
+import { markWriting, aiFeedbackHtml } from './marker.js';
 
 const $app = document.getElementById('app');
 const subjName = s => SUBJECTS[s].short || SUBJECTS[s].name;
@@ -704,7 +705,9 @@ function writingTask(id) {
 function writingMark(w, st) {
   const words = (st.text.trim().match(/\S+/g) || []).length;
   $app.innerHTML = `
-    <div class="card"><h1>✍️ Mark your writing</h1><p class="muted">${words} words${st.timeUp ? ' · time ran out' : ''}. Read your writing, then the model answer, then choose a score for each of the 7 writing criteria (total 25). A parent can help mark.</p></div>
+    <div class="card"><h1>✍️ Mark your writing</h1><p class="muted">${words} words${st.timeUp ? ' · time ran out' : ''}. Read your writing, then the model answer, then choose a score for each of the 7 writing criteria (total 25). A parent can help mark.</p>
+      ${aiKey() ? `<div class="btns"><button class="btn primary" id="aimark">${st.ai ? '🔁 Mark again with AI' : '🤖 Mark it for me (AI)'}</button></div>` : '<p class="muted small">Tip: a parent can switch on 🤖 AI marking in ⚙️ Settings.</p>'}</div>
+    <div id="aibox">${aiFeedbackHtml(st.ai, esc)}</div>
     <div class="two">
       <div class="card"><h2>Your writing</h2><div class="mywriting">${esc(st.text).replace(/\n/g, '<br>') || '<i>(empty)</i>'}</div></div>
       <div class="card"><h2>Model answer</h2><div class="model">${w.model}</div><p class="notes"><b>${esc(w.notes)}</b></p></div>
@@ -716,6 +719,24 @@ function writingMark(w, st) {
         `<label><input type="radio" name="${c.key}" value="${i + 1}"> <b>${i + 1}</b> · ${esc(l)}</label>`).join('')}</fieldset>`).join('')}
       <label>Notes for next time (optional)<textarea id="notes" rows="2" placeholder="e.g. use more paragraphs, stronger ending"></textarea></label>
       <div class="btns"><button class="btn primary" id="save">Save my score</button></div></div>`;
+  const fillFromAi = ai => {
+    for (const c of RUBRIC) { const r = document.querySelector(`input[name=${c.key}][value="${ai.scores[c.key]}"]`); if (r) r.checked = true; }
+    const n = document.getElementById('notes'); if (!n.value) n.value = ai.next_steps.join(' ');
+  };
+  if (st.ai) fillFromAi(st.ai);
+  const runAi = async () => {
+    const b = document.getElementById('aimark'); if (!b) return;
+    b.disabled = true; b.textContent = '🤖 Marking… (about 30 seconds)';
+    try {
+      st.ai = await markWriting(w, st.text, aiKey()); store.saveInProgress(st);
+      document.getElementById('aibox').innerHTML = aiFeedbackHtml(st.ai, esc); fillFromAi(st.ai);
+      toast(`AI mark: ${st.ai.total}/${RUBRIC_TOTAL}. The rubric below is filled in, change anything that looks wrong, then save.`, 'ok');
+      b.textContent = '🔁 Mark again with AI';
+    } catch (e) { toast(esc(e.message), 'error'); b.textContent = '🤖 Mark it for me (AI)'; }
+    b.disabled = false;
+  };
+  document.getElementById('aimark')?.addEventListener('click', runAi);
+  if (aiKey() && !st.ai && words >= 20) runAi();
   document.getElementById('save').onclick = async () => {
     const rub = {}; let missing = false;
     for (const c of RUBRIC) { const v = document.querySelector(`input[name=${c.key}]:checked`); if (!v) missing = true; else rub[c.key] = Number(v.value); }
@@ -726,6 +747,7 @@ function writingMark(w, st) {
       startedAt: new Date(st.startedAt).toISOString(), finishedAt: new Date(st.finishedAt || Date.now()).toISOString(),
       durationSec: Math.round(((st.finishedAt || Date.now()) - st.startedAt) / 1000), limitSec: st.limitSec, timeUp: !!st.timeUp,
       text: st.text, words, rubric: rub, notes: document.getElementById('notes').value, score: Math.round(total * 100) / 100, total: RUBRIC_TOTAL, items: [],
+      ai: st.ai || null, markedBy: !st.ai ? 'self' : RUBRIC.every(c => st.ai.scores[c.key] === rub[c.key]) ? 'ai' : 'ai+parent',
     };
     store.clearInProgress();
     location.hash = `#/result/${result.id}`;
@@ -734,15 +756,29 @@ function writingMark(w, st) {
   };
 }
 
+const aiKey = () => (store.getSettings().claudeKey || '').trim();
+
 function writingResult(r) {
   const w = writingTasks.find(x => x.id === r.promptId);
   $app.innerHTML = `
     <div class="card"><h1>✍️ ${esc(r.title)}</h1><p class="muted">${fmtDate(r.finishedAt)} · ${r.words} words · ${fmtTime(r.durationSec)}</p>
       <div class="scorebox"><div class="big ${r.score / r.total < 0.5 ? 'bad' : r.score / r.total < 0.75 ? 'mid' : 'good'}">${r.score}/${r.total}</div>
       <table class="tbl">${RUBRIC.map(c => `<tr><td>${esc(c.name)}</td><td>${r.rubric[c.key]}/${c.max}</td><td class="muted">${esc(c.levels[r.rubric[c.key] - 1])}</td></tr>`).join('')}</table></div>
-      ${r.notes ? `<p><b>Notes:</b> ${esc(r.notes)}</p>` : ''}${xpGain(r)}</div>
+      ${r.markedBy ? `<p class="muted small">Marked by: ${{ self: 'self-marked', ai: '🤖 AI marker', 'ai+parent': '🤖 AI marker, adjusted by a parent' }[r.markedBy]}</p>` : ''}
+      ${r.notes ? `<p><b>Notes:</b> ${esc(r.notes)}</p>` : ''}${xpGain(r)}
+      ${!r.ai && aiKey() && r.text ? '<div class="btns"><button class="btn" id="aimark">🤖 Get AI feedback on this piece</button></div>' : ''}</div>
+    <div id="aibox">${aiFeedbackHtml(r.ai, esc)}</div>
     <div class="two"><div class="card"><h2>Your writing</h2><div class="mywriting">${esc(r.text).replace(/\n/g, '<br>')}</div></div>
       <div class="card"><h2>Model answer</h2>${w ? `<div class="model">${w.model}</div><p class="notes"><b>${esc(w.notes)}</b></p>` : ''}</div></div>`;
+  document.getElementById('aimark')?.addEventListener('click', async e => {
+    const b = e.currentTarget; b.disabled = true; b.textContent = '🤖 Marking… (about 30 seconds)';
+    try {
+      r.ai = await markWriting(w || { type: r.type, title: r.title, prompt: '', model: '' }, r.text, aiKey());
+      b.remove(); document.getElementById('aibox').innerHTML = aiFeedbackHtml(r.ai, esc);
+      const res = await store.saveResult(r);
+      toast(res.synced ? 'AI feedback saved to GitHub ✔' : 'AI feedback saved on this device.', res.synced ? 'ok' : 'warn');
+    } catch (err) { toast(esc(err.message), 'error'); b.disabled = false; b.textContent = '🤖 Get AI feedback on this piece'; }
+  });
   celebrate();
 }
 
@@ -813,6 +849,13 @@ function settingsView() {
         <li>Generate, copy the token and paste it below. It is stored only in this browser.</li></ol></details>
       <div class="row3"><label>Owner<input id="owner" value="${esc(s.github.owner)}"></label><label>Repository<input id="repo" value="${esc(s.github.repo)}"></label><label>Branch<input id="branch" value="${esc(s.github.branch)}"></label></div>
       <label>Access token<input id="token" type="password" value="${esc(s.github.token)}" placeholder="github_pat_…" autocomplete="off"></label>
+      <h2>🤖 AI writing marker</h2>
+      <p class="muted">With a Claude API key, finished writing is marked by Claude against the same 7-criterion rubric as her external reports, with specific feedback for her. The piece is sent to Anthropic for marking (only the nickname, never her name). Costs about 5 US cents per piece.</p>
+      <details><summary><b>How to get a key (parent, one time)</b></summary><ol>
+        <li>Go to <b>console.anthropic.com</b>, sign in and add a little credit under <b>Billing</b> (US$5 is enough for about 100 pieces).</li>
+        <li>Optional but recommended: <b>Settings → Limits</b>, set a monthly spend limit (e.g. US$10).</li>
+        <li><b>API keys → Create key</b>, name it <i>magiselective writing</i>, copy it and paste it below. It is stored only in this browser, so add it on each computer she uses.</li></ol></details>
+      <label>Claude API key<input id="claudeKey" type="password" value="${esc(s.claudeKey || '')}" placeholder="sk-ant-…" autocomplete="off"></label>
       <div class="btns"><button class="btn primary" id="save">Save settings</button><button class="btn" id="test">Test connection</button><button class="btn" id="sync">Sync now</button></div>
       <p id="msg"></p>
       <h2>Backup</h2>
@@ -820,7 +863,7 @@ function settingsView() {
     </div>`;
   const val = id => document.getElementById(id).value.trim();
   const save = () => {
-    store.saveSettings({ nickname: val('nick') || 'Potalien', examDate: val('exam'), parentEmails: val('pemails'),
+    store.saveSettings({ nickname: val('nick') || 'Potalien', examDate: val('exam'), parentEmails: val('pemails'), claudeKey: val('claudeKey'),
       github: { ...s.github, owner: val('owner'), repo: val('repo'), branch: val('branch') || 'main', token: val('token') } });
   };
   const msg = (t, ok) => { const m = document.getElementById('msg'); m.textContent = t; m.className = ok ? 'ok' : 'warn'; };

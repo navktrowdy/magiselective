@@ -345,3 +345,6 @@ nav .brand { letter-spacing: -.01em; }
 .guidetabs { margin-left: 0; margin-top: 10px; }
 .guide h3 { margin-top: 12px; }
 .reprow { margin-bottom: 12px; } .reprow .rev { margin-bottom: 6px; } p.reported { margin-top: 10px; }
+.aifeedback blockquote { margin: 6px 0; padding: 8px 12px; border-left: 4px solid var(--line, #ccc); background: var(--soft, rgba(0,0,0,.03)); border-radius: 6px; }
+.aifeedback blockquote.better { border-left-color: var(--good, #2e7d32); }
+.aifeedback .small, .muted.small { font-size: .85rem; }
