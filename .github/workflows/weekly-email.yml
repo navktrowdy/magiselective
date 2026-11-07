@@ -1,0 +1,29 @@
+name: Weekly parent summary email
+
+on:
+  schedule:
+    # Sundays 08:00 UTC = 7 pm Sydney in daylight saving (6 pm from April)
+    - cron: '0 8 * * 0'
+  workflow_dispatch: {}  # "Run workflow" button for a test email
+
+permissions:
+  contents: read
+
+jobs:
+  email:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-save nodemailer@6
+      - name: Build and send the summary
+        env:
+          TZ: Australia/Sydney
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+        run: node tools/weekly-email.mjs
