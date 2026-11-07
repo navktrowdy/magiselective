@@ -111,7 +111,7 @@ function weeklyPlan(days) {
   else plan = {
     Mon: [P('maths', wm[0], `Maths: ${wm[0]} (untimed, 10 Qs)`, 25)],
     Tue: [P('thinking', wt[0], `Thinking: ${wt[0]} (untimed, 10 Qs)`, 25)],
-    Fri: [P('reading', alt ? 'Word Meaning in Context' : 'Gapped Text', alt ? 'Word meaning set' : 'Gapped-text (cloze) set', 15)],
+    Fri: [alt ? P('reading', 'Word Meaning in Context', 'Word meaning set', 15) : P('maths', wm[2] || 'mistakes', `Maths quick 5: ${wm[2] || 'mistakes'}`, 15)],
     Sat: [alt ? W : P('maths', wm[1] || 'focus', `Maths: ${wm[1] || 'weak topics'}`, 30)],
     Sun: alt ? [T('thinking', 'mini', 'Thinking mini mock', 15), T('reading', 'mini', 'Reading mini mock', 20)]
       : [T('maths', 'mini', 'Maths mini mock', 15), P('thinking', 'mistakes', 'Re-try Thinking mistakes', 20)],

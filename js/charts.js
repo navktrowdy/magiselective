@@ -40,3 +40,17 @@ export function radarChart(axes, { size = 340, color = '#c9a55c' } = {}) {
   }).join('');
   return `<svg viewBox="-70 0 ${size + 140} ${size}" class="radar" role="img" aria-label="Progress map">${grid}<polygon points="${shape}" fill="${color}" fill-opacity=".18" stroke="${color}" stroke-width="2.5" stroke-linejoin="round"/>${dots}${labels}</svg>`;
 }
+
+/** Line chart with category labels on the x-axis (e.g. test numbers). series: [{name, color, values[], dashed?}] */
+export function categoryChart(labels, series, { width = 640, height = 260 } = {}) {
+  const pad = { l: 36, r: 12, t: 12, b: 34 };
+  const W = width - pad.l - pad.r, H = height - pad.t - pad.b;
+  const x = i => pad.l + (labels.length === 1 ? W / 2 : (i / (labels.length - 1)) * W);
+  const y = v => pad.t + H - (v / 100) * H;
+  const grid = [0, 25, 50, 75, 100].map(v => `<line x1="${pad.l}" x2="${width - pad.r}" y1="${y(v)}" y2="${y(v)}" stroke="#e0e0e0"/><text x="${pad.l - 6}" y="${y(v) + 4}" font-size="10" text-anchor="end" fill="#888">${v}%</text>`).join('');
+  const xl = labels.map((l, i) => `<text x="${x(i)}" y="${height - 14}" font-size="10" text-anchor="middle" fill="#888">${l}</text>`).join('');
+  const lines = series.map(s => `<polyline points="${s.values.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.bold ? 3.5 : 2}" ${s.dashed ? 'stroke-dasharray="5 4"' : ''} stroke-linejoin="round"/>` +
+    s.values.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="${s.bold ? 4 : 3}" fill="#fff" stroke="${s.color}" stroke-width="2"><title>${s.name} · Test ${labels[i]}: ${v}%</title></circle>`).join('')).join('');
+  const legend = series.map(s => `<span class="lg"><i style="background:${s.color}"></i>${s.name}</span>`).join('');
+  return `<svg viewBox="0 0 ${width} ${height}" class="chart" role="img" aria-label="Trial test trend">${grid}${xl}<text x="${width / 2}" y="${height - 1}" font-size="10" text-anchor="middle" fill="#888">CS trial test numbers</text>${lines}</svg><div class="legend">${legend}</div>`;
+}

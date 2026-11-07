@@ -329,3 +329,7 @@ nav .brand { letter-spacing: -.01em; }
   .card { box-shadow: none; break-inside: avoid; border-color: #ddd; }
   .two { grid-template-columns: 1fr 1fr; }
 }
+
+.trialsum { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 14px 0; }
+.trialsum .tile { text-align: left; padding: 12px 14px; } .trialsum .tile b { font-size: 1.3rem; } .trialsum small { color: var(--muted); }
+@media (max-width: 900px) { .trialsum { grid-template-columns: 1fr 1fr; } }

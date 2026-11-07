@@ -47,6 +47,37 @@ export const THEMES = [
 ];
 
 // Family breaks built into the app (no study planned). More can be added in Settings.
+// CS Education "Selective Trial Test Summary Report" (oldest first). Scores are percentages;
+// total = 25% each of Maths, Thinking, Reading and Writing. No dates were given, so charts use test numbers.
+export const CS_TRIALS = [
+  { tests: '1–2', maths: 49, thinking: 38, reading: 32, writing: 68, total: 46.75, rank: 110, of: 138 },
+  { tests: '3–4', maths: 40, thinking: 53, reading: 45, writing: 60, total: 49.5, rank: 121, of: 147 },
+  { tests: '5–6', maths: 66, thinking: 50, reading: 66, writing: 72, total: 63.5, rank: 65, of: 149 },
+  { tests: '7–8', maths: 80, thinking: 75, reading: 37, writing: 68, total: 65.0, rank: 49, of: 153 },
+  { tests: '9–10', maths: 43, thinking: 38, reading: 55, writing: 68, total: 51.0, rank: 128, of: 151 },
+  { tests: '11–12', maths: 54, thinking: 55, reading: 63, writing: 70, total: 60.6, rank: 162, of: 252 },
+  { tests: '13–14', maths: 40, thinking: 65, reading: 76, writing: 57, total: 59.5, rank: 180, of: 258 },
+  { tests: '15–16', maths: 37, thinking: 40, reading: 55, writing: 61, total: 48.25, rank: 222, of: 270 },
+  { tests: '17–18', maths: 43, thinking: 55, reading: 50, writing: 70, total: 54.55, rank: 218, of: 277 },
+  { tests: '19–20', maths: 43, thinking: 53, reading: 50, writing: 65, total: 52.75, rank: 222, of: 278 },
+  { tests: '21–22', maths: 23, thinking: 48, reading: 50, writing: 75, total: 49.0, rank: 311, of: 378 },
+  { tests: '23–24', maths: 29, thinking: 38, reading: 45, writing: 70, total: 45.5, rank: 312, of: 397 },
+];
+
+/** Trend facts from the trial history, used by the Exams page, Parent page and email. */
+export function trialTrends(trials = CS_TRIALS) {
+  const avg = (arr, k) => Math.round(arr.reduce((a, t) => a + t[k], 0) / arr.length);
+  const half = Math.floor(trials.length / 2);
+  const early = trials.slice(0, half), late = trials.slice(half), last3 = trials.slice(-3);
+  const subjects = ['maths', 'thinking', 'reading', 'writing'].map(k => ({
+    key: k, early: avg(early, k), late: avg(late, k), last3: avg(last3, k),
+    best: Math.max(...trials.map(t => t[k])), bestAt: trials.find(t => t[k] === Math.max(...trials.map(x => x[k]))).tests,
+    latest: trials[trials.length - 1][k],
+  }));
+  const ahead = t => Math.round((1 - t.rank / t.of) * 100);
+  return { subjects, ahead, latest: trials[trials.length - 1], best: trials.reduce((m, t) => (t.total > m.total ? t : m)), aheadAvg: Math.round(trials.reduce((a, t) => a + ahead(t), 0) / trials.length) };
+}
+
 export const BREAKS = [
   { name: 'India trip', start: '2026-12-23', end: '2027-01-24', builtIn: true },
   { name: 'Jet-lag rest day', start: '2027-01-25', end: '2027-01-25', builtIn: true, recovery: true },

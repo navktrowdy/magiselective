@@ -1,5 +1,5 @@
 // Parent summary data, shared by the Parent page, the email button and the weekly email (tools/weekly-email.mjs).
-import { SUBJECTS, BASELINE, CS_EXAMS, ROUTINE } from './data/config.js';
+import { SUBJECTS, BASELINE, CS_EXAMS, CS_TRIALS, ROUTINE, trialTrends } from './data/config.js';
 import { RUBRIC, RUBRIC_TOTAL } from './data/writing.js';
 import * as store from './store.js';
 import { topicMastery, topicsFor, mistakesCount } from './bank.js';
@@ -119,6 +119,11 @@ export function computeSummary() {
   if (blankRate !== null && blankRate > 3) tips.push(`She is leaving <b>${blankRate}%</b> of timed questions blank. Remind her there's no penalty for guessing, and to flag and move on.`);
   else if (blankRate === null && csBlanks) tips.push(`She left ${csBlanks} blanks across the CS Thinking tests. When she starts timed tests in the app, check the "blanks" figure here.`);
   for (const p of pace) if (p.avg > p.target * 1.2) tips.push(`${name(p.sub)}: averaging ${p.avg}s per question vs about ${p.target}s in the real test. Practise flagging hard questions and coming back.`);
+  const trials = trialTrends();
+  const fall = trials.subjects.filter(x => x.early - x.late >= 8).sort((a, b) => (b.early - b.late) - (a.early - a.late));
+  for (const f of fall.slice(0, 2)) tips.push(`CS trials: <b>${SUBJECTS[f.key].short || SUBJECTS[f.key].name}</b> has dropped from a ${f.early}% average (first 6 trials) to ${f.late}% (last 6). It's the biggest drag on her total, so the plan gives it extra time.`);
+  const steady = trials.subjects.filter(x => x.late >= 60 && Math.abs(x.early - x.late) < 5);
+  if (steady.length) tips.push(`${steady.map(x => SUBJECTS[x.key].short || SUBJECTS[x.key].name).join(' and ')} is consistently strong in the CS trials (about ${steady[0].late}%). Keep it ticking over with one task a fortnight.`);
   if (help.length) tips.push(`Topics to raise with the CS tutor: <b>${help.slice(0, 4).map(h => h.topic).join(', ')}</b>.`);
   if (untried.length) tips.push(`Weak in CS exams but not yet practised in the app: <b>${untried.slice(0, 3).map(u => u.topic).join(', ')}</b>. Use the "Practise" buttons on My Skills.`);
   if (improving.length) tips.push(`Real improvement since the CS exams in <b>${improving.slice(0, 3).map(i => i.topic).join(', ')}</b>. Praise the effort!`);
@@ -138,7 +143,7 @@ export function computeSummary() {
 
   const phaseName = daysLeft <= 0 ? 'Exam done' : studyLeft > 95 ? 'Foundation' : studyLeft > 56 ? 'Build' : 'Exam mode';
 
-  return { s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, csW, appW, wAvg, tips, summaryText, phaseName, stats };
+  return { trials, s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, csW, appW, wAvg, tips, summaryText, phaseName, stats };
 }
 
 /** A self-contained HTML email (inline styles) for the weekly summary. */
@@ -170,6 +175,7 @@ export function emailHtml(x, appUrl = 'https://navktrowdy.github.io/magiselectiv
     <tr><td style="${td}">Time spent</td><td style="${td}">${x.s0.minutes} min</td><td style="${td}">${x.s1.minutes} min</td></tr>
     <tr><td style="${td}">Accuracy</td><td style="${td}">${x.s0.acc ?? '–'}${x.s0.acc !== null ? '%' : ''}</td><td style="${td}">${x.s1.acc ?? '–'}${x.s1.acc !== null ? '%' : ''}</td></tr></table>`)}
   ${box('📚 Subjects', `<table style="width:100%;border-collapse:collapse"><tr><td style="${td}"></td><td style="${td}font-weight:700">Latest CS exam</td><td style="${td}font-weight:700">App, last 6 weeks</td></tr>${subj}</table>`)}
+  ${box('📈 CS trial tests (12 trials)', `<table style="width:100%;border-collapse:collapse"><tr><td style="${td}"></td><td style="${td}font-weight:700">First 6 avg</td><td style="${td}font-weight:700">Last 6 avg</td><td style="${td}font-weight:700">Latest</td></tr>${x.trials.subjects.map(t => `<tr><td style="${td}">${SUBJECTS[t.key].icon} ${name(t.key) === 'Writing' ? 'Writing' : name(t.key)}</td><td style="${td}">${t.early}%</td><td style="${td}color:${t.late - t.early <= -5 ? c.bad : t.late - t.early >= 5 ? c.good : c.ink};font-weight:700">${t.late}% ${t.late - t.early <= -5 ? '▼' : t.late - t.early >= 5 ? '▲' : ''}</td><td style="${td}">${t.latest}%</td></tr>`).join('')}</table><p style="margin:8px 0 0;font-size:13px;color:${c.muted}">Latest total ${x.trials.latest.total}% · rank ${x.trials.latest.rank}/${x.trials.latest.of} (ahead of ${x.trials.ahead(x.trials.latest)}% of students)</p>`)}
   ${box('🛠 Needs help', topicList(x.help.slice(0, 6), 'Nothing below 50%. 🎉'))}
   ${box('🌱 Improving', topicList(x.improving.slice(0, 6), 'Not enough practice yet.'))}
   ${x.blankRate !== null ? box('⏱ Exam habits', `<p style="margin:0;font-size:14px">Blank answers in timed tests: <b style="color:${x.blankRate > 3 ? c.bad : c.good}">${x.blankRate}%</b>${x.pace.map(p => ` · ${name(p.sub)} ${p.avg}s/question (real ≈ ${p.target}s)`).join('')}</p>`) : ''}

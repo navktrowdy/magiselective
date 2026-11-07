@@ -1,11 +1,11 @@
 // Engagement screens: Potalien adoption & home, My Skills dashboard, Monthly exams.
 
-import { SUBJECTS, BASELINE, CS_EXAMS } from './data/config.js';
+import { SUBJECTS, BASELINE, CS_EXAMS, CS_TRIALS, trialTrends } from './data/config.js';
 import { SPECIES, STAGES, SHOP, FREE_BG } from './data/pets.js';
 import * as store from './store.js';
 import { topicMastery, topicsFor } from './bank.js';
 import { petSvg, computeProgress, say, speciesById, shopItem } from './pet.js';
-import { radarChart, lineChart } from './charts.js';
+import { radarChart, lineChart, categoryChart } from './charts.js';
 import { esc, pct, fmtDate, fmtDuration, todayStr, level, toast } from './util.js';
 
 const $app = () => document.getElementById('app');
@@ -235,6 +235,26 @@ const shortTopic = t => ({
 // ======================================================================
 // Monthly exams
 // ======================================================================
+export const TRIAL_COLORS = { maths: '#1e88e5', thinking: '#8e24aa', reading: '#43a047', writing: '#fb8c00', total: '#2b2620' };
+
+export function trialCard() {
+  const tr = trialTrends(); const L = CS_TRIALS.map(t => t.tests);
+  const cell = v => `<td><span class="pct ${v < 50 ? 'bad' : v < 75 ? 'mid' : 'good'}">${v}</span></td>`;
+  const arrow = (a, b) => (b - a >= 5 ? `<span class="up">▲ ${b - a}</span>` : a - b >= 5 ? `<span class="down">▼ ${a - b}</span>` : '<span class="flat">→</span>');
+  return `<div class="card"><h2>📈 CS trial test history (12 trials)</h2>
+    ${categoryChart(L, [
+      ...['maths', 'thinking', 'reading', 'writing'].map(k => ({ name: SUBJECTS[k].short || SUBJECTS[k].name, color: TRIAL_COLORS[k], values: CS_TRIALS.map(t => t[k]) })),
+      { name: 'Total', color: TRIAL_COLORS.total, values: CS_TRIALS.map(t => t.total), bold: true },
+      { name: 'Ahead of % of students', color: '#9e9e9e', values: CS_TRIALS.map(t => tr.ahead(t)), dashed: true },
+    ])}
+    <div class="trialsum">${tr.subjects.map(s => `<div class="tile"><b>${SUBJECTS[s.key].icon} ${s.late}%</b><span>${SUBJECTS[s.key].short || SUBJECTS[s.key].name}: last 6 avg ${arrow(s.early, s.late)}<br><small>first 6 avg ${s.early}% · best ${s.best}% (Test ${s.bestAt})</small></span></div>`).join('')}</div>
+    <details><summary>Show all 12 trials</summary>
+    <table class="tbl"><thead><tr><th>Tests</th><th>Maths</th><th>Thinking</th><th>Reading</th><th>Writing</th><th>Total</th><th>Rank</th><th>Ahead of</th></tr></thead><tbody>
+    ${[...CS_TRIALS].reverse().map(t => `<tr><td>${t.tests}</td>${cell(t.maths)}${cell(t.thinking)}${cell(t.reading)}${cell(t.writing)}<td><b>${t.total}</b></td><td>${t.rank}/${t.of}</td><td>${tr.ahead(t)}%</td></tr>`).join('')}
+    </tbody></table></details>
+    <p class="muted">"Ahead of" = the share of students she scored above. The group grew from 138 to 397 students, so rank numbers aren't directly comparable over time.</p></div>`;
+}
+
 export function examsView() {
   const entries = [
     ...CS_EXAMS.map(e => ({ id: null, subject: e.subject, topicLabel: e.name, finishedAt: e.date + 'T12:00:00Z',
@@ -259,6 +279,7 @@ export function examsView() {
         <td><b>${e.score}/${e.total}</b> <span class="pct ${level(e.pctScore)}">${Math.round(e.pctScore)}%</span></td>
         <td>${e.avg ? Math.round(e.avg) + '%' : '–'} ${e.avg ? (e.pctScore >= e.avg ? '<span class="chip good">above</span>' : '<span class="chip bad">below</span>') : ''}</td>
         <td>${e.rank ? `${e.rank} / ${e.rankOf}` : '–'}</td></tr>`).join('')}</tbody></table></div>
+    ${trialCard()}
     <div class="grid2">${charts}</div>
     <div class="card narrow"><h2>➕ Add an exam result</h2>
       <div class="row3"><label>Exam name<input id="ename" placeholder="e.g. CS Selective No. 18"></label>

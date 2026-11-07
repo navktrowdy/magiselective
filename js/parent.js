@@ -8,6 +8,7 @@ import { isBreakDay, breakOn, studyDaysUntil, addDays, daysBetween, today, nextB
 import { esc, pct, fmtDate, toast } from './util.js';
 
 import { computeSummary, name, lvl } from './summary.js';
+import { trialCard } from './views.js';
 
 const $app = () => document.getElementById('app');
 
@@ -75,6 +76,7 @@ export function parentView() {
         <p class="muted">Self-marks can be generous. Marking one piece together each fortnight keeps them honest.</p></div>
     </div>
 
+    ${trialCard()}
     <div class="card"><h2>🏆 CS exam history</h2>
       <table class="tbl"><thead><tr><th>Date</th><th>Exam</th><th>Subject</th><th>Score</th><th>Class avg</th><th>Rank</th></tr></thead><tbody>
       ${[...CS_EXAMS, ...all.filter(r => r.mode === 'exam').map(r => ({ date: localDay(r.finishedAt), name: r.topicLabel, subject: r.subject, score: r.score, total: r.total, avg: r.avg, rank: r.rank, rankOf: r.rankOf }))]
