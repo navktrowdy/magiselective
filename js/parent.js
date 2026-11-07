@@ -13,7 +13,7 @@ import { trialCard } from './views.js';
 const $app = () => document.getElementById('app');
 
 export function parentView() {
-  const { s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, csW, appW, wAvg, tips, summaryText, phaseName, stats } = computeSummary();
+  const { s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, blankText, csW, appW, wAvg, tips, summaryText, phaseName, stats } = computeSummary();
   $app().innerHTML = `
     <div class="parent">
     <div class="card ps-head">
@@ -64,7 +64,7 @@ export function parentView() {
       <div class="card"><h2>⏱ Exam habits (timed tests)</h2>
         <table class="tbl"><tbody>
           <tr><td>Timed tests done in app</td><td><b>${timed.length}</b> (${timed.filter(r => r.mode === 'mock').length} full, ${timed.filter(r => r.mode === 'mini').length} mini)</td></tr>
-          <tr><td>Blank answers</td><td>${blankRate === null ? '<span class="muted">no timed tests yet</span>' : `<b class="${blankRate > 3 ? 'warn' : 'ok'}">${blankRate}%</b>`} <span class="muted">· external tests: ${csBlanks} blanks in Thinking</span></td></tr>
+          <tr><td>Blank answers</td><td>${blankRate === null ? '<span class="muted">no timed tests yet</span>' : `<b class="${blankRate > 3 ? 'warn' : 'ok'}">${blankRate}%</b>`} <span class="muted">· external tests: ${blankText}</span></td></tr>
           ${pace.map(p => `<tr><td>${name(p.sub)} pace</td><td><b class="${p.avg > p.target * 1.2 ? 'warn' : 'ok'}">${p.avg}s</b> per question <span class="muted">(real test ≈ ${p.target}s)</span></td></tr>`).join('')}
           <tr><td>Ran out of time</td><td>${timeUps} test${timeUps === 1 ? '' : 's'}</td></tr>
           <tr><td>Past mistakes fixed</td><td>${pr.fixes}</td></tr>

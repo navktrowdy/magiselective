@@ -1,0 +1,1352 @@
+// External test results, entered from the downloaded PDF reports (No. 14–24).
+// topics: { appTopic: [correct, attempted] } with report topic names mapped onto the app's topics.
+// strands: { strand: [myScore %, classAverage %] }. Writing rubric uses the 7 criteria (total 25).
+export const WRITING_RECURRING = [
+  {
+    "text": "Use richer vocabulary and figurative language (similes, metaphors, strong verbs).",
+    "count": 7
+  },
+  {
+    "text": "Give deeper, more specific details and ideas, and a message or moral where it fits.",
+    "count": 5
+  },
+  {
+    "text": "Proofread for punctuation and grammar: commas, apostrophes, speech marks, run-on sentences.",
+    "count": 5
+  },
+  {
+    "text": "Use linking words and clear transitions between paragraphs.",
+    "count": 4
+  },
+  {
+    "text": "Start with a strong hook and finish with a clear conclusion.",
+    "count": 2
+  },
+  {
+    "text": "Read the prompt carefully and answer exactly what it asks.",
+    "count": 1
+  },
+  {
+    "text": "For persuasive texts, use PEEL paragraphs (Point, Explain, Example, Link).",
+    "count": 1
+  }
+];
+
+export default [
+ {
+  "id": "ext14-reading",
+  "name": "External test No. 14",
+  "date": "2026-08-13",
+  "subject": "reading",
+  "score": 29,
+  "total": 38,
+  "avg": 61.28,
+  "rank": 22,
+  "rankOf": 253,
+  "strands": {
+   "Narrative": [
+    75,
+    66.16
+   ],
+   "Word Meaning in Context": [
+    50,
+    33.89
+   ],
+   "Poetry": [
+    100,
+    70.29
+   ],
+   "Gapped Text": [
+    100,
+    61.07
+   ],
+   "Comparing Texts": [
+    70,
+    73.99
+   ]
+  },
+  "topics": {
+   "Main Idea": [
+    7,
+    9
+   ],
+   "Inference": [
+    3,
+    3
+   ],
+   "Vocabulary in Context": [
+    5,
+    9
+   ],
+   "Figurative Language": [
+    1,
+    1
+   ],
+   "Text Structure": [
+    6,
+    6
+   ],
+   "Comparing Texts": [
+    7,
+    10
+   ]
+  }
+ },
+ {
+  "id": "ext14-writing",
+  "name": "External test No. 14: narrative",
+  "date": "2026-08-13",
+  "subject": "writing",
+  "score": 14,
+  "total": 25,
+  "avg": null,
+  "rank": 186,
+  "rankOf": 255,
+  "title": "Lost in the bush",
+  "rubric": {
+   "content": 2.25,
+   "form": 3.25,
+   "organising": 2.25,
+   "style": 2.25,
+   "sentences": 2.25,
+   "spelling": 1,
+   "punctuation": 1
+  }
+ },
+ {
+  "id": "ext15-maths",
+  "name": "External test No. 15",
+  "date": "2026-08-20",
+  "subject": "maths",
+  "score": 13,
+  "total": 35,
+  "avg": 63.56,
+  "rank": 241,
+  "rankOf": 256,
+  "strands": {
+   "Measurement and Geometry": [
+    42.86,
+    60.8
+   ],
+   "Number and Algebra": [
+    28.57,
+    76.51
+   ],
+   "Data Interpretation": [
+    33.33,
+    53.78
+   ],
+   "Problem Solving": [
+    28.57,
+    54.3
+   ],
+   "Statistics and Probability": [
+    50,
+    74.12
+   ]
+  },
+  "topics": {
+   "2D Space": [
+    2,
+    2
+   ],
+   "Decimals": [
+    0,
+    1
+   ],
+   "Fractions": [
+    1,
+    2
+   ],
+   "Data Interpretation": [
+    1,
+    3
+   ],
+   "Angles": [
+    0,
+    2
+   ],
+   "Area": [
+    1,
+    3
+   ],
+   "Problem Solving": [
+    2,
+    7
+   ],
+   "Data": [
+    2,
+    4
+   ],
+   "Time": [
+    1,
+    1
+   ],
+   "3D Space": [
+    0,
+    1
+   ],
+   "Whole Numbers": [
+    1,
+    1
+   ],
+   "Percentages": [
+    0,
+    1
+   ],
+   "Perimeter": [
+    1,
+    2
+   ],
+   "Multiplication and Division": [
+    0,
+    2
+   ],
+   "Volume and Capacity": [
+    0,
+    1
+   ],
+   "Length": [
+    1,
+    1
+   ],
+   "Mass": [
+    0,
+    1
+   ]
+  }
+ },
+ {
+  "id": "ext15-thinking",
+  "name": "External test No. 15",
+  "date": "2026-08-20",
+  "subject": "thinking",
+  "score": 16,
+  "total": 40,
+  "avg": 64.03,
+  "rank": 236,
+  "rankOf": 254,
+  "blanks": 8,
+  "strands": {
+   "Problem Solving": [
+    55,
+    67.66
+   ],
+   "Critical Thinking": [
+    25,
+    60.39
+   ]
+  },
+  "topics": {
+   "Identifying Similarities and Patterns": [
+    5,
+    7
+   ],
+   "Matching Arguments": [
+    2,
+    6
+   ],
+   "Applying Principles": [
+    2,
+    6
+   ],
+   "Detecting Reasoning Error": [
+    1,
+    7
+   ],
+   "Finding Procedures": [
+    3,
+    7
+   ],
+   "Finding the Main Conclusion": [
+    0,
+    1
+   ],
+   "Relevant Selection": [
+    3,
+    6
+   ]
+  }
+ },
+ {
+  "id": "ext16-reading",
+  "name": "External test No. 16",
+  "date": "2026-08-27",
+  "subject": "reading",
+  "score": 21,
+  "total": 38,
+  "avg": 62.66,
+  "rank": 187,
+  "rankOf": 264,
+  "strands": {
+   "Narrative": [
+    62.5,
+    61.93
+   ],
+   "Word Meaning in Context": [
+    37.5,
+    60.61
+   ],
+   "Poetry": [
+    83.33,
+    77.71
+   ],
+   "Gapped Text": [
+    50,
+    53.16
+   ],
+   "Comparing Texts": [
+    50,
+    61.54
+   ]
+  },
+  "topics": {
+   "Main Idea": [
+    2,
+    3
+   ],
+   "Inference": [
+    6,
+    9
+   ],
+   "Author's Purpose and Tone": [
+    1,
+    1
+   ],
+   "Vocabulary in Context": [
+    3,
+    8
+   ],
+   "Figurative Language": [
+    1,
+    1
+   ],
+   "Text Structure": [
+    3,
+    6
+   ],
+   "Comparing Texts": [
+    5,
+    10
+   ]
+  }
+ },
+ {
+  "id": "ext16-writing",
+  "name": "External test No. 16: informative essay",
+  "date": "2026-08-27",
+  "subject": "writing",
+  "score": 15,
+  "total": 25,
+  "avg": null,
+  "rank": 156,
+  "rankOf": 265,
+  "title": "The Great Barrier Reef",
+  "rubric": {
+   "content": 3.25,
+   "form": 2,
+   "organising": 2,
+   "style": 1.25,
+   "sentences": 2.25,
+   "spelling": 2.25,
+   "punctuation": 2.25
+  }
+ },
+ {
+  "id": "ext17-maths",
+  "name": "External test No. 17",
+  "date": "2026-09-03",
+  "subject": "maths",
+  "score": 15,
+  "total": 35,
+  "avg": 70.79,
+  "rank": 246,
+  "rankOf": 273,
+  "strands": {
+   "Number and Algebra": [
+    50,
+    74.42
+   ],
+   "Measurement and Geometry": [
+    33.33,
+    66.48
+   ],
+   "Statistics and Probability": [
+    66.67,
+    79.61
+   ],
+   "Problem Solving": [
+    25,
+    58.52
+   ],
+   "Data Interpretation": [
+    0,
+    75.09
+   ]
+  },
+  "topics": {
+   "Multiplication and Division": [
+    1,
+    2
+   ],
+   "Area": [
+    2,
+    3
+   ],
+   "Angles": [
+    0,
+    2
+   ],
+   "Fractions": [
+    1,
+    3
+   ],
+   "Volume and Capacity": [
+    1,
+    2
+   ],
+   "2D Space": [
+    0,
+    2
+   ],
+   "Probability": [
+    1,
+    1
+   ],
+   "Patterns": [
+    1,
+    4
+   ],
+   "Problem Solving": [
+    1,
+    4
+   ],
+   "Perimeter": [
+    1,
+    1
+   ],
+   "Data": [
+    3,
+    5
+   ],
+   "Percentages": [
+    1,
+    1
+   ],
+   "Time": [
+    0,
+    1
+   ],
+   "Addition and Subtraction": [
+    1,
+    1
+   ],
+   "Length": [
+    0,
+    1
+   ],
+   "Data Interpretation": [
+    0,
+    1
+   ],
+   "Whole Numbers": [
+    1,
+    1
+   ]
+  }
+ },
+ {
+  "id": "ext17-thinking",
+  "name": "External test No. 17",
+  "date": "2026-09-03",
+  "subject": "thinking",
+  "score": 22,
+  "total": 40,
+  "avg": 66.46,
+  "rank": 203,
+  "rankOf": 272,
+  "blanks": 5,
+  "strands": {
+   "Problem Solving": [
+    42.11,
+    65.54
+   ],
+   "Critical Thinking": [
+    66.67,
+    67.3
+   ]
+  },
+  "topics": {
+   "Finding Procedures": [
+    3,
+    9
+   ],
+   "Finding the Main Conclusion": [
+    2,
+    4
+   ],
+   "Relevant Selection": [
+    4,
+    7
+   ],
+   "Matching Arguments": [
+    5,
+    5
+   ],
+   "Identifying Similarities and Patterns": [
+    1,
+    3
+   ],
+   "Detecting Reasoning Error": [
+    5,
+    6
+   ],
+   "Applying Principles": [
+    1,
+    4
+   ],
+   "Identifying Inferences and Assumptions": [
+    1,
+    2
+   ]
+  }
+ },
+ {
+  "id": "ext18-reading",
+  "name": "External test No. 18",
+  "date": "2026-09-10",
+  "subject": "reading",
+  "score": 19,
+  "total": 38,
+  "avg": 59.7,
+  "rank": 202,
+  "rankOf": 270,
+  "strands": {
+   "Informational & Persuasive": [
+    50,
+    66.81
+   ],
+   "Word Meaning in Context": [
+    37.5,
+    50.46
+   ],
+   "Poetry": [
+    50,
+    52.72
+   ],
+   "Gapped Text": [
+    83.33,
+    67.74
+   ],
+   "Comparing Texts": [
+    40,
+    60.81
+   ]
+  },
+  "topics": {
+   "Main Idea": [
+    4,
+    5
+   ],
+   "Inference": [
+    2,
+    5
+   ],
+   "Figurative Language": [
+    1,
+    4
+   ],
+   "Vocabulary in Context": [
+    3,
+    8
+   ],
+   "Text Structure": [
+    5,
+    6
+   ],
+   "Comparing Texts": [
+    4,
+    10
+   ]
+  }
+ },
+ {
+  "id": "ext18-writing",
+  "name": "External test No. 18: narrative",
+  "date": "2026-09-10",
+  "subject": "writing",
+  "score": 18,
+  "total": 25,
+  "avg": null,
+  "rank": 157,
+  "rankOf": 270,
+  "title": "The emotions day",
+  "rubric": {
+   "content": 3,
+   "form": 3.5,
+   "organising": 3.5,
+   "style": 2,
+   "sentences": 3.05,
+   "spelling": 1.5,
+   "punctuation": 1
+  }
+ },
+ {
+  "id": "ext19-maths",
+  "name": "External test No. 19",
+  "date": "2026-09-17",
+  "subject": "maths",
+  "score": 15,
+  "total": 35,
+  "avg": 69.34,
+  "rank": 242,
+  "rankOf": 274,
+  "blanks": 2,
+  "strands": {
+   "Measurement and Geometry": [
+    58.33,
+    66.79
+   ],
+   "Problem Solving": [
+    33.33,
+    70.13
+   ],
+   "Number and Algebra": [
+    44.44,
+    68.05
+   ],
+   "Statistics and Probability": [
+    28.57,
+    75.34
+   ],
+   "Data Interpretation": [
+    0,
+    64.96
+   ]
+  },
+  "topics": {
+   "3D Space": [
+    0,
+    1
+   ],
+   "Problem Solving": [
+    2,
+    6
+   ],
+   "2D Space": [
+    3,
+    4
+   ],
+   "Patterns": [
+    2,
+    2
+   ],
+   "Mass": [
+    0,
+    1
+   ],
+   "Whole Numbers": [
+    1,
+    3
+   ],
+   "Area": [
+    3,
+    4
+   ],
+   "Data": [
+    1,
+    6
+   ],
+   "Probability": [
+    1,
+    1
+   ],
+   "Volume and Capacity": [
+    1,
+    1
+   ],
+   "Angles": [
+    0,
+    1
+   ],
+   "Fractions": [
+    0,
+    1
+   ],
+   "Multiplication and Division": [
+    0,
+    1
+   ],
+   "Addition and Subtraction": [
+    0,
+    1
+   ],
+   "Data Interpretation": [
+    0,
+    1
+   ],
+   "Percentages": [
+    1,
+    1
+   ]
+  }
+ },
+ {
+  "id": "ext19-thinking",
+  "name": "External test No. 19",
+  "date": "2026-09-17",
+  "subject": "thinking",
+  "score": 21,
+  "total": 40,
+  "avg": 71.35,
+  "rank": 240,
+  "rankOf": 274,
+  "strands": {
+   "Problem Solving": [
+    59.09,
+    68.63
+   ],
+   "Critical Thinking": [
+    44.44,
+    74.68
+   ]
+  },
+  "topics": {
+   "Finding Procedures": [
+    5,
+    8
+   ],
+   "Finding the Main Conclusion": [
+    2,
+    4
+   ],
+   "Matching Arguments": [
+    2,
+    6
+   ],
+   "Detecting Reasoning Error": [
+    2,
+    5
+   ],
+   "Identifying Similarities and Patterns": [
+    2,
+    6
+   ],
+   "Relevant Selection": [
+    6,
+    8
+   ],
+   "Identifying Inferences and Assumptions": [
+    2,
+    3
+   ]
+  }
+ },
+ {
+  "id": "ext20-reading",
+  "name": "External test No. 20",
+  "date": "2026-09-24",
+  "subject": "reading",
+  "score": 19,
+  "total": 38,
+  "avg": 59.91,
+  "rank": 198,
+  "rankOf": 266,
+  "strands": {
+   "Narrative": [
+    75,
+    70.21
+   ],
+   "Word Meaning in Context": [
+    12.5,
+    30.78
+   ],
+   "Poetry": [
+    83.33,
+    85.15
+   ],
+   "Gapped Text": [
+    33.33,
+    55.2
+   ],
+   "Comparing Texts": [
+    50,
+    62.66
+   ]
+  },
+  "topics": {
+   "Inference": [
+    4,
+    5
+   ],
+   "Figurative Language": [
+    2,
+    3
+   ],
+   "Main Idea": [
+    4,
+    5
+   ],
+   "Vocabulary in Context": [
+    1,
+    8
+   ],
+   "Author's Purpose and Tone": [
+    1,
+    1
+   ],
+   "Text Structure": [
+    2,
+    6
+   ],
+   "Comparing Texts": [
+    5,
+    10
+   ]
+  }
+ },
+ {
+  "id": "ext20-writing",
+  "name": "External test No. 20: persuasive speech",
+  "date": "2026-09-24",
+  "subject": "writing",
+  "score": 16,
+  "total": 25,
+  "avg": null,
+  "rank": 159,
+  "rankOf": 264,
+  "title": "School of the Future",
+  "rubric": {
+   "content": 2,
+   "form": 3.5,
+   "organising": 3,
+   "style": 1.5,
+   "sentences": 2.25,
+   "spelling": 2,
+   "punctuation": 2
+  }
+ },
+ {
+  "id": "ext21-maths",
+  "name": "External test No. 21",
+  "date": "2026-10-15",
+  "subject": "maths",
+  "score": 8,
+  "total": 35,
+  "avg": 59.15,
+  "rank": 341,
+  "rankOf": 355,
+  "blanks": 4,
+  "strands": {
+   "Number and Algebra": [
+    28.57,
+    64.51
+   ],
+   "Measurement and Geometry": [
+    33.33,
+    59.84
+   ],
+   "Statistics and Probability": [
+    0,
+    48.81
+   ],
+   "Problem Solving": [
+    28.57,
+    60.24
+   ],
+   "Data Interpretation": [
+    0,
+    68.73
+   ]
+  },
+  "topics": {
+   "Whole Numbers": [
+    1,
+    1
+   ],
+   "2D Space": [
+    0,
+    3
+   ],
+   "Patterns": [
+    1,
+    1
+   ],
+   "Angles": [
+    0,
+    1
+   ],
+   "Decimals": [
+    0,
+    1
+   ],
+   "Area": [
+    1,
+    3
+   ],
+   "Volume and Capacity": [
+    1,
+    1
+   ],
+   "Data": [
+    0,
+    6
+   ],
+   "Problem Solving": [
+    2,
+    7
+   ],
+   "Fractions": [
+    0,
+    1
+   ],
+   "Probability": [
+    0,
+    1
+   ],
+   "Time": [
+    1,
+    1
+   ],
+   "3D Space": [
+    0,
+    1
+   ],
+   "Multiplication and Division": [
+    0,
+    2
+   ],
+   "Length": [
+    1,
+    1
+   ],
+   "Mass": [
+    0,
+    1
+   ],
+   "Data Interpretation": [
+    0,
+    2
+   ],
+   "Percentages": [
+    0,
+    1
+   ]
+  }
+ },
+ {
+  "id": "ext21-thinking",
+  "name": "External test No. 21",
+  "date": "2026-10-15",
+  "subject": "thinking",
+  "score": 19,
+  "total": 40,
+  "avg": 63.98,
+  "rank": 286,
+  "rankOf": 353,
+  "strands": {
+   "Problem Solving": [
+    60,
+    62.48
+   ],
+   "Critical Thinking": [
+    35,
+    65.48
+   ]
+  },
+  "topics": {
+   "Identifying Similarities and Patterns": [
+    2,
+    6
+   ],
+   "Finding the Main Conclusion": [
+    1,
+    2
+   ],
+   "Matching Arguments": [
+    1,
+    5
+   ],
+   "Detecting Reasoning Error": [
+    2,
+    5
+   ],
+   "Finding Procedures": [
+    6,
+    10
+   ],
+   "Relevant Selection": [
+    4,
+    4
+   ],
+   "Identifying Inferences and Assumptions": [
+    0,
+    4
+   ],
+   "Applying Principles": [
+    3,
+    4
+   ]
+  }
+ },
+ {
+  "id": "ext22-reading",
+  "name": "External test No. 22",
+  "date": "2026-10-22",
+  "subject": "reading",
+  "score": 19,
+  "total": 38,
+  "avg": 64.67,
+  "rank": 326,
+  "rankOf": 375,
+  "strands": {
+   "Narrative": [
+    25,
+    49.43
+   ],
+   "Word Meaning in Context": [
+    25,
+    40
+   ],
+   "Poetry": [
+    50,
+    83.24
+   ],
+   "Gapped Text": [
+    50,
+    70.6
+   ],
+   "Comparing Texts": [
+    90,
+    81.99
+   ]
+  },
+  "topics": {
+   "Author's Purpose and Tone": [
+    0,
+    1
+   ],
+   "Main Idea": [
+    0,
+    3
+   ],
+   "Inference": [
+    2,
+    6
+   ],
+   "Figurative Language": [
+    3,
+    4
+   ],
+   "Vocabulary in Context": [
+    2,
+    8
+   ],
+   "Text Structure": [
+    3,
+    6
+   ],
+   "Comparing Texts": [
+    9,
+    10
+   ]
+  }
+ },
+ {
+  "id": "ext22-writing",
+  "name": "External test No. 22: diary entry",
+  "date": "2026-10-22",
+  "subject": "writing",
+  "score": 19,
+  "total": 25,
+  "avg": null,
+  "rank": 202,
+  "rankOf": 373,
+  "title": "The rare visit",
+  "rubric": {
+   "content": 3,
+   "form": 3.5,
+   "organising": 3.5,
+   "style": 2.25,
+   "sentences": 2.5,
+   "spelling": 2,
+   "punctuation": 2
+  }
+ },
+ {
+  "id": "ext22-writing-rewrite",
+  "name": "External test No. 22 (rewrite): diary entry",
+  "date": "2026-10-23",
+  "subject": "writing",
+  "score": 12,
+  "total": 25,
+  "avg": null,
+  "rank": 40,
+  "rankOf": 63,
+  "title": "Long lost sister",
+  "rubric": {
+   "content": 2.25,
+   "form": 2.25,
+   "organising": 2.25,
+   "style": 1.25,
+   "sentences": 2.25,
+   "spelling": 1,
+   "punctuation": 1
+  }
+ },
+ {
+  "id": "ext23-maths",
+  "name": "External test No. 23",
+  "date": "2026-10-29",
+  "subject": "maths",
+  "score": 10,
+  "total": 35,
+  "avg": 56.65,
+  "rank": 352,
+  "rankOf": 391,
+  "strands": {
+   "Problem Solving": [
+    20,
+    60.05
+   ],
+   "Measurement and Geometry": [
+    7.69,
+    50.07
+   ],
+   "Number and Algebra": [
+    50,
+    58.44
+   ],
+   "Data Interpretation": [
+    100,
+    66.16
+   ],
+   "Statistics and Probability": [
+    0,
+    62.15
+   ]
+  },
+  "topics": {
+   "Problem Solving": [
+    1,
+    5
+   ],
+   "Time": [
+    1,
+    1
+   ],
+   "Fractions": [
+    1,
+    2
+   ],
+   "Angles": [
+    0,
+    2
+   ],
+   "Data Interpretation": [
+    3,
+    3
+   ],
+   "Multiplication and Division": [
+    2,
+    3
+   ],
+   "Area": [
+    0,
+    2
+   ],
+   "3D Space": [
+    0,
+    1
+   ],
+   "Length": [
+    0,
+    1
+   ],
+   "Volume and Capacity": [
+    0,
+    1
+   ],
+   "Data": [
+    0,
+    3
+   ],
+   "Probability": [
+    0,
+    1
+   ],
+   "2D Space": [
+    0,
+    2
+   ],
+   "Percentages": [
+    0,
+    1
+   ],
+   "Whole Numbers": [
+    1,
+    2
+   ],
+   "Patterns": [
+    1,
+    2
+   ],
+   "Perimeter": [
+    0,
+    2
+   ],
+   "Mass": [
+    0,
+    1
+   ]
+  }
+ },
+ {
+  "id": "ext23-thinking",
+  "name": "External test No. 23",
+  "date": "2026-10-29",
+  "subject": "thinking",
+  "score": 15,
+  "total": 40,
+  "avg": 59.44,
+  "rank": 355,
+  "rankOf": 390,
+  "blanks": 2,
+  "strands": {
+   "Problem Solving": [
+    21.05,
+    55.82
+   ],
+   "Critical Thinking": [
+    52.38,
+    62.71
+   ]
+  },
+  "topics": {
+   "Finding Procedures": [
+    1,
+    5
+   ],
+   "Matching Arguments": [
+    2,
+    3
+   ],
+   "Applying Principles": [
+    2,
+    4
+   ],
+   "Detecting Reasoning Error": [
+    3,
+    6
+   ],
+   "Relevant Selection": [
+    3,
+    7
+   ],
+   "Identifying Similarities and Patterns": [
+    0,
+    7
+   ],
+   "Finding the Main Conclusion": [
+    4,
+    4
+   ],
+   "Identifying Inferences and Assumptions": [
+    0,
+    4
+   ]
+  }
+ },
+ {
+  "id": "ext24-reading",
+  "name": "External test No. 24",
+  "date": "2026-11-05",
+  "subject": "reading",
+  "score": 17,
+  "total": 38,
+  "avg": 60.44,
+  "rank": 296,
+  "rankOf": 349,
+  "strands": {
+   "Narrative": [
+    50,
+    58.13
+   ],
+   "Poetry": [
+    50,
+    64.71
+   ],
+   "Gapped Text": [
+    33.33,
+    80.47
+   ],
+   "Comparing Texts": [
+    80,
+    68.88
+   ],
+   "Word Meaning in Context": [
+    0,
+    33.95
+   ]
+  },
+  "topics": {
+   "Main Idea": [
+    1,
+    4
+   ],
+   "Inference": [
+    3,
+    4
+   ],
+   "Figurative Language": [
+    1,
+    4
+   ],
+   "Vocabulary in Context": [
+    0,
+    8
+   ],
+   "Author's Purpose and Tone": [
+    2,
+    2
+   ],
+   "Text Structure": [
+    2,
+    6
+   ],
+   "Comparing Texts": [
+    8,
+    10
+   ]
+  }
+ },
+ {
+  "id": "ext24-writing",
+  "name": "External test No. 24: newspaper report",
+  "date": "2026-11-05",
+  "subject": "writing",
+  "score": 18,
+  "total": 25,
+  "avg": null,
+  "rank": 155,
+  "rankOf": 350,
+  "rubric": {
+   "content": 3.25,
+   "form": 3.1,
+   "organising": 3.1,
+   "style": 1.8,
+   "sentences": 2,
+   "spelling": 2,
+   "punctuation": 2.25
+  },
+  "feedback": [
+   "Start with a more compelling hook.",
+   "Include quotes from witnesses or school staff (a required element of a news report).",
+   "Write a stronger conclusion that wraps up the report.",
+   "Give more specific details about the incident and its consequences.",
+   "Use richer vocabulary and figurative/persuasive language.",
+   "Use more complex sentences and vary sentence length.",
+   "Watch spelling: separately, passersby, witnesses. Use apostrophes for possession (the students' parents)."
+  ]
+ }
+];
