@@ -54,9 +54,14 @@ Questions live in `js/data/` (`maths.js`, `thinking.js`, `reading.js`, `writing.
 node tools/validate.mjs     # checks the hand-written banks
 node tools/gencheck.mjs     # stress-tests every question generator
 node tools/audit-generators.mjs  # re-solves every generated question independently and compares answers
+node tools/answer-key.mjs   # independent answer key for every hand-written Maths question
 ```
 
-This checks IDs, answers, option counts and topics. To run the app locally, use `python3 -m http.server` and open http://localhost:8000.
+This checks IDs, answers, option counts and topics. The same four checks run automatically on GitHub for every push and pull request (`.github/workflows/quality.yml`); a red ✘ means a question or answer is wrong, so don't merge until it's green. A new hand-written Maths question needs its own line in `tools/answer-key.mjs`, or the check fails.
+
+### 🚩 Reported questions
+
+If a question ever looks wrong, Magizhini can press **🚩 Something looks wrong with this question** (after checking an answer in practice, or in a test's review). It is taken out of every future test at once (for a generated question, the whole question type is paused) and listed on the 👪 Parent page and in the weekly email, with her note. Press **It's fine, bring it back** if it was OK, or get it fixed first. To run the app locally, use `python3 -m http.server` and open http://localhost:8000.
 
 ## Weekly summary email (parents)
 

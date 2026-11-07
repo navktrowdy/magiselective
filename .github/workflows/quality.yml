@@ -1,0 +1,28 @@
+name: Question bank quality check
+
+# Runs every check on the question bank whenever anything changes.
+# A red ✘ on a pull request means a question or answer is wrong: fix it before merging.
+on:
+  push:
+  pull_request:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Structure of every question (validate)
+        run: node tools/validate.mjs
+      - name: Generated questions sanity check
+        run: node tools/gencheck.mjs
+      - name: Generated answers re-solved independently
+        run: node tools/audit-generators.mjs
+      - name: Hand-written Maths answer key
+        run: node tools/answer-key.mjs
