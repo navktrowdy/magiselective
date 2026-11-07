@@ -1,6 +1,6 @@
 // Writing tasks: 30-minute prompts, a marking rubric and model responses.
 
-// Same 7 criteria (total 25) used by CS Education's writing reports, so scores compare directly.
+// Same 7 criteria (total 25) used in her external writing reports, so scores compare directly.
 // levels[i] describes a score of i + 1.
 export const RUBRIC = [
   { key: 'content', name: 'Content / Relevant details', max: 4, levels: [
@@ -58,7 +58,7 @@ export default [
 <p>Neighbour Arjun Patel reported hearing "a loud rumbling and the beeping of a reversing truck" at around 2 am, but assumed it was a late delivery.</p>
 <p>The skeleton, nicknamed "Rex" by local schoolchildren, has been the museum's star attraction since 1998. Museum director Dr Helen Wu said the loss was "devastating for the whole community" and urged anyone with information to contact police immediately.</p>
 <p>The museum will remain closed until further notice while detectives examine the scene. Meanwhile, Year 5 students at Riverbend Public School have already started a poster campaign titled "Bring Rex Home". Riverbend, it seems, is not ready to let its favourite dinosaur become history.</p>`,
-    notes: 'Why it scores well: a punchy headline; a lead paragraph that answers who, what, when and where; quotes from FOUR different people (cleaner, detective, neighbour, director), which your CS teacher asked for; specific details (times, measurements); formal but vivid vocabulary ("eerily", "devastating"); and a closing line with a clever play on words.' },
+    notes: 'Why it scores well: a punchy headline; a lead paragraph that answers who, what, when and where; quotes from FOUR different people (cleaner, detective, neighbour, director), which your tutor asked for; specific details (times, measurements); formal but vivid vocabulary ("eerily", "devastating"); and a closing line with a clever play on words.' },
 
   { id: 'w1', type: 'Narrative', title: 'The Door That Wasn\'t There Yesterday',
     prompt: 'Write a story that begins with a character discovering a door that was not there the day before. Think about where the door leads, how your character feels and what changes for them.',

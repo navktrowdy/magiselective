@@ -48,7 +48,7 @@ export const BADGES = [
   { id: 'q100', icon: '💯', name: 'Century Spud', desc: 'Answer 100 questions.' },
   { id: 'q500', icon: '🌋', name: 'Question Volcano', desc: 'Answer 500 questions.' },
   { id: 'q1000', icon: '🪐', name: 'Thousand-Question Planet', desc: 'Answer 1000 questions.' },
-  { id: 'streak3', icon: '🔥', name: 'Warming Up', desc: 'Practise on 3 planned days in a row (CS days don\'t count against you).' },
+  { id: 'streak3', icon: '🔥', name: 'Warming Up', desc: 'Practise on 3 planned days in a row (tuition days don\'t count against you).' },
   { id: 'streak7', icon: '☄️', name: 'Week of Fire', desc: 'Practise on 7 planned days in a row.' },
   { id: 'streak14', icon: '🌞', name: 'Unstoppable', desc: 'Practise on 14 planned days in a row.' },
   { id: 'perfect', icon: '🌟', name: 'Perfect Orbit', desc: 'Score 100% in a drill of 5 or more questions.' },
@@ -57,7 +57,7 @@ export const BADGES = [
   { id: 'comeback', icon: '🔁', name: 'Comeback Kid', desc: 'Fix 10 past mistakes.' },
   { id: 'writer', icon: '🪄', name: 'Word Wizard', desc: 'Complete 3 writing tasks.' },
   { id: 'skillstar', icon: '⭐', name: 'Skill Star', desc: 'Reach 80% in a skill (8+ questions).' },
-  { id: 'abovecrowd', icon: '🏔️', name: 'Above the Crowd', desc: 'Beat the CS class average in a timed test.' },
+  { id: 'abovecrowd', icon: '🏔️', name: 'Above the Crowd', desc: 'Beat the class average of an external test in a timed test.' },
 ];
 
 export const TALK = {

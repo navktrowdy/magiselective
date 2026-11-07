@@ -13,12 +13,12 @@ A practice app for the **NSW Selective High School Placement Test**. It runs on 
 
 - **Practice mode:** no timer. After each answer she sees whether it was right, a worked explanation and the concept notes. She can practise mixed questions, her weak topics, a single topic, or **re-try her mistakes**.
 - **Timed tests:** cover every category, with a countdown, flag-for-review, a question navigator, auto-submit when time runs out and keyboard shortcuts (A–E, ←/→, F).
-- **Results:** score, category and topic breakdown compared with the Sep 2026 CS Education test, a timing analysis, the concept notes for every topic she missed, and a full question-by-question explanation.
+- **Results:** score, category and topic breakdown compared with her external tests, a timing analysis, the concept notes for every topic she missed, and a full question-by-question explanation.
 - **Dashboard:** exam countdown, a weekly plan that changes by phase (Foundation → Build → Exam mode) and targets her weakest topics, a progress chart and focus topics.
 - **My Potalien 👽🥔:** she adopts a potato-alien pet (5 species) and names it. It earns XP from every question, **evolves through 6 stages**, and its mood depends on her daily streak. She spends ✨ stardust on hats, glasses, capes and space backgrounds. There are 15 badges to unlock, including "No Spud Left Behind" for a full test with no blanks. The pet cheers or comforts her after each practice answer.
 - **My Skills:** a progress map (radar chart), tiles for accuracy, questions, drills and time spent, and a card for every skill showing accuracy, questions answered and time per question. Skills are split into "Practise next" and "Strengths", and she gets a level title (Rising Star → Galaxy Brain).
 - **Drills:** her full drill history. She can open any drill to review every answer and worked solution.
-- **Exams:** log named monthly exams (score, class average, rank) and chart them against the class average. The CS Selective No. 17 results are already included.
+- **Exams:** log named monthly exams (score, class average, rank) and chart them against the class average. Her external test results are already included.
 - Correct answers are spread evenly across A–E, so there is no letter pattern to guess from.
 
 Test formats follow the [NSW Department of Education](https://education.nsw.gov.au/schooling/parents-and-carers/choosing-a-school-setting/selective-high-schools/placement-test/selective-high-school-practice-tests) guidelines.
@@ -27,10 +27,10 @@ Test formats follow the [NSW Department of Education](https://education.nsw.gov.
 - **Maths:** 73 hand-written questions plus 46 question generators × 6 versions (about 350 questions). Generators create fresh numbers and compute the answer and worked explanation in code, so they are always correct.
 - **Thinking Skills:** 101 hand-written questions (critical thinking and logic puzzles) plus 14 problem-solving generators × 6 versions (about 185).
 - **Reading:** 16 original texts (97 marks) across narrative, poetry, informational/persuasive, word meaning in context, gapped text (cloze) and short thematic texts.
-- **Writing:** 11 tasks across narrative, persuasive, speech, newspaper report, diary, advice letter, descriptive and discussion. Each has a model answer and is marked with the 7 CS criteria (out of 25).
+- **Writing:** 11 tasks across narrative, persuasive, speech, newspaper report, diary, advice letter, descriptive and discussion. Each has a model answer and is marked with 7 standard writing criteria (out of 25).
 
 ### Weekly plan
-The plan fits around Magizhini's routine (CS tuition Wed/Thu, boxing Fri, Tamil school Sat afternoon). That's about 2¼ hours of app time a week, with no app work on CS days. Planned rest days never break the 🔥 streak. To change the routine, edit `ROUTINE` in `js/data/config.js`.
+The plan fits around Magizhini's routine (tuition Wed/Thu, boxing Fri, Tamil school Sat afternoon). That's about 2¼ hours of app time a week, with no app work on tuition days. Planned rest days never break the 🔥 streak. To change the routine, edit `ROUTINE` in `js/data/config.js`.
 
 ## One-time setup (parent)
 

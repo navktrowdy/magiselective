@@ -176,7 +176,7 @@ export function scoreItems(items) {
   return { score: items.filter(i => i.correct).length, total: items.length, byStrand, byTopic };
 }
 
-/** Accuracy per topic across all saved attempts (+ the CS baseline as a starting point). */
+/** Accuracy per topic across all saved attempts (+ the external test baseline as a starting point). */
 export function topicMastery(subject) {
   const m = {};
   const base = BASELINE[subject]?.topics || {};

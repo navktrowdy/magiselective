@@ -170,7 +170,7 @@ export function skillsView(subj = 'maths') {
   const base = BASELINE[subj];
   const title = items.length < 20 ? 'New Explorer' : TITLES.find(([min]) => acc >= min)[1];
 
-  // per-topic stats from drills (time) + mastery (includes CS exam baseline)
+  // per-topic stats from drills (time) + mastery (includes external test baseline)
   const mastery = topicMastery(subj);
   const tstat = {};
   for (const it of items) { const t = tstat[it.topic] || (tstat[it.topic] = { n: 0, c: 0, time: 0 }); t.n++; if (it.correct) t.c++; t.time += it.timeSec || 0; }
@@ -196,7 +196,7 @@ export function skillsView(subj = 'maths') {
       <div class="bar2 ${level(m.pct)}"><span style="width:${m.pct ?? 0}%"></span></div>
       <div class="skillmeta"><span class="chip ${tag[0]}">${tag[1]}</span>
         <span>📝 ${t.n} answered</span><span>⏱ ${fmtDuration(t.time)}${t.n ? ` · ${Math.round(t.time / t.n)}s each` : ''}</span>
-        ${m.baseline && !t.n ? '<span class="muted">from CS exam</span>' : ''}
+        ${m.baseline && !t.n ? '<span class="muted">from external test</span>' : ''}
         <a href="${href}">Practise →</a></div></div>`;
   };
   const sorted = [...mastery].sort((a, b) => (a.pct ?? -1) - (b.pct ?? -1));
@@ -216,7 +216,7 @@ export function skillsView(subj = 'maths') {
           <div class="tile"><b>${fmtDuration(time)}</b><span>Time spent</span></div>
         </div>
         <div class="radarwrap">${radarChart(axes, { size: 400 })}</div>
-        ${base ? `<p class="muted center">Dots start from your CS exams and update as you practise.</p>` : ''}
+        ${base ? `<p class="muted center">Dots start from your external tests and update as you practise.</p>` : ''}
         <div class="titlebadge"><span>${esc(title)}</span></div>
       </div>
       <div class="two">
@@ -241,7 +241,7 @@ export function trialCard() {
   const tr = trialTrends(); const L = CS_TRIALS.map(t => t.tests);
   const cell = v => `<td><span class="pct ${v < 50 ? 'bad' : v < 75 ? 'mid' : 'good'}">${v}</span></td>`;
   const arrow = (a, b) => (b - a >= 5 ? `<span class="up">▲ ${b - a}</span>` : a - b >= 5 ? `<span class="down">▼ ${a - b}</span>` : '<span class="flat">→</span>');
-  return `<div class="card"><h2>📈 CS trial test history (12 trials)</h2>
+  return `<div class="card"><h2>📈 External trial test history (12 trials)</h2>
     ${categoryChart(L, [
       ...['maths', 'thinking', 'reading', 'writing'].map(k => ({ name: SUBJECTS[k].short || SUBJECTS[k].name, color: TRIAL_COLORS[k], values: CS_TRIALS.map(t => t[k]) })),
       { name: 'Total', color: TRIAL_COLORS.total, values: CS_TRIALS.map(t => t.total), bold: true },
@@ -273,7 +273,7 @@ export function examsView() {
 
   $app().innerHTML = `
     <div class="card"><h1>🏆 Monthly exam results</h1>
-      <p>Record each tutoring or trial exam (for example CS Education Selective tests) so it sits alongside daily drills on your progress charts.</p>
+      <p>Record each tutoring or trial exam (for example selective trial tests) so it sits alongside daily drills on your progress charts.</p>
       <table class="tbl"><thead><tr><th>Date</th><th>Exam</th><th>Subject</th><th>Score</th><th>Class avg</th><th>Rank</th></tr></thead><tbody>
       ${entries.map(e => `<tr><td>${fmtDate(e.finishedAt)}</td><td>${esc(e.topicLabel)}</td><td>${SUBJECTS[e.subject].icon} ${esc(SUBJECTS[e.subject].short || SUBJECTS[e.subject].name)}</td>
         <td><b>${e.score}/${e.total}</b> <span class="pct ${level(e.pctScore)}">${Math.round(e.pctScore)}%</span></td>
@@ -282,7 +282,7 @@ export function examsView() {
     ${trialCard()}
     <div class="grid2">${charts}</div>
     <div class="card narrow"><h2>➕ Add an exam result</h2>
-      <div class="row3"><label>Exam name<input id="ename" placeholder="e.g. CS Selective No. 18"></label>
+      <div class="row3"><label>Exam name<input id="ename" placeholder="e.g. External test No. 18"></label>
         <label>Date<input id="edate" type="date" value="${todayStr()}"></label>
         <label>Subject<select id="esubj">${['reading', 'maths', 'thinking', 'writing'].map(s => `<option value="${s}">${SUBJECTS[s].name}</option>`).join('')}</select></label></div>
       <div class="row3"><label>Score<input id="escore" type="number" step="0.5" min="0"></label><label>Out of<input id="etotal" type="number" min="1"></label>

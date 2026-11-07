@@ -13,7 +13,7 @@ export const say = (kind, vars = {}) => pick(TALK[kind]).replace(/\{(\w+)\}/g, (
 const dayKey = iso => iso.slice(0, 10);
 const addDays = (d, n) => { const x = new Date(d + 'T00:00:00'); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); };
 const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-// Planned rest days (e.g. CS tuition days) never break a streak or make the pet sad.
+// Planned rest days (e.g. tuition days) never break a streak or make the pet sad.
 const isRestDay = d => ROUTINE[DOW[new Date(d + 'T00:00:00').getDay()]]?.mins === 0 || isBreakDay(d);
 const prevPlanned = d => { let x = addDays(d, -1); for (let i = 0; i < 7 && isRestDay(x); i++) x = addDays(x, -1); return x; };
 const localToday = () => { const d = new Date(); return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };

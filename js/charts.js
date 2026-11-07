@@ -52,5 +52,5 @@ export function categoryChart(labels, series, { width = 640, height = 260 } = {}
   const lines = series.map(s => `<polyline points="${s.values.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ')}" fill="none" stroke="${s.color}" stroke-width="${s.bold ? 3.5 : 2}" ${s.dashed ? 'stroke-dasharray="5 4"' : ''} stroke-linejoin="round"/>` +
     s.values.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="${s.bold ? 4 : 3}" fill="#fff" stroke="${s.color}" stroke-width="2"><title>${s.name} · Test ${labels[i]}: ${v}%</title></circle>`).join('')).join('');
   const legend = series.map(s => `<span class="lg"><i style="background:${s.color}"></i>${s.name}</span>`).join('');
-  return `<svg viewBox="0 0 ${width} ${height}" class="chart" role="img" aria-label="Trial test trend">${grid}${xl}<text x="${width / 2}" y="${height - 1}" font-size="10" text-anchor="middle" fill="#888">CS trial test numbers</text>${lines}</svg><div class="legend">${legend}</div>`;
+  return `<svg viewBox="0 0 ${width} ${height}" class="chart" role="img" aria-label="Trial test trend">${grid}${xl}<text x="${width / 2}" y="${height - 1}" font-size="10" text-anchor="middle" fill="#888">Trial test numbers</text>${lines}</svg><div class="legend">${legend}</div>`;
 }

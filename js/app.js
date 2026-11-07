@@ -83,7 +83,7 @@ function weeklyPlan(days) {
   const P = (s, topic, label, m) => ({ subject: s, label, mins: m, href: `#/practice/${s}${topic ? `?topic=${encodeURIComponent(topic)}` : ''}` });
   const T = (s, mode, label, m) => ({ subject: s, label, mins: m, href: `#/test/${s}/${mode}` });
   const W = { subject: 'writing', label: 'Writing task + self-mark', mins: 30, href: '#/writing' };
-  const REST_CS = [{ subject: 'rest', label: 'No app today. CS tuition counts! 💪', mins: 0, href: '#/pet' }];
+  const REST_CS = [{ subject: 'rest', label: 'No app today. Tuition counts! 💪', mins: 0, href: '#/pet' }];
   let plan;
   const ended = lastEndedBreak();
   const backWeek = ended && daysBetween(ended.end, todayLocal()) <= 8;
@@ -154,7 +154,7 @@ function dashboard() {
     const base = BASELINE[subj];
     const scoreLine = lastTest
       ? `Last test: <b>${pct(lastTest.score, lastTest.total)}%</b> <span class="muted">(${fmtDate(lastTest.finishedAt)})</span>`
-      : base ? `Latest CS test: <b>${Math.round(base.score)}%</b> <span class="muted">(${fmtDate(base.date)})</span>` : '<span class="muted">No tests yet</span>';
+      : base ? `Latest external test: <b>${Math.round(base.score)}%</b> <span class="muted">(${fmtDate(base.date)})</span>` : '<span class="muted">No tests yet</span>';
     if (subj === 'writing') {
       return `<div class="card subj"><h3>${S.icon} ${S.name}</h3><p>${lastTest ? `Last task: <b>${lastTest.score}/${lastTest.total}</b> <span class="muted">(${fmtDate(lastTest.finishedAt)})</span>` : '<span class="muted">No tasks yet</span>'}</p>
         <p class="muted">1 task · 30 minutes · marked with a rubric</p>
@@ -202,14 +202,14 @@ function dashboard() {
     <section class="grid4">${SUBJECT_ORDER.map(card).join('')}</section>
     <section class="card">
       <h2>📅 This week's plan <small class="muted">· about ${Math.round(plan.filter(([d]) => !breakOn(dateOf(d))).flatMap(([, t]) => t).reduce((a, t) => a + t.mins, 0) / 5) * 5} min of app time this week</small></h2>
-      <p class="muted">Fits around CS tuition, boxing and Tamil school. Skip a day if school homework is heavy; Potalien will understand 💛</p>
+      <p class="muted">Fits around tuition, boxing and Tamil school. Skip a day if school homework is heavy; Potalien will understand 💛</p>
       <div class="plan">${plan.map(([d, tasks]) => breakOn(dateOf(d)) ? `<div class="day holidayday ${d === dow ? 'today' : ''}"><h4>${d}${d === dow ? ' · today' : ''}</h4><div class="busy">${breakOn(dateOf(d)).recovery ? '😴' : '🇮🇳'} ${esc(breakOn(dateOf(d)).name)}</div><span class="task">${breakOn(dateOf(d)).recovery ? 'Rest and beat the jet lag 😴' : 'Holiday: no study! 🥭'}</span></div>` : `<div class="day ${d === dow ? 'today' : ''} ${ROUTINE[d].mins ? '' : 'restday'}"><h4>${d}${d === dow ? ' · today' : ''}</h4>
         <div class="busy">${ROUTINE[d].icon} ${esc(ROUTINE[d].busy)}</div>${tasks.map(t =>
         `<a href="${t.href}" class="task">${d === dow && doneToday.has(t.subject) ? '✅ ' : ''}${esc(t.label)}${t.mins ? ` <small>· ${t.mins}m</small>` : ''}</a>`).join('')}
         ${ROUTINE[d].when ? `<div class="busy">⏰ ${esc(ROUTINE[d].when)}</div>` : ''}</div>`).join('')}</div>
     </section>
     <section class="two">
-      <div class="card"><h2>🎯 Focus topics</h2><p class="muted">Lowest accuracy so far (includes your CS exams). Click to practise.</p><div class="focusgrid">${focus}</div></div>
+      <div class="card"><h2>🎯 Focus topics</h2><p class="muted">Lowest accuracy so far (includes your external tests). Click to practise.</p><div class="focusgrid">${focus}</div></div>
       <div class="card"><h2>📈 Progress</h2>${progressChart(results)}</div>
     </section>`;
 
@@ -517,7 +517,7 @@ function resultView(id) {
   const strands = Object.entries(r.byStrand).map(([st, v]) => {
     const bp = base?.strands?.[st];
     return `<tr><td>${esc(st)}</td><td>${v.correct}/${v.total}</td><td>${bar(pct(v.correct, v.total), pct(v.correct, v.total) < 50 ? 'bad' : pct(v.correct, v.total) < 75 ? 'mid' : 'good')}</td>
-      <td>${pct(v.correct, v.total)}%</td><td class="muted">${bp ? `${Math.round(bp[0])}% in CS test (${fmtDate(base.date)})` : ''}</td></tr>`;
+      <td>${pct(v.correct, v.total)}%</td><td class="muted">${bp ? `${Math.round(bp[0])}% in external test (${fmtDate(base.date)})` : ''}</td></tr>`;
   }).join('');
   const topics = Object.entries(r.byTopic).sort((a, b) => pct(a[1].correct, a[1].total) - pct(b[1].correct, b[1].total))
     .map(([t, v]) => `<tr><td>${esc(t)}</td><td>${v.correct}/${v.total}</td><td>${bar(pct(v.correct, v.total), pct(v.correct, v.total) < 50 ? 'bad' : pct(v.correct, v.total) < 75 ? 'mid' : 'good')}</td></tr>`).join('');
@@ -547,7 +547,7 @@ function resultView(id) {
       <div class="scorebox">
         <div class="big ${p < 50 ? 'bad' : p < 75 ? 'mid' : 'good'}">${p}%</div>
         <div><b>${r.score} / ${r.total}</b> correct<br>${blanks ? `<span class="warn">${blanks} left blank</span>. Always guess, there's no penalty!` : 'No blanks. Great!'}
-        ${base && r.mode !== 'practice' ? `<br><span class="muted">Latest CS test: ${Math.round(base.score)}% (class average ${Math.round(base.cohortAverage)}%)</span>` : ''}</div>
+        ${base && r.mode !== 'practice' ? `<br><span class="muted">Latest external test: ${Math.round(base.score)}% (class average ${Math.round(base.cohortAverage)}%)</span>` : ''}</div>
       </div>
       ${xpGain(r)}
       <div class="btns"><a class="btn" href="#/">Dashboard</a>
@@ -575,7 +575,7 @@ function coachCard() {
   const cs = [...CS_EXAMS].filter(e => e.subject === 'writing').pop();
   if (!cs) return '';
   return `<div class="card coach"><h2>🧑‍🏫 Coach notes from ${esc(cs.name)}: ${cs.score}/${cs.total}</h2>
-    <p class="muted">Your CS teacher's advice. Tick these off in every piece of writing.</p>
+    <p class="muted">Your tutor's advice. Tick these off in every piece of writing.</p>
     <ul class="checklist">${cs.feedback.map(f => `<li>☐ ${esc(f)}</li>`).join('')}</ul>
     <table class="tbl">${RUBRIC.map(c => `<tr><td>${esc(c.name)}</td><td>${cs.rubric[c.key]}/${c.max}</td><td>${bar(pct(cs.rubric[c.key], c.max), pct(cs.rubric[c.key], c.max) < 60 ? 'bad' : pct(cs.rubric[c.key], c.max) < 80 ? 'mid' : 'good')}</td></tr>`).join('')}</table></div>`;
 }
@@ -637,7 +637,7 @@ function writingTask(id) {
 function writingMark(w, st) {
   const words = (st.text.trim().match(/\S+/g) || []).length;
   $app.innerHTML = `
-    <div class="card"><h1>✍️ Mark your writing</h1><p class="muted">${words} words${st.timeUp ? ' · time ran out' : ''}. Read your writing, then the model answer, then choose a score for each of the 7 CS criteria (total 25). A parent can help mark.</p></div>
+    <div class="card"><h1>✍️ Mark your writing</h1><p class="muted">${words} words${st.timeUp ? ' · time ran out' : ''}. Read your writing, then the model answer, then choose a score for each of the 7 writing criteria (total 25). A parent can help mark.</p></div>
     <div class="two">
       <div class="card"><h2>Your writing</h2><div class="mywriting">${esc(st.text).replace(/\n/g, '<br>') || '<i>(empty)</i>'}</div></div>
       <div class="card"><h2>Model answer</h2><div class="model">${w.model}</div><p class="notes"><b>${esc(w.notes)}</b></p></div>
