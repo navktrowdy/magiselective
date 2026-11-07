@@ -196,7 +196,7 @@ export function topicMastery(subject) {
 
 export function weakTopics(subject, n = 3) {
   const all = topicMastery(subject);
-  const tried = all.filter(t => t.pct !== null).sort((a, b) => a.pct - b.pct);
+  const tried = all.filter(t => t.pct !== null).sort((a, b) => a.pct - b.pct || b.total - a.total); // ties: more evidence first
   const untried = all.filter(t => t.pct === null);
   return [...tried.filter(t => t.pct < 80), ...untried, ...tried.filter(t => t.pct >= 80)].slice(0, n);
 }

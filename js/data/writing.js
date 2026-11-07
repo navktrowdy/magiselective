@@ -166,4 +166,49 @@ export default [
 <p>You are going to have an amazing year. Good luck!</p>
 <p>Your friend,<br>Potalien (Year 5)</p>`,
     notes: 'Why it scores well: correct letter format with a friendly greeting and sign-off; it builds a connection by sharing feelings; it gives clear, organised advice using "first/second/third/finally"; it includes specific, practical examples; and its warm, encouraging tone suits the audience.' },
+  { id: 'w12', type: 'Recount', title: 'A Day I Will Never Forget',
+    prompt: 'Write a recount of a day that taught you something important. Focus on the moments that mattered most and reflect on what you learnt.',
+    model: `<p>Last summer, on a scorching Saturday in January, my cousin Arjun and I entered the junior section of the Parramatta River fun run. I was certain it would be easy. I was wrong.</p>
+<p>The starting horn blasted at 7 am. Within minutes, I had sprinted to the front, my sneakers slapping the hot path as spectators cheered. For one glorious kilometre, I felt unbeatable.</p>
+<p>By the halfway mark, everything changed. My legs turned to lead, a stitch stabbed my side and the finish line seemed to shimmer further away with every step. Arjun, who had started slowly, jogged up beside me. Instead of racing past, he matched my pace. "Breathe with me," he said. "In for three, out for three."</p>
+<p>Moments later, the rhythm steadied me. We ran the final stretch side by side, and when we crossed the line together, I barely noticed the clock.</p>
+<p>That morning I learnt that starting fast matters far less than finishing strong, and that the best teammates are the ones who slow down for you. Next year, I'll pace myself. And I'll run beside Arjun again.</p>`,
+    notes: 'Why it scores well: it opens with who/what/when/where; it focuses on three key moments instead of listing everything; it uses varied time connectives (Within minutes, By the halfway mark, Moments later); it uses sensory detail and a metaphor ("legs turned to lead"); and it ends with a genuine reflection.' },
+
+  { id: 'w13', type: 'Expository', title: 'Why Do We Need Sleep?',
+    prompt: 'Write an informative text explaining why sleep is important for young people. Organise your ideas clearly and stay factual.',
+    model: `<h4 style="margin:0">Why Do We Need Sleep?</h4>
+<p>Every night, our bodies switch into a powerful repair mode called sleep. Although it may look as if nothing is happening, sleep is essential for growing, learning and staying healthy.</p>
+<p><b>Sleep helps the body grow and repair.</b> During deep sleep, the body releases growth hormone, which helps children grow and repairs muscles after a busy day. This is why athletes and growing children often need more rest.</p>
+<p><b>Sleep strengthens memory.</b> While we sleep, the brain sorts through the day's information, storing important facts and skills. Students who sleep well usually find it easier to remember what they learnt in class.</p>
+<p><b>Sleep supports mood and health.</b> A lack of sleep can make people irritable and less able to concentrate. Regular sleep also helps the immune system, the body's defence against illness, fight germs.</p>
+<p>Health experts suggest that children aged 6 to 12 get around nine to twelve hours of sleep each night. In short, sleep is not wasted time: it is when the body and brain prepare for the day ahead.</p>`,
+    notes: 'Why it scores well: a clear title and focus; each paragraph starts with a topic sentence (in bold) covering one sub-topic; technical terms are explained ("immune system, the body\'s defence against illness"); the tone stays factual with no opinion; and the conclusion sums up without adding new ideas.' },
+
+  { id: 'w14', type: 'Guide', title: 'How to Look After a Class Pet',
+    prompt: 'Your class is getting a pet guinea pig. Write a guide for students explaining how to look after it properly.',
+    model: `<h4 style="margin:0">How to Look After Our Class Guinea Pig</h4>
+<p>Our new guinea pig, Biscuit, depends on us to stay healthy and happy. Follow these steps every day and Biscuit will thrive.</p>
+<p><b>1. Feed Biscuit twice a day.</b> Give a handful of guinea pig pellets and fresh vegetables such as capsicum or lettuce. <i>Tip: never give chocolate, onion or potato. They can make guinea pigs very sick.</i></p>
+<p><b>2. Refill the water bottle.</b> Check it each morning and refill it with clean, cool water.</p>
+<p><b>3. Provide plenty of hay.</b> Guinea pigs need hay all day to keep their teeth healthy, because their teeth never stop growing.</p>
+<p><b>4. Clean the cage every Friday.</b> Remove old bedding, wipe the floor and add fresh bedding. Wash your hands afterwards.</p>
+<p><b>5. Handle Biscuit gently.</b> Sit on the floor, support Biscuit's bottom with one hand and keep your voice calm.</p>
+<p>By following this guide, every student can help Biscuit live a long, happy life in Room 5.</p>`,
+    notes: 'Why it scores well: a clear title and purpose; numbered steps that make sense on their own; every step starts with a command verb (Feed, Refill, Provide, Clean, Handle); a tip appears exactly where it\'s needed; reasons are given ("because their teeth never stop growing"); and a short concluding sentence.' },
+
+  { id: 'w15', type: 'Advice Sheet', title: 'Beating Exam Nerves',
+    prompt: 'Write an advice sheet for Year 5 students who feel nervous before a big test.',
+    model: `<h4 style="margin:0">Beating Exam Nerves: Top Tips for Year 5</h4>
+<p>Feeling nervous before a test is completely normal. It means you care! These tips will help you stay calm and do your best.</p>
+<ol>
+<li><b>Get a good night's sleep.</b> A rested brain remembers more than a tired one, so switch off screens an hour before bed.</li>
+<li><b>Eat a proper breakfast.</b> Foods like eggs, toast or yoghurt give you steady energy for the whole test.</li>
+<li><b>Breathe slowly.</b> If your heart starts racing, breathe in for four counts and out for four counts. It tells your body to relax.</li>
+<li><b>Start with a question you can do.</b> An early success builds confidence for the harder questions.</li>
+<li><b>Don't get stuck.</b> If a question takes too long, make your best guess, flag it, and come back later.</li>
+<li><b>Talk kindly to yourself.</b> Replace "I can't do this" with "I've practised for this."</li>
+</ol>
+<p>Remember: one test does not define you. Prepare well, stay calm and give it your best shot. You've got this!</p>`,
+    notes: 'Why it scores well: a clear, specific title; a reassuring introduction; the most important advice first; numbered tips that are easy to scan, each starting with a command verb; reasons explain WHY ("It tells your body to relax"); and an encouraging call to action at the end.' },
 ];

@@ -2,9 +2,10 @@
 import { rng } from './util.js';
 import mathsGen from './mathsGen.js';
 import thinkingGen from './thinkingGen.js';
+import anglesGen from './anglesGen.js';
 
 export const SEEDS = 6; // versions of each generator that appear in the question pools
-const GENS = { maths: mathsGen, thinking: thinkingGen };
+const GENS = { maths: [...mathsGen, ...anglesGen], thinking: thinkingGen };
 const hash = s => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 
 export function generate(subject, key, seed) {
@@ -24,7 +25,7 @@ export function fromId(id) {
 }
 
 export function allGenerated(subject) {
-  return (GENS[subject] || []).flatMap(g => Array.from({ length: SEEDS }, (_, i) => generate(subject, g.key, i + 1)));
+  return (GENS[subject] || []).flatMap(g => Array.from({ length: g.seeds || SEEDS }, (_, i) => generate(subject, g.key, i + 1)));
 }
 
 export const generatorsFor = subject => GENS[subject] || [];

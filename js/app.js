@@ -2,6 +2,7 @@ import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS, ROUTINE, THEMES, WRITING_R
 import { activeBreak, nextBreak, lastEndedBreak, breakEndWithRecovery, breakOn, studyDaysUntil, getBreaks, saveBreaks, addDays, daysBetween, today as todayLocal, fmtShort } from './breaks.js';
 import CONCEPTS from './data/concepts.js';
 import { RUBRIC, RUBRIC_TOTAL, TIPS } from './data/writing.js';
+import { TYPES as WTYPES, TYPE_FOR, TIME_PLAN, TECHNIQUES, VOCAB, VOCAB_TIP, TEST_FACTS } from './data/writingGuide.js';
 import * as store from './store.js';
 import {
   buildTest, getQuestion, passages, writingTasks, letter, scoreItems, topicMastery, weakTopics,
@@ -31,6 +32,7 @@ const routes = [
   [/^#\/run$/, runSession],
   [/^#\/result\/(.+)$/, resultView],
   [/^#\/writing$/, writingList],
+  [/^#\/writing\/guide$/, writingGuideView],
   [/^#\/writing\/(\w+)$/, writingTask],
   [/^#\/history(?:\?.*)?$/, historyView],
   [/^#\/concepts$/, conceptsView],
@@ -571,6 +573,46 @@ function resultView(id) {
 // =====================================================================
 // Writing
 // =====================================================================
+const guideFor = w => WTYPES.find(t => t.id === TYPE_FOR[w.type]);
+function styleHelp(w) {
+  const g = guideFor(w); if (!g) return '';
+  return `<details class="stylehelp"><summary>${g.icon} How to write a <b>${esc(g.name.toLowerCase())}</b> (structure & checklist)</summary>
+    <div class="two"><div><b>Structure</b><ol>${g.structure.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>
+    <div><b>Before you finish, check:</b><ul class="checklist">${g.check.map(x => `<li>☐ ${esc(x)}</li>`).join('')}</ul></div></div></details>`;
+}
+function showPhase(st) {
+  const el = document.getElementById('phase'); if (!el || !st.startedAt) return;
+  const m = (Date.now() - st.startedAt) / 60000; const p = TIME_PLAN.find(x => m >= x.from && m < x.to) || TIME_PLAN[TIME_PLAN.length - 1];
+  el.className = `phase-banner ph-${p.name.replace(/\s/g, '').toLowerCase()}`;
+  el.innerHTML = `${p.icon} <b>${p.name}</b> <span class="muted">(${p.from}–${p.to} min)</span> · ${esc(p.tip)}`;
+}
+function selfCheck(w) {
+  const g = guideFor(w); if (!g) return '';
+  return `<div class="card"><h2>${g.icon} Self-check: ${esc(g.name)}</h2><p class="muted">Tick what you did. Anything unticked is your goal for next time.</p>
+    <div class="selfcheck">${g.check.map((x, i) => `<label><input type="checkbox" id="sc${i}"> ${esc(x)}</label>`).join('')}</div>
+    <details><summary>Common mistakes in a ${esc(g.name.toLowerCase())}</summary><ul>${g.mistakes.map(x => `<li>${esc(x)}</li>`).join('')}</ul></details></div>`;
+}
+
+function writingGuideView() {
+  const typeCard = g => `<div class="card guide" id="g-${g.id}"><h2>${g.icon} ${esc(g.name)}</h2><p><i>${esc(g.what)}</i></p>
+    <div class="two"><div><h3>Structure</h3><ol>${g.structure.map(x => `<li>${esc(x)}</li>`).join('')}</ol>
+      <h3>How to improve</h3><ul>${g.improve.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+    <div><h3>Common mistakes</h3><ul class="traps">${g.mistakes.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+      <h3>Self-check</h3><ul class="checklist">${g.check.map(x => `<li>☐ ${esc(x)}</li>`).join('')}</ul>
+      ${writingTasks.filter(w => TYPE_FOR[w.type] === g.id).length ? `<p>Practise: ${writingTasks.filter(w => TYPE_FOR[w.type] === g.id).map(w => `<a href="#/writing/${w.id}">${esc(w.title)}</a>`).join(' · ')}</p>` : ''}</div></div></div>`;
+  $app.innerHTML = `
+    <div class="card"><h1>📚 Writing guide</h1><p class="muted">Adapted from your tutor's writing notes. Every writing style, how to structure it, how to lift it, and a checklist.</p>
+      <ul>${TEST_FACTS.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+      <div class="tabs guidetabs">${WTYPES.map(g => `<a href="#/writing/guide" data-jump="g-${g.id}">${g.icon} ${esc(g.name)}</a>`).join('')}<a href="#/writing/guide" data-jump="g-tech">🎨 Techniques</a><a href="#/writing/guide" data-jump="g-vocab">🔤 Vocabulary</a></div></div>
+    <div class="card"><h2>⏱ Your 30 minutes</h2><div class="timeplan">${TIME_PLAN.map(p => `<div><b>${p.icon} ${p.from}–${p.to} min · ${p.name}</b><span>${esc(p.tip)}</span></div>`).join('')}</div>
+      <p class="muted">The writing timer shows these reminders as you go.</p></div>
+    ${WTYPES.map(typeCard).join('')}
+    <div class="card" id="g-tech"><h2>🎨 Language techniques</h2><p class="muted">Use techniques when they help your writing. One strong simile beats three decorative ones.</p>
+      ${TECHNIQUES.map(grp => `<h3>${esc(grp.group)}</h3><table class="tbl">${grp.items.map(([n, d, e]) => `<tr><td><b>${esc(n)}</b></td><td>${esc(d)}</td><td><i>${esc(e)}</i></td></tr>`).join('')}</table>`).join('')}</div>
+    <div class="card" id="g-vocab"><h2>🔤 Vocabulary upgrades</h2><table class="tbl">${VOCAB.map(([a, b]) => `<tr><td><b>${esc(a)}</b> →</td><td>${esc(b)}</td></tr>`).join('')}</table><p class="muted">${esc(VOCAB_TIP)}</p></div>`;
+  $app.querySelectorAll('[data-jump]').forEach(a => a.onclick = e => { e.preventDefault(); document.getElementById(a.dataset.jump)?.scrollIntoView({ behavior: 'smooth' }); });
+}
+
 function coachCard() {
   const cs = [...CS_EXAMS].filter(e => e.subject === 'writing').pop();
   if (!cs) return '';
@@ -588,6 +630,7 @@ function writingList() {
     <div class="card">
       <h1>✍️ Writing</h1>
       <p>One task, <b>30 minutes</b>, as in the real test. When you finish, mark your writing with the rubric and compare it with a model answer.</p>
+      <div class="btns"><a class="btn primary" href="#/writing/guide">📚 Writing guide: every style, techniques & checklists</a></div>
       <details><summary><b>Tips for a high score</b></summary><ul>${TIPS.map(t => `<li>${esc(t)}</li>`).join('')}</ul></details>
     </div>
     ${coachCard()}
@@ -619,7 +662,9 @@ function writingTask(id) {
   const words = t => (t.trim().match(/\S+/g) || []).length;
   $app.innerHTML = `<div class="card writing">
       <header class="examhead"><div><b>✍️ ${esc(w.title)}</b> · ${esc(w.type)}</div><div id="wc">${words(st.text)} words</div><div id="timer" class="timer">${fmtTime(rem())}</div></header>
+      <div id="phase" class="phase-banner"></div>
       <p class="prompt">${esc(w.prompt)}</p>
+      ${styleHelp(w)}
       <textarea id="txt" spellcheck="false" placeholder="Plan first, then write here…">${esc(st.text)}</textarea>
       <p class="muted">Spell-check is turned off, just like in the real test. Your writing is saved as you type.</p>
       <div class="btns"><button class="btn primary" id="done">I'm finished, mark it</button></div></div>`;
@@ -632,6 +677,7 @@ function writingTask(id) {
   timer = setInterval(() => {
     const r = rem(); const el = document.getElementById('timer');
     if (el) { el.textContent = fmtTime(r); el.classList.toggle('low', r < 300); }
+    showPhase(st);
     if (r <= 0) { toast('⏰ Time is up! Pens down.'); finish(true); }
   }, 1000);
 }
@@ -644,6 +690,7 @@ function writingMark(w, st) {
       <div class="card"><h2>Your writing</h2><div class="mywriting">${esc(st.text).replace(/\n/g, '<br>') || '<i>(empty)</i>'}</div></div>
       <div class="card"><h2>Model answer</h2><div class="model">${w.model}</div><p class="notes"><b>${esc(w.notes)}</b></p></div>
     </div>
+    ${selfCheck(w)}
     ${coachCard()}
     <div class="card"><h2>Rubric</h2>
       ${RUBRIC.map(c => `<fieldset class="rubric"><legend>${esc(c.name)}</legend>${c.levels.map((l, i) =>
