@@ -1,4 +1,4 @@
-import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS, ROUTINE, THEMES } from './data/config.js';
+import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS, ROUTINE, THEMES, WRITING_RECURRING } from './data/config.js';
 import { activeBreak, nextBreak, lastEndedBreak, breakEndWithRecovery, breakOn, studyDaysUntil, getBreaks, saveBreaks, addDays, daysBetween, today as todayLocal, fmtShort } from './breaks.js';
 import CONCEPTS from './data/concepts.js';
 import { RUBRIC, RUBRIC_TOTAL, TIPS } from './data/writing.js';
@@ -577,6 +577,8 @@ function coachCard() {
   return `<div class="card coach"><h2>🧑‍🏫 Coach notes from ${esc(cs.name)}: ${cs.score}/${cs.total}</h2>
     <p class="muted">Your tutor's advice. Tick these off in every piece of writing.</p>
     <ul class="checklist">${cs.feedback.map(f => `<li>☐ ${esc(f)}</li>`).join('')}</ul>
+    <h3>🔁 Recurring advice across all ${CS_EXAMS.filter(e => e.subject === 'writing').length} external writing reports</h3>
+    <ul class="checklist">${WRITING_RECURRING.map(r => `<li>☐ ${esc(r.text)} <span class="chip">${r.count} of ${CS_EXAMS.filter(e => e.subject === 'writing').length}</span></li>`).join('')}</ul>
     <table class="tbl">${RUBRIC.map(c => `<tr><td>${esc(c.name)}</td><td>${cs.rubric[c.key]}/${c.max}</td><td>${bar(pct(cs.rubric[c.key], c.max), pct(cs.rubric[c.key], c.max) < 60 ? 'bad' : pct(cs.rubric[c.key], c.max) < 80 ? 'mid' : 'good')}</td></tr>`).join('')}</table></div>`;
 }
 

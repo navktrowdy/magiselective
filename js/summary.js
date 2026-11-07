@@ -106,6 +106,9 @@ export function computeSummary() {
   }).filter(Boolean);
   const timeUps = timed.filter(r => r.timeUp).length;
   const csBlanks = CS_EXAMS.reduce((a, e) => a + (e.blanks || 0), 0);
+  const blanksBy = sub => CS_EXAMS.filter(e => e.subject === sub).reduce((a, e) => a + (e.blanks || 0), 0);
+  const worstBlank = [...CS_EXAMS].sort((a, b) => (b.blanks || 0) - (a.blanks || 0))[0];
+  const blankText = `${blanksBy('thinking')} in Thinking and ${blanksBy('maths')} in Maths`;
 
   // ---------- writing ----------
   const csW = [...CS_EXAMS].filter(e => e.subject === 'writing').pop();
@@ -117,7 +120,7 @@ export function computeSummary() {
   if (a0.planned && a0.done < a0.planned) tips.push(`This week ${a0.done} of ${a0.planned} planned practice days were done so far.${a0.done === 0 ? ' A short 15-minute session is a good restart.' : ''}`);
   if (a0.planned && a0.done === a0.planned) tips.push(`All ${a0.planned} planned days done this week. Worth a mention at dinner! 🎉`);
   if (blankRate !== null && blankRate > 3) tips.push(`She is leaving <b>${blankRate}%</b> of timed questions blank. Remind her there's no penalty for guessing, and to flag and move on.`);
-  else if (blankRate === null && csBlanks) tips.push(`She left ${csBlanks} blanks across the external Thinking tests. When she starts timed tests in the app, check the "blanks" figure here.`);
+  else if (blankRate === null && csBlanks) tips.push(`External tests: she left ${blankText} unanswered${worstBlank?.blanks >= 5 ? ` (${worstBlank.blanks} in ${worstBlank.name} ${name(worstBlank.subject)}, mostly at the end, which means she ran out of time)` : ''}. There's no penalty for guessing: practise pacing and flag-and-move-on in the app's timed tests.`);
   for (const p of pace) if (p.avg > p.target * 1.2) tips.push(`${name(p.sub)}: averaging ${p.avg}s per question vs about ${p.target}s in the real test. Practise flagging hard questions and coming back.`);
   const trials = trialTrends();
   const fall = trials.subjects.filter(x => x.early - x.late >= 8).sort((a, b) => (b.early - b.late) - (a.early - a.late));
@@ -143,7 +146,7 @@ export function computeSummary() {
 
   const phaseName = daysLeft <= 0 ? 'Exam done' : studyLeft > 95 ? 'Foundation' : studyLeft > 56 ? 'Build' : 'Exam mode';
 
-  return { trials, s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, csW, appW, wAvg, tips, summaryText, phaseName, stats };
+  return { trials, s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, blankText, csW, appW, wAvg, tips, summaryText, phaseName, stats };
 }
 
 /** A self-contained HTML email (inline styles) for the weekly summary. */

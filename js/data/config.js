@@ -1,3 +1,4 @@
+import EXTERNAL, { WRITING_RECURRING } from './external.js';
 // Central configuration: subjects, test formats, category taxonomy and baseline.
 // Edit DEFAULT_SETTINGS.examDate in the app's Settings page rather than here.
 
@@ -97,36 +98,9 @@ export const ROUTINE = {
   Sun: { icon: '🌤️', busy: 'Tamil homework', mins: 45 },
 };
 
-// External test results (entered from the PDF reports).
-// topics: { appTopic: [correct, attempted] } — external test topic names mapped onto the app's topics.
-// strands: { strand: [myScore %, cohortAverage %] }
-export const CS_EXAMS = [
-  { id: 'cs17-maths', name: 'External test No. 17', date: '2026-09-03', subject: 'maths', score: 15, total: 35, avg: 70.46, rank: 216, rankOf: 241,
-    strands: { 'Number and Algebra': [50.0, 74.03], 'Measurement and Geometry': [33.33, 66.18], 'Statistics and Probability': [66.67, 79.39], 'Problem Solving': [25.0, 58.51], 'Data Interpretation': [0, 73.03] },
-    topics: { 'Multiplication and Division': [1, 2], 'Area': [2, 3], 'Angles': [0, 2], 'Fractions': [1, 3], 'Volume and Capacity': [1, 2], '2D Space': [0, 2], 'Probability': [1, 1], 'Patterns': [1, 4],
-      'Problem Solving': [1, 4], 'Perimeter': [1, 1], 'Data': [3, 5], 'Percentages': [1, 1], 'Time': [0, 1], 'Addition and Subtraction': [1, 1], 'Length': [0, 1], 'Data Interpretation': [0, 1], 'Whole Numbers': [1, 1] } },
-  { id: 'cs17-thinking', name: 'External test No. 17', date: '2026-09-03', subject: 'thinking', score: 22, total: 40, avg: 66.7, rank: 179, rankOf: 240, blanks: 5,
-    strands: { 'Problem Solving': [42.11, 65.53], 'Critical Thinking': [66.67, 67.76] },
-    topics: { 'Finding Procedures': [3, 10], 'Finding the Main Conclusion': [2, 4], 'Relevant Selection': [4, 7], 'Matching Arguments': [5, 5], 'Identifying Similarities and Patterns': [1, 3],
-      'Detecting Reasoning Error': [5, 6], 'Applying Principles': [1, 4], 'Identifying Inferences and Assumptions': [1, 2] } },
-  { id: 'cs23-maths', name: 'External test No. 23', date: '2026-10-29', subject: 'maths', score: 10, total: 35, avg: 56.65, rank: 352, rankOf: 391,
-    strands: { 'Problem Solving': [20.0, 60.05], 'Measurement and Geometry': [7.69, 50.07], 'Number and Algebra': [50.0, 58.44], 'Data Interpretation': [100.0, 66.16], 'Statistics and Probability': [0, 62.15] },
-    topics: { 'Problem Solving': [1, 5], 'Time': [1, 1], 'Fractions': [1, 2], 'Angles': [0, 2], 'Data Interpretation': [3, 3], 'Multiplication and Division': [2, 3], 'Area': [0, 2], '3D Space': [0, 1],
-      'Length': [0, 1], 'Volume and Capacity': [0, 1], 'Data': [0, 3], 'Probability': [0, 1], '2D Space': [0, 2], 'Percentages': [0, 1], 'Whole Numbers': [1, 2], 'Patterns': [1, 2], 'Perimeter': [0, 2], 'Mass': [0, 1] } },
-  { id: 'cs23-thinking', name: 'External test No. 23', date: '2026-10-29', subject: 'thinking', score: 15, total: 40, avg: 59.44, rank: 355, rankOf: 390, blanks: 2,
-    strands: { 'Problem Solving': [21.05, 55.82], 'Critical Thinking': [52.38, 62.71] },
-    topics: { 'Finding Procedures': [1, 5], 'Matching Arguments': [2, 3], 'Applying Principles': [2, 4], 'Detecting Reasoning Error': [3, 6], 'Relevant Selection': [3, 7],
-      'Identifying Similarities and Patterns': [0, 7], 'Finding the Main Conclusion': [4, 4], 'Identifying Inferences and Assumptions': [0, 4] } },
-  { id: 'cs24-reading', name: 'External test No. 24', date: '2026-11-05', subject: 'reading', score: 17, total: 38, avg: 60.44, rank: 296, rankOf: 349,
-    strands: { 'Narrative': [50.0, 58.13], 'Poetry': [50.0, 64.71], 'Gapped Text': [33.33, 80.47], 'Comparing Texts': [80.0, 68.88], 'Word Meaning in Context': [0, 33.95] },
-    topics: { 'Main Idea': [1, 4], 'Inference': [3, 4], 'Figurative Language': [1, 4], 'Vocabulary in Context': [0, 8], "Author's Purpose and Tone": [2, 2], 'Text Structure': [2, 6], 'Comparing Texts': [8, 10] } },
-  { id: 'cs24-writing', name: 'External test No. 24 (newspaper report)', date: '2026-11-05', subject: 'writing', score: 18, total: 25, avg: null, rank: 155, rankOf: 350,
-    rubric: { content: 3.25, form: 3.1, organising: 3.1, style: 1.8, sentences: 2, spelling: 2, punctuation: 2.25 },
-    feedback: ['Start with a more compelling hook.', 'Include quotes from witnesses or school staff (a required element of a news report).',
-      'Write a stronger conclusion that wraps up the report.', 'Give more specific details about the incident and its consequences.',
-      'Use richer vocabulary and figurative/persuasive language.', 'Use more complex sentences and vary sentence length.',
-      'Watch spelling: separately, passersby, witnesses. Use apostrophes for possession (the students\' parents).'] },
-];
+// External test results (No. 14–24) live in ./external.js.
+export const CS_EXAMS = EXTERNAL;
+export { WRITING_RECURRING };
 
 // Summary per subject used across the app: latest exam + all exam topic counts combined.
 export const BASELINE = (() => {
