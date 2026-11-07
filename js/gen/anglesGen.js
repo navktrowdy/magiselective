@@ -177,7 +177,10 @@ export default [
     if (r() < 0.5) { const { opts, a: ai } = options(r, name, ['Acute', 'Right', 'Obtuse', 'Straight', 'Reflex'].filter(x => x !== name), N5);
       return { q: `What type of angle is marked?${svg}`, opts, a: ai, exp: `Acute &lt; 90° · Right = 90° · Obtuse between 90° and 180° · Straight = 180° · <b>Reflex</b> between 180° and 360°.<br>The marked angle is about ${est}°, so it is <b>${name.toLowerCase()}</b>.<br><b>Tip:</b> compare it with a square corner (90°) and a straight line (180°).` }; }
     if (a === 90 || a === 180) return null;
-    const { opts, a: ai } = sortedOptions(r, est, [360 - est, 180 - est > 0 ? 180 - est : est + 90, Math.abs(90 - est) || est + 40, est + 60 < 360 ? est + 60 : est - 60], N5, deg);
+    const pool = [360 - est, 180 - est, est + 90, est - 90, est + 45, est - 45, est + 135, est - 135, 2 * est, Math.round(est / 2 / 5) * 5].filter(x => x > 0 && x < 360);
+    const chosen = [est]; for (const c of pool) if (chosen.length < N5 && chosen.every(x => Math.abs(x - c) >= 25)) chosen.push(c);
+    if (chosen.length < N5) return null;
+    const opts = chosen.sort((x, y) => x - y).map(deg); const ai = opts.indexOf(deg(est)); // well spaced: only one fair estimate
     return { q: `Which is the <b>best estimate</b> for the marked angle?${svg}`, opts, a: ai,
       exp: `Compare with benchmarks: a square corner is 90°, a straight line 180°, three-quarters of a turn 270°.<br>This angle is ${name.toLowerCase()} and about <b>${est}°</b>.${a > 180 ? '<br><b>Trap:</b> the arc goes the LONG way round, so it is a reflex angle, not the small angle.' : ''}` };
   } },
