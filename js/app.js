@@ -6,7 +6,7 @@ import { TYPES as WTYPES, TYPE_FOR, TIME_PLAN, TECHNIQUES, VOCAB, VOCAB_TIP, TES
 import * as store from './store.js';
 import {
   buildTest, getQuestion, passages, writingTasks, letter, scoreItems, topicMastery, weakTopics,
-  topicsFor, mistakesCount,
+  topicsFor, mistakesCount, isReported, reportQuestion,
 } from './bank.js';
 import { lineChart } from './charts.js';
 import { parentView } from './parent.js';
@@ -371,6 +371,7 @@ function renderQuestion() {
       <p class="petsay">${esc(say(chosen === q.a ? 'correct' : 'wrong'))}</p></div></div>
       <div class="exp">${q.exp}</div>
       ${concept ? `<details class="concept"><summary>📘 Concept: ${esc(q.topic)}</summary>${conceptHtml(q.topic)}</details>` : ''}
+      ${reportBtn(qid)}
     </div>` : '';
 
   const nav = practice ? '' : `<div class="navgrid">${s.qids.map((id, i) =>
@@ -405,6 +406,7 @@ function renderQuestion() {
     </div>`;
 
   $app.querySelectorAll('.opt').forEach(b => b.onclick = () => choose(Number(b.dataset.i)));
+  wireReport();
   $app.querySelectorAll('[data-go]').forEach(b => b.onclick = () => go(Number(b.dataset.go)));
   document.getElementById('check')?.addEventListener('click', check);
   document.getElementById('next')?.addEventListener('click', () => {
@@ -503,6 +505,23 @@ function xpGain(r) {
     <div class="gain"><b>+${after.xp - before.xp} XP</b><span>+${Math.floor(after.xp / 4) - Math.floor(before.xp / 4)} ✨ stardust</span></div></div>`;
 }
 
+// ---------- 🚩 report a wrong question ----------
+function reportBtn(qid) {
+  return isReported(qid)
+    ? `<p class="reported muted">🚩 Reported. This question is out of your practice until it's checked.</p>`
+    : `<button class="btn ghost small reportq" data-qid="${esc(qid)}">🚩 Something looks wrong with this question</button>`;
+}
+function wireReport() {
+  $app.querySelectorAll('.reportq').forEach(b => b.onclick = async () => {
+    const note = prompt('What looks wrong? (optional, e.g. "answer should be C" or "two answers are right")');
+    if (note === null) return;
+    b.disabled = true;
+    await reportQuestion(b.dataset.qid, note);
+    b.outerHTML = `<p class="reported muted">🚩 Thanks! This question is taken out of your practice and a parent will check it.</p>`;
+    toast('Question reported 🚩', 'ok');
+  });
+}
+
 function resultView(id) {
   const r = store.getResult(decodeURIComponent(id));
   if (!r) { $app.innerHTML = '<div class="card">Result not found. <a href="#/history">Back to history</a></div>'; return; }
@@ -539,7 +558,7 @@ function resultView(id) {
       <div class="qtext">${q.q}</div>
       <p><b>Your answer:</b> ${letter(it.chosen)}${it.chosen !== null ? `: ${optText(it.chosen)}` : ''}<br>
       <b>Correct answer:</b> ${letter(q.a)}: ${optText(q.a)}</p>
-      <div class="exp">${q.exp}</div></details>`;
+      <div class="exp">${q.exp}</div>${reportBtn(it.qid)}</details>`;
   }).join('');
 
   $app.innerHTML = `

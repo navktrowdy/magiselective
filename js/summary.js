@@ -2,7 +2,7 @@
 import { SUBJECTS, BASELINE, CS_EXAMS, CS_TRIALS, ROUTINE, trialTrends } from './data/config.js';
 import { RUBRIC, RUBRIC_TOTAL } from './data/writing.js';
 import * as store from './store.js';
-import { topicMastery, topicsFor, mistakesCount } from './bank.js';
+import { topicMastery, topicsFor, mistakesCount, getQuestion } from './bank.js';
 import { computeProgress } from './pet.js';
 import { isBreakDay, breakOn, studyDaysUntil, addDays, daysBetween, today, nextBreak, fmtShort } from './breaks.js';
 import { esc, pct, fmtDate } from './util.js';
@@ -117,6 +117,8 @@ export function computeSummary() {
 
   // ---------- suggested actions ----------
   const tips = [];
+  const reported = (prof?.reported || []).map(r => ({ ...r, q: getQuestion(r.id) }));
+  if (reported.length) tips.push(`🚩 She reported <b>${reported.length}</b> question${reported.length > 1 ? 's' : ''} as possibly wrong (now kept out of her practice). Check ${reported.length > 1 ? 'them' : 'it'} on the Parent page (${reported.map(r => esc(r.key)).join(', ')}).`);
   if (a0.planned && a0.done < a0.planned) tips.push(`This week ${a0.done} of ${a0.planned} planned practice days were done so far.${a0.done === 0 ? ' A short 15-minute session is a good restart.' : ''}`);
   if (a0.planned && a0.done === a0.planned) tips.push(`All ${a0.planned} planned days done this week. Worth a mention at dinner! 🎉`);
   if (blankRate !== null && blankRate > 3) tips.push(`She is leaving <b>${blankRate}%</b> of timed questions blank. Remind her there's no penalty for guessing, and to flag and move on.`);
@@ -146,7 +148,7 @@ export function computeSummary() {
 
   const phaseName = daysLeft <= 0 ? 'Exam done' : studyLeft > 95 ? 'Foundation' : studyLeft > 56 ? 'Build' : 'Exam mode';
 
-  return { trials, s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, blankText, csW, appW, wAvg, tips, summaryText, phaseName, stats };
+  return { trials, s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, blankText, csW, appW, wAvg, tips, summaryText, phaseName, stats, reported };
 }
 
 /** A self-contained HTML email (inline styles) for the weekly summary. */

@@ -7,7 +7,7 @@ import reading1 from './data/reading.js';
 import reading2 from './data/reading2.js';
 import writing from './data/writing.js';
 import { SUBJECTS, TOPIC_STRANDS, BASELINE } from './data/config.js';
-import { getResults } from './store.js';
+import { getResults, getProfile, saveProfile } from './store.js';
 import { balance } from './balance.js';
 import { allGenerated, fromId } from './gen/index.js';
 
@@ -15,6 +15,24 @@ const reading = [...reading1, ...reading2];
 const thinking = [...thinking1, ...thinking2];
 const LETTERS = 'ABCDEFG';
 export const letter = i => (i === null || i === undefined ? '–' : LETTERS[i]);
+
+// ---------- reported questions ----------
+// A question reported as wrong is kept out of every future test until a parent marks it fixed.
+// For a generated question the whole generator is paused (a bug would affect every version).
+const reportKey = id => (id.startsWith('g:') ? id.split(':').slice(0, 3).join(':') : id);
+export const getReported = () => (getProfile()?.reported || []);
+export const isReported = id => getReported().some(r => r.key === reportKey(id));
+export async function reportQuestion(id, note = '') {
+  const p = getProfile() || {};
+  p.reported = (p.reported || []).filter(r => r.key !== reportKey(id));
+  p.reported.push({ key: reportKey(id), id, note: String(note).slice(0, 300), at: new Date().toISOString() });
+  await saveProfile(p);
+}
+export async function unreportQuestion(key) {
+  const p = getProfile(); if (!p) return;
+  p.reported = (p.reported || []).filter(r => r.key !== key);
+  await saveProfile(p);
+}
 
 // ---------- flatten banks ----------
 const index = new Map();
@@ -97,9 +115,9 @@ const examOrder = qs => [1, 2, 3].flatMap(d => shuffle(qs.filter(q => (q.diff ||
 /** Build the list of question ids for a test. */
 export function buildTest(subject, mode, opts = {}) {
   const { seen, last } = questionHistory();
-  if (subject === 'reading') return buildReading(mode, opts, seen);
+  if (subject === 'reading') return buildReading(mode, opts, seen).filter(id => !isReported(id));
 
-  let pool = bankFor(subject);
+  let pool = bankFor(subject).filter(q => !isReported(q.id));
   if (mode === 'practice') {
     const count = opts.count || 10;
     if (opts.topic === 'mistakes') {

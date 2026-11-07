@@ -2,7 +2,7 @@
 import { SUBJECTS, BASELINE, CS_EXAMS, ROUTINE } from './data/config.js';
 import { RUBRIC, RUBRIC_TOTAL } from './data/writing.js';
 import * as store from './store.js';
-import { topicMastery, topicsFor, mistakesCount } from './bank.js';
+import { topicMastery, topicsFor, mistakesCount, unreportQuestion } from './bank.js';
 import { computeProgress } from './pet.js';
 import { isBreakDay, breakOn, studyDaysUntil, addDays, daysBetween, today, nextBreak, fmtShort } from './breaks.js';
 import { esc, pct, fmtDate, toast } from './util.js';
@@ -13,7 +13,7 @@ import { trialCard } from './views.js';
 const $app = () => document.getElementById('app');
 
 export function parentView() {
-  const { s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, blankText, csW, appW, wAvg, tips, summaryText, phaseName, stats } = computeSummary();
+  const { s, prof, all, drills, t, byDay, pr, daysLeft, studyLeft, last, s0, s1, a0, a1, row, cells, subjRows, recentItems, improving, help, untried, moverRow, timed, blankRate, pace, timeUps, csBlanks, blankText, csW, appW, wAvg, tips, summaryText, phaseName, stats, reported } = computeSummary();
   $app().innerHTML = `
     <div class="parent">
     <div class="card ps-head">
@@ -29,6 +29,12 @@ export function parentView() {
       <div class="tile"><b>${stats(drills).questions}</b><span>questions answered</span></div>
       <div class="tile"><b>${Math.round(stats(drills).minutes / 60 * 10) / 10}h</b><span>total practice time</span></div>
     </div>
+
+    ${reported.length ? `<div class="card"><h2>🚩 Questions she reported</h2>
+      <p class="muted">These are kept out of her practice. If a question is actually fine, press <b>It's fine, bring it back</b>. If it really is wrong, ask for it to be fixed (quote the ID), then bring it back.</p>
+      ${reported.map(r => `<div class="reprow"><details class="rev wrong"><summary><span class="pill">${esc(r.q?.topic || '?')}</span> <code>${esc(r.key)}</code> <span class="muted">${fmtDate(r.at)}</span>${r.note ? ` · “${esc(r.note)}”` : ''}</summary>
+        ${r.q ? `<div class="qtext">${r.q.q}</div><ol type="A">${r.q.opts.map((o, i) => `<li>${/<svg/.test(o) ? 'diagram' : esc(o)}${i === r.q.a ? ' <b>← marked correct</b>' : ''}</li>`).join('')}</ol><div class="exp">${r.q.exp}</div>` : '<p>Question no longer in the bank.</p>'}
+        </details><button class="btn small" data-unreport="${esc(r.key)}">It's fine, bring it back</button></div>`).join('')}</div>` : ''}
 
     <div class="card"><h2>💡 Suggested actions</h2>${tips.length ? `<ul class="tips">${tips.map(x => `<li>${x}</li>`).join('')}</ul>` : '<p>All on track. Nothing to flag right now.</p>'}</div>
 
@@ -85,6 +91,7 @@ export function parentView() {
       </tbody></table><p class="muted noprint">Add new external test results on the <a href="#/exams">Exams</a> page.</p></div>
     </div>`;
 
+  $app().querySelectorAll('[data-unreport]').forEach(b => b.onclick = async () => { await unreportQuestion(b.dataset.unreport); toast('Back in her practice ✔', 'ok'); parentView(); });
   document.getElementById('print').onclick = () => window.print();
   document.getElementById('email').onclick = () => {
     const to = (store.getSettings().parentEmails || '').trim();

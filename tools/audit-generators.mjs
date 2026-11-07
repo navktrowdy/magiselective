@@ -133,3 +133,4 @@ for (const subject of ['maths', 'thinking']) for (const g of generatorsFor(subje
 console.log(`Re-solved ${total} generated questions (${N} versions × ${total / N} types). Mismatches: ${bad}.`);
 if (skipped.size) console.log('No independent solver for:', [...skipped].join(', '));
 console.log(fails.join('\n'));
+process.exit(bad || skipped.size ? 1 : 0);
