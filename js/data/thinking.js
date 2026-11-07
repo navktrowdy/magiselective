@@ -249,9 +249,9 @@ export default [
     opts: ['3', '4', '5', '6'], a: 1,
     exp: `Look for how the first two numbers make the third:<br>3 × 4 = 12 − 1 = 11 ✔ · 5 × 2 = 10 − 1 = 9 ✔ · 2 × 7 = 14 − 1 = 13 ✔<br>Rule: first × second − 1.<br>6 × ? − 1 = 23 → 6 × ? = 24 → ? = <b>4</b>.` },
   { id: 't55', topic: 'Identifying Similarities and Patterns', diff: 1,
-    q: 'Which number is the <b>odd one out</b>? 16, 25, 36, 48, 64',
-    opts: ['16', '25', '48', '64'], a: 2,
-    exp: `16 = 4×4, 25 = 5×5, 36 = 6×6, 64 = 8×8 are all <b>square numbers</b>.<br><b>48</b> is not a square number.` },
+    q: 'Which number is the <b>odd one out</b>? 16, 36, 48, 64, 100',
+    opts: ['16', '36', '48', '100'], a: 2,
+    exp: `16 = 4×4, 36 = 6×6, 64 = 8×8, 100 = 10×10 are all <b>square numbers</b>.<br><b>48</b> is not a square number.<br><b>Tip:</b> check other properties too (odd/even, multiples) to make sure only ONE number stands out.` },
 
   // ---- Spatial Reasoning ----
   { id: 't56', topic: 'Spatial Reasoning', diff: 2,

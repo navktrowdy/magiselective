@@ -94,7 +94,12 @@ export default [
     if (type === 'mult') { const k = pick(r, [3, 4, 6, 7, 9]); good = sample(r, Array.from({ length: 12 }, (_, i) => k * (i + 2)), 3); do { odd = int(r, k * 2, k * 13); } while (odd % k === 0); why = `are all multiples of ${k}`; }
     else if (type === 'square') { good = sample(r, [16, 25, 36, 49, 64, 81, 100], 3); odd = pick(r, [18, 24, 32, 45, 50, 60, 72].filter(x => !good.includes(x))); why = 'are all square numbers (a number times itself)'; }
     else { good = sample(r, [12, 18, 24, 30, 36, 42, 48, 54], 3); odd = pick(r, [15, 21, 27, 33, 45]); why = 'are all multiples of 6'; }
-    const { opts, a } = sortedOptions(r, odd, good, N4);
+    // reject sets where a DIFFERENT number also stands out (only odd/even one, or only square number)
+    const all4 = [...good, odd]; const sq = x => Number.isInteger(Math.sqrt(x));
+    const g = (x, y) => (y ? g(y, x % y) : x);
+    for (const x of all4) { if (x === odd) continue; const rest = all4.filter(y => y !== x); const f = rest.reduce(g); if (f > 1 && x % f !== 0) return null; } // another number fails a shared factor
+    for (const prop of [x => x % 2 === 0, sq]) { const yes = all4.filter(prop); const lone = yes.length === 1 ? yes[0] : yes.length === 3 ? all4.find(x => !prop(x)) : null; if (lone !== null && lone !== undefined && lone !== odd) return null; }
+    const opts = [...good, odd].sort((x, y) => x - y).map(String); const a = opts.indexOf(String(odd)); // exact set: never add filler numbers
     return { q: `Which number is the <b>odd one out</b>?`, opts, a, exp: `${good.join(', ')} ${why}.<br><b>${odd}</b> is not.` };
   } },
   { key: 'fold', topic: 'Spatial Reasoning', diff: 2, make(r) {

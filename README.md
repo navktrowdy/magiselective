@@ -53,6 +53,7 @@ Questions live in `js/data/` (`maths.js`, `thinking.js`, `reading.js`, `writing.
 ```bash
 node tools/validate.mjs     # checks the hand-written banks
 node tools/gencheck.mjs     # stress-tests every question generator
+node tools/audit-generators.mjs  # re-solves every generated question independently and compares answers
 ```
 
 This checks IDs, answers, option counts and topics. To run the app locally, use `python3 -m http.server` and open http://localhost:8000.

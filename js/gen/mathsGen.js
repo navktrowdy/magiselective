@@ -170,7 +170,8 @@ export default [
   { key: 'dur24', topic: 'Time', diff: 2, make(r) {
     const s = int(r, 6 * 12, 15 * 12) * 5; const d = int(r, 10, 60) * 5; const e = s + d;
     const wrong = (Math.floor(e / 60) * 100 + e % 60) - (Math.floor(s / 60) * 100 + s % 60);
-    const { opts, a } = options(r, fmtDur(d), [`${Math.floor(wrong / 100)} h ${wrong % 100} min`, fmtDur(d + 60), d > 60 ? fmtDur(d - 60) : null, fmtDur(d + 10), fmtDur(d > 20 ? d - 10 : d + 20), fmtDur(d + 30), fmtDur(d + 40)], N5);
+    const naive = wrong % 100 >= 60 ? `${Math.floor(wrong / 100)} h ${wrong % 100} min` : null; // e.g. "1 h 65 min" trap
+    const { opts, a } = options(r, fmtDur(d), [naive, fmtDur(d + 60), d > 60 ? fmtDur(d - 60) : null, fmtDur(d + 10), fmtDur(d > 20 ? d - 10 : d + 20), fmtDur(d + 30), fmtDur(d + 40)], N5);
     return { q: `A train leaves at <b>${fmt24(s)}</b> and arrives at <b>${fmt24(e)}</b>. How long is the trip?`, opts, a,
       exp: `Count on in chunks: ${fmt24(s)} → ${fmt24(Math.ceil(s / 60) * 60)} is ${Math.ceil(s / 60) * 60 - s} min, then on to ${fmt24(e)}.<br>Total = <b>${fmtDur(d)}</b>.<br><b>Trap:</b> subtracting the times like normal numbers treats an hour as 100 minutes.` };
   } },
