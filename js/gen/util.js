@@ -51,15 +51,31 @@ export function options(r, correct, distractors, n, fmt = String, filler) {
   return { opts, a: opts.indexOf(fmt(correct)) };
 }
 
-/** Same as options() but keeps numeric options in ascending order (as real papers often do). */
+/**
+ * Numeric options in ascending order (as real papers show them), with the correct answer placed at a
+ * RANDOM position so there is no "it's always B" pattern. Common-mistake distractors are used first;
+ * nearby values fill the rest (step = a sensible gap, e.g. 5 or 10 for angles).
+ */
 export function sortedOptions(r, correct, distractors, n, fmt = String) {
-  const { opts } = options(r, correct, distractors, n, fmt);
-  if (!opts) return { opts: null, a: -1 };
-  const vals = opts.map(o => ({ o, v: parseFloat(String(o).replace(/[^0-9.\-]/g, '')) }));
-  if (vals.some(x => Number.isNaN(x.v))) return { opts, a: opts.indexOf(fmt(correct)) };
-  vals.sort((x, y) => x.v - y.v);
-  const sorted = vals.map(x => x.o);
-  return { opts: sorted, a: sorted.indexOf(fmt(correct)) };
+  const val = x => parseFloat(String(fmt(x)).replace(/[^0-9.\-]/g, ''));
+  const cv = val(correct);
+  if (Number.isNaN(cv)) { const o = options(r, correct, distractors, n, fmt); return o; }
+  const seen = new Set([fmt(correct)]);
+  const ok = d => d !== undefined && d !== null && !Number.isNaN(d) && !(typeof d === 'number' && d < 0) && !seen.has(fmt(d));
+  const lows = [], highs = [];
+  for (const d of distractors) if (ok(d)) { seen.add(fmt(d)); (val(d) < cv ? lows : highs).push(d); }
+  const step = Number.isInteger(cv) ? (cv >= 100 ? 10 : cv >= 20 ? 5 : 1) : 0.5;
+  let want = Math.floor(r() * n); // index of the correct answer
+  const fill = (arr, dir) => { for (let k = 1; arr.length < n - 1 && k < 60; k++) { const c = Math.round((cv + dir * k * step) * 100) / 100; if (c >= 0 && ok(c)) { seen.add(fmt(c)); arr.push(c); } } };
+  if (lows.length < want) fill(lows, -1);
+  want = Math.min(want, lows.length);
+  if (highs.length < n - 1 - want) fill(highs, 1);
+  if (highs.length < n - 1 - want) want = Math.min(lows.length, n - 1 - highs.length);
+  const pickL = [...lows].sort((a, b) => val(b) - val(a)).slice(0, want);
+  const pickH = [...highs].sort((a, b) => val(a) - val(b)).slice(0, n - 1 - want);
+  const all = [...pickL, correct, ...pickH].sort((a, b) => val(a) - val(b)).map(fmt);
+  if (all.length < n) return { opts: null, a: -1 };
+  return { opts: all, a: all.indexOf(fmt(correct)) };
 }
 
 export const money = v => `$${v.toFixed(2)}`;

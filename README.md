@@ -24,10 +24,10 @@ A practice app for the **NSW Selective High School Placement Test**. It runs on 
 Test formats follow the [NSW Department of Education](https://education.nsw.gov.au/schooling/parents-and-carers/choosing-a-school-setting/selective-high-schools/placement-test/selective-high-school-practice-tests) guidelines.
 
 ### Question bank
-- **Maths:** 73 hand-written questions plus 46 question generators × 6 versions (about 350 questions). Generators create fresh numbers and compute the answer and worked explanation in code, so they are always correct.
+- **Maths:** 73 hand-written questions plus 61 question generators (about 500 questions), including 15 angle types that draw their own diagrams (about 190 angle questions). Generators create fresh numbers and compute the answer and worked explanation in code, so they are always correct. Answers are spread evenly across A–E.
 - **Thinking Skills:** 101 hand-written questions (critical thinking and logic puzzles) plus 14 problem-solving generators × 6 versions (about 185).
 - **Reading:** 16 original texts (97 marks) across narrative, poetry, informational/persuasive, word meaning in context, gapped text (cloze) and short thematic texts.
-- **Writing:** 11 tasks across narrative, persuasive, speech, newspaper report, diary, advice letter, descriptive and discussion. Each has a model answer and is marked with 7 standard writing criteria (out of 25).
+- **Writing:** 15 tasks across narrative, persuasive, speech, newspaper report, diary, letter, recount, explanation, guide, advice sheet, descriptive and discussion, each with a model answer. A built-in **writing guide** (adapted from her tutor's notes) covers every style's structure, improvements, mistakes and checklist, plus language techniques and vocabulary. The writing timer shows the 30-minute plan (plan → write → proofread → check).
 
 ### Weekly plan
 The plan fits around Magizhini's routine (tuition Wed/Thu, boxing Fri, Tamil school Sat afternoon). That's about 2¼ hours of app time a week, with no app work on tuition days. Planned rest days never break the 🔥 streak. To change the routine, edit `ROUTINE` in `js/data/config.js`.
