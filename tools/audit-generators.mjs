@@ -149,6 +149,30 @@ const S = {
     return ['eq', d >= 0 ? `Larger by ${d} m` : `Smaller by ${-d} m`]; },
   pinwheel: q => { const m = q.match(/(\d+) cm wide and has an area of (\d+) cm²/); const w = +m[1], L = +m[2] / w;
     return /side length of the shaded/.test(q) ? L - w : /area of the shaded/.test(q) ? (L - w) ** 2 : (L + w) ** 2; },
+  // ---- numberGen ----
+  remOdd: (q, o) => { const d = +q.match(/divided by (\d+)/)[1]; const rs = o.map(x => +x % d); const odd = o.filter((x, i) => rs.filter(y => y === rs[i]).length === 1); return odd.length === 1 && rs.filter(y => y !== (+odd[0] % d)).length === 4 ? ['eq', odd[0]] : ['eq', 'AMBIGUOUS']; },
+  lcmTrays: q => { const ns = [...q.matchAll(/with (\d+) cups|one with (\d+) cups/g)].map(m => +(m[1] || m[2])); for (let t = 1; t < 10000; t++) if (ns.every(n => t % n === 0)) return t; },
+  multDiff: q => { const N = +q.match(/less than (\d+)\./)[1], a = +q.match(/multiple of (\d+)\./)[1], b = +q.match(/even number that is a multiple of (\d+)/)[1];
+    let big = 0, small = Infinity; for (let x = 1; x < N; x++) { if (x % a === 0) big = Math.max(big, x); if (x % 2 === 0 && x % b === 0) small = Math.min(small, x); } return big - small; },
+  ineqSum: q => { const [, p, A] = q.match(/multiplies it by (\d+), the answer is less than (\d+)/), [, k, B] = q.match(/multiplies it by (\d+), the answer is greater than (\d+)/); let s = 0; for (let x = 1; x < 1000; x++) if (p * x < A && k * x > B) s += x; return s; },
+  wallPaint: (q, o, h) => { const n = +q.match(/split into (\d+) equal/)[1]; const pre = (h.match(/class="pre"/g) || []).length; const [, a, b] = q.match(/paints (\d+)\/(\d+) of the whole wall/); let white = n - pre - n * a / b;
+    const m = q.match(/paints (\d+)\/(\d+) of the sections that are still white/); if (m) white -= white * m[1] / m[2]; return white; },
+  containerMass: q => { const f = t => ({ 'completely full': 1, 'half full': 0.5, 'one-quarter full': 0.25, 'three-quarters full': 0.75 })[t];
+    const m = q.match(/is (completely full|half full|one-quarter full|three-quarters full) of .*?mass of (\d+) g\. When it is (completely full|half full|one-quarter full|three-quarters full), they have a mass of (\d+) g/);
+    const C = (m[4] - m[2]) / (f(m[3]) - f(m[1])), E = m[2] - f(m[1]) * C; const ask = /mass of the empty/.test(q) ? 0 : f(q.match(/when the \w+ is (completely full|half full|one-quarter full|three-quarters full)\?/)[1]); return E + ask * C; },
+  outfits: (q, o) => { const [, A, t1, s1, B, t2, s2] = q.match(/(\w+) has (\d+) different pairs of shorts and (\d+) different tops\. (\w+) has (\d+) different pairs of shorts and (\d+) different tops/); const d = t1 * s1 - t2 * s2;
+    return ['eq', o.find(x => (d === 0 ? /same number/.test(x) : new RegExp(`^${d > 0 ? A : B} has ${Math.abs(d)} more`).test(x)))]; },
+  probRatio: q => { const same = q.match(/same number of (\w+) discs as (\w+) discs/); const [, k, x, y] = q.match(/(\d+) times as many (\w+) discs as (\w+) discs/);
+    const parts = { [y]: 1 }; parts[x] = +k; parts[same[1] === x ? same[2] : same[1]] = +k; const ask = q.match(/probability that it is (\w+)\?/)[1]; const tot = Object.values(parts).reduce((a, b) => a + b, 0); return ['eq', frac(parts[ask], tot)]; },
+  twoDice: q => { let n = 0; const sm = q.match(/add up to (\d+)\?/), so = q.match(/add up to more than (\d+)/);
+    for (let x = 1; x <= 6; x++) for (let y = 1; y <= 6; y++) if (/second number is larger/.test(q) ? y > x : so ? x + y > +so[1] : sm ? x + y === +sm[1] : x % 2 === 0 && y % 2 === 0) n++; return ['eq', frac(n, 36)]; },
+  cardArr: q => { const d = q.match(/show the digits ([\d, ]+)\./)[1].split(', '); const all = new Set(); for (const a of d) for (const b of d) for (const c of d) if (new Set([a, b, c]).size === 3) all.add(a + b + c);
+    const gt = q.match(/greater than (\d+)/); const ok = [...all].filter(t => (/even number/.test(q) ? +t % 2 === 0 : gt ? +t > +gt[1] : +t % 5 === 0)).length; return ['eq', frac(ok, all.size)]; },
+  missingBars: (q, o, h) => { const N = +q.match(/^(\d+) children/)[1]; const k = +q.match(/is (\d+) times the number/)[1]; const top = +[...h.matchAll(/font-size="11">(\d+)<\/text>/g)].map(m => m[1]).pop();
+    const H = 150, seen = [...h.matchAll(/class="gbar" x="[\d.]+" y="[\d.]+" width="\d+" height="([\d.]+)"/g)].reduce((s, m) => s + Math.round(+m[1] / (H / top)), 0);
+    const three = (N - seen) / (k + 1); return /How many children have 2 pets/.test(q) ? k * three : three; },
+  meanNew: q => { const [, n, m] = q.match(/(\d+) students sat a \w+ test and their average mark was (\d+)/); const m2 = +q.match(/rose to (\d+)/)[1]; return (+n + 1) * m2 - n * m; },
+  kthRow: (q, o, h) => { const cells = rows(h); const vals = cells[1].slice(1).map(Number); const k = +q.match(/the (\d+)\w\w largest/)[1]; const v = [...vals].sort((a, b) => b - a)[k - 1]; return ['eq', `${cells[0][0]} ${vals.indexOf(v) + 1}`]; },
 };
 
 

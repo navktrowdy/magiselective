@@ -348,3 +348,4 @@ nav .brand { letter-spacing: -.01em; }
 .aifeedback blockquote { margin: 6px 0; padding: 8px 12px; border-left: 4px solid var(--line, #ccc); background: var(--soft, rgba(0,0,0,.03)); border-radius: 6px; }
 .aifeedback blockquote.better { border-left-color: var(--good, #2e7d32); }
 .aifeedback .small, .muted.small { font-size: .85rem; }
+.qtext .box { border: 2px solid var(--line2); background: var(--card); border-radius: 10px; padding: 10px 14px; margin: 4px 0 12px; }

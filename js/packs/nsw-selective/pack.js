@@ -7,6 +7,7 @@
 import maths from './content/maths.js';
 import thinking1 from './content/thinking.js';
 import thinking2 from './content/thinking2.js';
+import thinking3 from './content/thinking3.js';
 import reading1 from './content/reading.js';
 import reading2 from './content/reading2.js';
 import writing, { RUBRIC, TIPS } from './content/writing.js';
@@ -15,6 +16,7 @@ import concepts from './content/concepts.js';
 import mathsGen from '../../gen/mathsGen.js';
 import anglesGen from '../../gen/anglesGen.js';
 import spaceGen from '../../gen/spaceGen.js';
+import numberGen from '../../gen/numberGen.js';
 import thinkingGen from '../../gen/thinkingGen.js';
 
 // Official test format (computer-based). Mini mocks are short, all-category tests for school nights.
@@ -102,6 +104,6 @@ export default {
   reading: { multiPartTypes: ['Word Meaning in Context', 'Gapped Text', 'Comparing Texts'], passageQuestions: 14 },
   writing: { rubric: RUBRIC, tips: TIPS, tasks: writing, guide: writingGuide },
   concepts,
-  banks: { maths, thinking: [...thinking1, ...thinking2], reading: [...reading1, ...reading2] },
-  generators: { maths: [...mathsGen, ...anglesGen, ...spaceGen], thinking: thinkingGen },
+  banks: { maths, thinking: [...thinking1, ...thinking2, ...thinking3], reading: [...reading1, ...reading2] },
+  generators: { maths: [...mathsGen, ...anglesGen, ...spaceGen, ...numberGen], thinking: thinkingGen },
 };

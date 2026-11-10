@@ -111,7 +111,7 @@ export default [
       exp: `Each new shape adds ${add} matchsticks (one side is shared).<br>Rule: ${first} + ${add} × (shapes − 1).<br>For ${n}: ${first} + ${add} × ${n - 1} = <b>${v}</b>.<br><b>Trap:</b> ${first} × ${n} = ${first * n} counts every shared side twice.` };
   } },
   { key: 'machine', topic: 'Patterns', diff: 1, make(r) {
-    const m = int(r, 2, 6), s = int(r, 1, 9); const inp = int(r, 4, 15); const out = inp * m - s;
+    const m = int(r, 2, 6), s = int(r, 1, 9); const inp = int(r, 4, 15); const out = inp * m - s; if (out < 1) return null; // keep outputs positive for Year 5
     const { opts, a } = sortedOptions(r, inp, [out * m - s, Math.round((out - s) / m) === inp ? inp + 2 : Math.round((out - s) / m), (out + s) * m, inp + 1], N5);
     return { q: `A number machine follows the rule "<b>multiply by ${m}, then subtract ${s}</b>". The output is ${out}. What was the input?`, opts, a,
       exp: `Work backwards with opposite operations in reverse order:<br>${out} + ${s} = ${out + s}, then ${out + s} ÷ ${m} = <b>${inp}</b>.<br>Check: ${inp} × ${m} − ${s} = ${out} ✔` };
