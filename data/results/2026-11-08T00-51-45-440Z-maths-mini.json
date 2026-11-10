@@ -1,0 +1,205 @@
+{
+  "id": "2026-11-08T00-51-45-440Z-maths-mini",
+  "subject": "maths",
+  "mode": "mini",
+  "topicLabel": "",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-08T00:51:45.440Z",
+  "finishedAt": "2026-11-08T00:51:51.443Z",
+  "durationSec": 6,
+  "limitSec": 900,
+  "timeUp": false,
+  "score": 0,
+  "total": 13,
+  "byStrand": {
+    "Statistics and Probability": {
+      "correct": 0,
+      "total": 2
+    },
+    "Number and Algebra": {
+      "correct": 0,
+      "total": 2
+    },
+    "Measurement and Geometry": {
+      "correct": 0,
+      "total": 6
+    },
+    "Data Interpretation": {
+      "correct": 0,
+      "total": 1
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 2
+    }
+  },
+  "byTopic": {
+    "Probability": {
+      "correct": 0,
+      "total": 1
+    },
+    "Multiplication and Division": {
+      "correct": 0,
+      "total": 1
+    },
+    "Decimals": {
+      "correct": 0,
+      "total": 1
+    },
+    "Area": {
+      "correct": 0,
+      "total": 1
+    },
+    "Mass": {
+      "correct": 0,
+      "total": 1
+    },
+    "Time": {
+      "correct": 0,
+      "total": 1
+    },
+    "Data Interpretation": {
+      "correct": 0,
+      "total": 1
+    },
+    "Data": {
+      "correct": 0,
+      "total": 1
+    },
+    "2D Space": {
+      "correct": 0,
+      "total": 1
+    },
+    "Volume and Capacity": {
+      "correct": 0,
+      "total": 1
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 2
+    },
+    "Angles": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:probnot:2",
+      "topic": "Probability",
+      "strand": "Statistics and Probability",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "m08",
+      "topic": "Multiplication and Division",
+      "strand": "Number and Algebra",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "m14",
+      "topic": "Decimals",
+      "strand": "Number and Algebra",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lshape:2",
+      "topic": "Area",
+      "strand": "Measurement and Geometry",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:mass:5",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:dur24:4",
+      "topic": "Time",
+      "strand": "Measurement and Geometry",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:tblsales:4",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:mean:2",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:coord:4",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:tank:2",
+      "topic": "Volume and Capacity",
+      "strand": "Measurement and Geometry",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:legs:5",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:rate:4",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:angExt:1",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    }
+  ]
+}
