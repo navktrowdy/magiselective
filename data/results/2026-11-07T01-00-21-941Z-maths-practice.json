@@ -1,0 +1,64 @@
+{
+  "id": "2026-11-07T01-00-21-941Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "2D Space",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-07T01:00:21.941Z",
+  "finishedAt": "2026-11-07T01:02:47.894Z",
+  "durationSec": 146,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 2,
+  "total": 4,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 2,
+      "total": 4
+    }
+  },
+  "byTopic": {
+    "2D Space": {
+      "correct": 2,
+      "total": 4
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:polygon:4",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 26,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:polygon:3",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 21,
+      "flagged": false
+    },
+    {
+      "qid": "m48",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 0,
+      "correct": false,
+      "timeSec": 37,
+      "flagged": false
+    },
+    {
+      "qid": "m47",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 55,
+      "flagged": false
+    }
+  ]
+}
