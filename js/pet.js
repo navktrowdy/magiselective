@@ -2,7 +2,7 @@
 // Progress is derived from saved results, so it is identical on every device.
 
 import { SPECIES, STAGES, SHOP, BADGES, TALK } from './data/pets.js';
-import { BASELINE, ROUTINE } from './data/config.js';
+import { BASELINE, ROUTINE } from './family.js';
 import { isBreakDay, today as todayLocal } from './breaks.js';
 
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];

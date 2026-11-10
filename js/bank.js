@@ -1,18 +1,13 @@
 // Question bank access, test assembly and progress analytics.
 
-import maths from './data/maths.js';
-import thinking1 from './data/thinking.js';
-import thinking2 from './data/thinking2.js';
-import reading1 from './data/reading.js';
-import reading2 from './data/reading2.js';
-import writing from './data/writing.js';
-import { SUBJECTS, TOPIC_STRANDS, BASELINE } from './data/config.js';
+import { PACK, SUBJECTS, TOPIC_STRANDS, BANKS, WRITING_TASKS } from './pack.js';
+import { BASELINE } from './family.js';
 import { getResults, getProfile, saveProfile } from './store.js';
 import { balance } from './balance.js';
 import { allGenerated, fromId } from './gen/index.js';
 
-const reading = [...reading1, ...reading2];
-const thinking = [...thinking1, ...thinking2];
+const { maths, thinking, reading } = BANKS;
+const writing = WRITING_TASKS;
 const LETTERS = 'ABCDEFG';
 export const letter = i => (i === null || i === undefined ? '–' : LETTERS[i]);
 
@@ -146,9 +141,9 @@ function stratifiedPickTopics(pool, n, seen) {
   return shuffle(out);
 }
 
-// Official NSW Reading test: 17 questions in 45 minutes. 14 single questions on
-// passages + 3 multi-part sets (word meaning in context, gapped text, short thematic texts).
-export const MULTI_PART = ['Word Meaning in Context', 'Gapped Text', 'Comparing Texts'];
+// A full reading test = single questions on passages + one of each multi-part set (defined by the exam pack).
+export const MULTI_PART = PACK.reading.multiPartTypes;
+const PASSAGE_QS = PACK.reading.passageQuestions;
 
 function buildReading(mode, opts, seen) {
   const all = [...passages.values()];
@@ -170,13 +165,13 @@ function buildReading(mode, opts, seen) {
     // one passage + one multi-part set (least seen first)
     return ids([std[0], multi[0]].filter(Boolean));
   }
-  // full mock: 14 passage questions, then one of each multi-part set
+  // full mock: the passage questions, then one of each multi-part set
   const out = []; const types = new Set();
   for (const p of std) {
-    if (out.length >= 14) break;
+    if (out.length >= PASSAGE_QS) break;
     if (types.has(p.type) && std.some(x => !types.has(x.type) && !out.includes(x.questions[0].id))) continue;
     types.add(p.type);
-    out.push(...p.questions.slice(0, 14 - out.length).map(q => q.id));
+    out.push(...p.questions.slice(0, PASSAGE_QS - out.length).map(q => q.id));
   }
   for (const t of MULTI_PART) { const p = multi.find(x => x.type === t); if (p) out.push(...p.questions.map(q => q.id)); }
   return out;

@@ -1,7 +1,7 @@
 // ✍️ AI writing marker: sends a finished piece to Claude, which marks it against the same
 // 7-criterion rubric (total 25) used in her external writing reports and returns kind, specific feedback.
 // The parent's Claude API key is stored only in this browser (Settings), like the GitHub token.
-import { RUBRIC, RUBRIC_TOTAL } from './data/writing.js';
+import { PACK, RUBRIC, RUBRIC_TOTAL } from './pack.js';
 
 const MODEL = 'claude-opus-5-5';
 const plain = html => String(html || '').replace(/<\/(p|h\d|li)>/g, '\n').replace(/<br\s*\/?>/g, '\n').replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim();
@@ -21,13 +21,13 @@ const SCHEMA = {
   },
 };
 
-const SYSTEM = `You are an experienced NSW Selective High School Placement Test writing marker. You mark 30-minute pieces by a Year 5 student (age 10) who is preparing for the test.
+const SYSTEM = `You are an experienced ${PACK.name} writing marker. You mark ${PACK.sections.writing.mock.minutes}-minute pieces by ${PACK.student} who is preparing for the test.
 
 Mark against this rubric (total ${RUBRIC_TOTAL}). Each criterion's score is a whole number from 1 to its maximum; the descriptor for each score is given.
 ${RUBRIC.map(c => `- ${c.key} (${c.name}, max ${c.max}):\n${c.levels.map((l, i) => `    ${i + 1}: ${l}`).join('\n')}`).join('\n')}
 
 How to mark:
-- Mark at the standard of the Selective test, not general Year 5 expectations. Be accurate rather than generous: a top score means it would stand out among strong Selective candidates. Judge what is on the page, allowing for the 30-minute time limit.
+- Mark at the standard of this test, not general school expectations. Be accurate rather than generous: a top score means it would stand out among strong candidates for this test. Judge what is on the page, allowing for the 30-minute time limit.
 - If the piece does not answer the task, or is very short or unfinished, reflect that in Content and Form.
 - The model answer is a guide to a high-scoring response, not the only correct approach.
 - Write to the student as "you", in short, warm, plain sentences a 10-year-old understands. Be specific: quote her own words when you praise or suggest.

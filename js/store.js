@@ -2,7 +2,16 @@
 // (one JSON file per attempt under data/results/) so progress follows her
 // to any device. Writes need a fine-grained token with Contents: read & write.
 
-import { DEFAULT_SETTINGS } from './data/config.js';
+import { PACK } from './pack.js';
+import { SYNC_DEFAULTS } from './family.js';
+
+// Where results are saved: the family file says so, otherwise it is worked out from a GitHub Pages address.
+const pagesRepo = () => { try { const m = location.hostname.match(/^(.+)\.github\.io$/); return m ? { owner: m[1], repo: location.pathname.split('/')[1] || '' } : {}; } catch { return {}; } };
+const DEFAULT_SETTINGS = {
+  nickname: 'Potalien',
+  examDate: PACK.defaultExamDate,
+  github: { owner: '', repo: '', branch: 'main', path: 'data/results', token: '', ...pagesRepo(), ...(SYNC_DEFAULTS || {}) },
+};
 
 const K_SETTINGS = 'ms.settings';
 const K_RESULTS = 'ms.results';

@@ -1,6 +1,7 @@
 // Engagement screens: Potalien adoption & home, My Skills dashboard, Monthly exams.
 
-import { SUBJECTS, BASELINE, CS_EXAMS, CS_TRIALS, trialTrends } from './data/config.js';
+import { SUBJECTS } from './pack.js';
+import { BASELINE, EXTERNAL_TESTS, TRIALS, trialTrends } from './family.js';
 import { SPECIES, STAGES, SHOP, FREE_BG } from './data/pets.js';
 import * as store from './store.js';
 import { topicMastery, topicsFor } from './bank.js';
@@ -238,26 +239,27 @@ const shortTopic = t => ({
 export const TRIAL_COLORS = { maths: '#1e88e5', thinking: '#8e24aa', reading: '#43a047', writing: '#fb8c00', total: '#2b2620' };
 
 export function trialCard() {
-  const tr = trialTrends(); const L = CS_TRIALS.map(t => t.tests);
+  const tr = trialTrends(); if (!tr) return ''; // no external trial history for this family
+  const L = TRIALS.map(t => t.tests);
   const cell = v => `<td><span class="pct ${v < 50 ? 'bad' : v < 75 ? 'mid' : 'good'}">${v}</span></td>`;
   const arrow = (a, b) => (b - a >= 5 ? `<span class="up">▲ ${b - a}</span>` : a - b >= 5 ? `<span class="down">▼ ${a - b}</span>` : '<span class="flat">→</span>');
   return `<div class="card"><h2>📈 External trial test history (12 trials)</h2>
     ${categoryChart(L, [
-      ...['maths', 'thinking', 'reading', 'writing'].map(k => ({ name: SUBJECTS[k].short || SUBJECTS[k].name, color: TRIAL_COLORS[k], values: CS_TRIALS.map(t => t[k]) })),
-      { name: 'Total', color: TRIAL_COLORS.total, values: CS_TRIALS.map(t => t.total), bold: true },
-      { name: 'Ahead of % of students', color: '#9e9e9e', values: CS_TRIALS.map(t => tr.ahead(t)), dashed: true },
+      ...['maths', 'thinking', 'reading', 'writing'].map(k => ({ name: SUBJECTS[k].short || SUBJECTS[k].name, color: TRIAL_COLORS[k], values: TRIALS.map(t => t[k]) })),
+      { name: 'Total', color: TRIAL_COLORS.total, values: TRIALS.map(t => t.total), bold: true },
+      { name: 'Ahead of % of students', color: '#9e9e9e', values: TRIALS.map(t => tr.ahead(t)), dashed: true },
     ])}
     <div class="trialsum">${tr.subjects.map(s => `<div class="tile"><b>${SUBJECTS[s.key].icon} ${s.late}%</b><span>${SUBJECTS[s.key].short || SUBJECTS[s.key].name}: last 6 avg ${arrow(s.early, s.late)}<br><small>first 6 avg ${s.early}% · best ${s.best}% (Test ${s.bestAt})</small></span></div>`).join('')}</div>
     <details><summary>Show all 12 trials</summary>
     <table class="tbl"><thead><tr><th>Tests</th><th>Maths</th><th>Thinking</th><th>Reading</th><th>Writing</th><th>Total</th><th>Rank</th><th>Ahead of</th></tr></thead><tbody>
-    ${[...CS_TRIALS].reverse().map(t => `<tr><td>${t.tests}</td>${cell(t.maths)}${cell(t.thinking)}${cell(t.reading)}${cell(t.writing)}<td><b>${t.total}</b></td><td>${t.rank}/${t.of}</td><td>${tr.ahead(t)}%</td></tr>`).join('')}
+    ${[...TRIALS].reverse().map(t => `<tr><td>${t.tests}</td>${cell(t.maths)}${cell(t.thinking)}${cell(t.reading)}${cell(t.writing)}<td><b>${t.total}</b></td><td>${t.rank}/${t.of}</td><td>${tr.ahead(t)}%</td></tr>`).join('')}
     </tbody></table></details>
     <p class="muted">"Ahead of" = the share of students she scored above. The group grew from 138 to 397 students, so rank numbers aren't directly comparable over time.</p></div>`;
 }
 
 export function examsView() {
   const entries = [
-    ...CS_EXAMS.map(e => ({ id: null, subject: e.subject, topicLabel: e.name, finishedAt: e.date + 'T12:00:00Z',
+    ...EXTERNAL_TESTS.map(e => ({ id: null, subject: e.subject, topicLabel: e.name, finishedAt: e.date + 'T12:00:00Z',
       pctScore: pct(e.score, e.total), avg: e.avg, rank: e.rank, rankOf: e.rankOf, builtIn: true, score: e.score, total: e.total })),
     ...store.getResults().filter(r => r.mode === 'exam').map(r => ({ ...r, pctScore: pct(r.score, r.total) })),
   ].sort((a, b) => b.finishedAt.localeCompare(a.finishedAt));

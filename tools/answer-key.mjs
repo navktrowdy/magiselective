@@ -1,7 +1,7 @@
 // Independent answer key for the hand-written Maths questions.
-// Each answer is RE-COMPUTED here (separately from js/data/maths.js) and compared with the marked option.
+// Each answer is RE-COMPUTED here (separately from the pack's maths.js) and compared with the marked option.
 // Run: node tools/answer-key.mjs   (exits with an error if any answer disagrees)
-import maths from '../js/data/maths.js';
+import maths from '../js/packs/nsw-selective/content/maths.js';
 
 const gcd = (a, b) => (b ? gcd(b, a % b) : a);
 const KEY = {

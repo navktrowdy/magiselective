@@ -1,4 +1,4 @@
-// Writing guide adapted from Magizhini's tutor's writing notes (paraphrased; examples written for this app).
+// Writing guide adapted from a tutor's writing notes (paraphrased; examples written for this app).
 
 export const TEST_FACTS = [
   'One prompt, 30 minutes. You only find out the style (persuasive, narrative, diary…) when you open the test, so practise every style.',

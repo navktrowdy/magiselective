@@ -1,14 +1,6 @@
-// Checks the question banks for structural mistakes. Run: node tools/validate.mjs
-import maths from '../js/data/maths.js';
-import thinking1 from '../js/data/thinking.js';
-import thinking2 from '../js/data/thinking2.js';
-const thinking = [...thinking1, ...thinking2];
-import reading1 from '../js/data/reading.js';
-import reading2 from '../js/data/reading2.js';
-const reading = [...reading1, ...reading2];
-import writing, { RUBRIC } from '../js/data/writing.js';
-import concepts from '../js/data/concepts.js';
-import { TOPIC_STRANDS, SUBJECTS } from '../js/data/config.js';
+// Checks the question banks of every exam pack for structural mistakes. Run: node tools/validate.mjs
+import { PACK, SUBJECTS, TOPIC_STRANDS, RUBRIC, BANKS, WRITING_TASKS as writing, CONCEPTS as concepts } from '../js/pack.js';
+const { maths, thinking, reading } = BANKS;
 import { balance } from '../js/balance.js';
 
 let errors = 0;
@@ -44,5 +36,17 @@ console.log(`Reading: ${reading.length} texts, ${rq.length} questions`, count(rq
 const rb = reading.flatMap(p => balance(p.questions));
 console.log('Answer spread shown to student → maths', dist(balance(maths)), '· thinking', dist(balance(thinking)), '· reading', dist(rb));
 console.log(`Writing: ${writing.length} prompts`);
+
+// ---- structure rules (keep the engine independent of any one exam or family) ----
+import { readFileSync, readdirSync } from 'node:fs';
+for (const f of ['id', 'name', 'shortName', 'region', 'student', 'defaultExamDate', 'sections', 'sectionOrder', 'taxonomy', 'reading', 'writing', 'concepts', 'banks', 'generators']) if (!PACK[f]) err(`pack ${PACK.id}: missing "${f}"`);
+for (const k of PACK.sectionOrder) if (!PACK.sections[k]?.mock) err(`pack ${PACK.id}: section "${k}" has no mock format`);
+const engine = [...readdirSync('js').filter(f => f.endsWith('.js')).map(f => `js/${f}`), ...readdirSync('js/gen').map(f => `js/gen/${f}`)];
+for (const f of engine) {
+  const src = readFileSync(f, 'utf8');
+  if (f !== 'js/pack.js' && /from '\.\.?\/(\.\.\/)?packs\//.test(src)) err(`${f}: imports a pack directly. Use js/pack.js so other exams can plug in.`);
+  if (/\bNSW\b|Selective/.test(src.replace(/\/\/.*$/gm, '')) && f !== 'js/pack.js') err(`${f}: names a specific exam. Use PACK.name / PACK.shortName.`);
+  if (/India trip|Tamil|Boxing|Tuition/.test(src)) err(`${f}: contains family details. They belong in data/family.json.`);
+}
 if (errors) { console.error(`\n${errors} problem(s) found`); process.exit(1); }
 console.log('\n✔ Question banks look good');

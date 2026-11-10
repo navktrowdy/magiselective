@@ -1,7 +1,7 @@
 // Holidays / breaks (e.g. the family trip to India). Stored in the synced Potalien profile.
 // During a break: no study is planned, streaks are protected and the Potalien goes on holiday too.
 import * as store from './store.js';
-import { BREAKS } from './data/config.js';
+import { BREAKS } from './family.js';
 
 const localDate = (d = new Date()) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 export const today = () => localDate();

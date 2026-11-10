@@ -1,8 +1,8 @@
-import { SUBJECTS, SUBJECT_ORDER, BASELINE, CS_EXAMS, ROUTINE, THEMES, WRITING_RECURRING } from './data/config.js';
+import { THEMES } from './data/config.js';
+import { PACK, SUBJECTS, SUBJECT_ORDER, CONCEPTS, RUBRIC, RUBRIC_TOTAL, TIPS, WRITING_GUIDE } from './pack.js';
+import { BASELINE, EXTERNAL_TESTS, ROUTINE, WRITING_RECURRING, PLAN_NOTE, REST_NOTE, BREAK_NAME } from './family.js';
 import { activeBreak, nextBreak, lastEndedBreak, breakEndWithRecovery, breakOn, studyDaysUntil, getBreaks, saveBreaks, addDays, daysBetween, today as todayLocal, fmtShort } from './breaks.js';
-import CONCEPTS from './data/concepts.js';
-import { RUBRIC, RUBRIC_TOTAL, TIPS } from './data/writing.js';
-import { TYPES as WTYPES, TYPE_FOR, TIME_PLAN, TECHNIQUES, VOCAB, VOCAB_TIP, TEST_FACTS } from './data/writingGuide.js';
+const { TYPES: WTYPES, TYPE_FOR, TIME_PLAN, TECHNIQUES, VOCAB, VOCAB_TIP, TEST_FACTS } = WRITING_GUIDE;
 import * as store from './store.js';
 import {
   buildTest, getQuestion, passages, writingTasks, letter, scoreItems, topicMastery, weakTopics,
@@ -68,7 +68,7 @@ function daysToExam() {
 }
 
 function phaseFor(days) {
-  // Phases follow STUDY days left (holidays like the India trip don't count).
+  // Phases follow STUDY days left (holidays don't count).
   const sd = studyDaysUntil(store.getSettings().examDate);
   if (days <= 0) return { name: 'Exam done', desc: 'Well done! Update the exam date in Settings if needed.' };
   if (sd > 95) return { name: 'Foundation', desc: 'Learn the concepts: short untimed practice on weak topics during the week, mini mocks on Sundays.' };
@@ -86,7 +86,7 @@ function weeklyPlan(days) {
   const P = (s, topic, label, m) => ({ subject: s, label, mins: m, href: `#/practice/${s}${topic ? `?topic=${encodeURIComponent(topic)}` : ''}` });
   const T = (s, mode, label, m) => ({ subject: s, label, mins: m, href: `#/test/${s}/${mode}` });
   const W = { subject: 'writing', label: 'Writing task + self-mark', mins: 30, href: '#/writing' };
-  const REST_CS = [{ subject: 'rest', label: 'No app today. Tuition counts! 💪', mins: 0, href: '#/pet' }];
+  const REST_CS = [{ subject: 'rest', label: REST_NOTE, mins: 0, href: '#/pet' }];
   let plan;
   const ended = lastEndedBreak();
   const backWeek = ended && daysBetween(ended.end, todayLocal()) <= 8;
@@ -184,7 +184,7 @@ function dashboard() {
     <section class="hero">
       <div>
         <h1>Hi ${esc(s.nickname)} 👽🥔</h1>
-        <p>${days > 0 ? `<b>${days}</b> days until the Selective test (${fmtDate(s.examDate)})${studyDays < days ? ` · <b>${studyDays}</b> study days after holidays` : ''}` : 'Exam day has passed. Update the date in Settings.'}</p>
+        <p>${days > 0 ? `<b>${days}</b> days until the ${esc(PACK.shortName)} test (${fmtDate(s.examDate)})${studyDays < days ? ` · <b>${studyDays}</b> study days after holidays` : ''}` : 'Exam day has passed. Update the date in Settings.'}</p>
         <p class="phase"><b>${phase.name} phase:</b> ${phase.desc}</p>
       </div>
       <div class="countdown"><span>${Math.max(days, 0)}</span>days</div>
@@ -205,7 +205,7 @@ function dashboard() {
     <section class="grid4">${SUBJECT_ORDER.map(card).join('')}</section>
     <section class="card">
       <h2>📅 This week's plan <small class="muted">· about ${Math.round(plan.filter(([d]) => !breakOn(dateOf(d))).flatMap(([, t]) => t).reduce((a, t) => a + t.mins, 0) / 5) * 5} min of app time this week</small></h2>
-      <p class="muted">Fits around tuition, boxing and Tamil school. Skip a day if school homework is heavy; Potalien will understand 💛</p>
+      <p class="muted">${esc(PLAN_NOTE)}</p>
       <div class="plan">${plan.map(([d, tasks]) => breakOn(dateOf(d)) ? `<div class="day holidayday ${d === dow ? 'today' : ''}"><h4>${d}${d === dow ? ' · today' : ''}</h4><div class="busy">${breakOn(dateOf(d)).recovery ? '😴' : '🇮🇳'} ${esc(breakOn(dateOf(d)).name)}</div><span class="task">${breakOn(dateOf(d)).recovery ? 'Rest and beat the jet lag 😴' : 'Holiday: no study! 🥭'}</span></div>` : `<div class="day ${d === dow ? 'today' : ''} ${ROUTINE[d].mins ? '' : 'restday'}"><h4>${d}${d === dow ? ' · today' : ''}</h4>
         <div class="busy">${ROUTINE[d].icon} ${esc(ROUTINE[d].busy)}</div>${tasks.map(t =>
         `<a href="${t.href}" class="task">${d === dow && doneToday.has(t.subject) ? '✅ ' : ''}${esc(t.label)}${t.mins ? ` <small>· ${t.mins}m</small>` : ''}</a>`).join('')}
@@ -225,7 +225,7 @@ function progressChart(results) {
   const colors = { maths: '#1e88e5', thinking: '#8e24aa', reading: '#43a047', writing: '#fb8c00' };
   const series = SUBJECT_ORDER.map(subj => {
     const pts = [];
-    CS_EXAMS.filter(e => e.subject === subj).forEach(e => pts.push({ x: e.date, y: pct(e.score, e.total), label: e.name }));
+    EXTERNAL_TESTS.filter(e => e.subject === subj).forEach(e => pts.push({ x: e.date, y: pct(e.score, e.total), label: e.name }));
     results.filter(r => r.subject === subj && r.mode !== 'practice')
       .forEach(r => pts.push({ x: r.finishedAt.slice(0, 10), y: pct(r.score, r.total), label: MODE_LABEL[r.mode] }));
     return { name: subjName(subj), color: colors[subj], points: pts };
@@ -294,8 +294,8 @@ function testIntro(subj, mode) {
       <h1>${S.icon} ${S.name}: ${MODE_LABEL[mode]}</h1>
       <ul class="rules">
         <li>${subj === 'reading'
-          ? `<b>${mode === 'mock' ? '17 questions' : '2 texts'} (${f.note}) · ${qids.length} marks · ${f.minutes} minutes</b>${mode === 'mock' ? ' (same format as the real NSW Selective test)' : ''}`
-          : `<b>${qids.length} questions · ${f.minutes} minutes</b>${mode === 'mock' && qids.length === f.questions ? ' (same as the real NSW Selective test)' : ''}`}</li>
+          ? `<b>${mode === 'mock' ? `${f.questions} questions` : '2 texts'} (${f.note}) · ${qids.length} marks · ${f.minutes} minutes</b>${mode === 'mock' ? ` (same format as the real ${esc(PACK.name)})` : ''}`
+          : `<b>${qids.length} questions · ${f.minutes} minutes</b>${mode === 'mock' && qids.length === f.questions ? ` (same as the real ${esc(PACK.name)})` : ''}`}</li>
         <li>Covers every category: ${S.strands.join(', ')}${subj === 'reading' && mode === 'mini' ? ' (a few text types each time)' : ''}.</li>
         <li>You can move between questions and <b>flag</b> ones to come back to.</li>
         <li>There is <b>no penalty for wrong answers</b>, so never leave a question blank. Guess if time is running out!</li>
@@ -638,13 +638,13 @@ function writingGuideView() {
 }
 
 function coachCard() {
-  const cs = [...CS_EXAMS].filter(e => e.subject === 'writing').pop();
+  const cs = [...EXTERNAL_TESTS].filter(e => e.subject === 'writing').pop();
   if (!cs) return '';
   return `<div class="card coach"><h2>🧑‍🏫 Coach notes from ${esc(cs.name)}: ${cs.score}/${cs.total}</h2>
     <p class="muted">Your tutor's advice. Tick these off in every piece of writing.</p>
     <ul class="checklist">${cs.feedback.map(f => `<li>☐ ${esc(f)}</li>`).join('')}</ul>
-    <h3>🔁 Recurring advice across all ${CS_EXAMS.filter(e => e.subject === 'writing').length} external writing reports</h3>
-    <ul class="checklist">${WRITING_RECURRING.map(r => `<li>☐ ${esc(r.text)} <span class="chip">${r.count} of ${CS_EXAMS.filter(e => e.subject === 'writing').length}</span></li>`).join('')}</ul>
+    <h3>🔁 Recurring advice across all ${EXTERNAL_TESTS.filter(e => e.subject === 'writing').length} external writing reports</h3>
+    <ul class="checklist">${WRITING_RECURRING.map(r => `<li>☐ ${esc(r.text)} <span class="chip">${r.count} of ${EXTERNAL_TESTS.filter(e => e.subject === 'writing').length}</span></li>`).join('')}</ul>
     <table class="tbl">${RUBRIC.map(c => `<tr><td>${esc(c.name)}</td><td>${cs.rubric[c.key]}/${c.max}</td><td>${bar(pct(cs.rubric[c.key], c.max), pct(cs.rubric[c.key], c.max) < 60 ? 'bad' : pct(cs.rubric[c.key], c.max) < 80 ? 'mid' : 'good')}</td></tr>`).join('')}</table></div>`;
 }
 
@@ -837,11 +837,11 @@ function settingsView() {
       <h2>✈️ Holidays and breaks</h2>
       <p class="muted">No study is planned on these days, the 🔥 streak is protected and the Potalien goes on holiday too.</p>
       <ul class="breaklist">${getBreaks().map((b, i) => `<li><b>${esc(b.name)}</b>: ${fmtShort(b.start)} → ${fmtShort(b.end)} (${daysBetween(b.start, b.end) + 1} days) ${b.builtIn ? '<span class="chip">built in</span>' : `<button class="btn small" data-delbreak="${i}">Remove</button>`}</li>`).join('') || '<li class="muted">No breaks added yet.</li>'}</ul>
-      <div class="row3"><label>Name<input id="bname" value="India trip"></label><label>First day<input id="bstart" type="date"></label><label>Last day<input id="bend" type="date"></label></div>
+      <div class="row3"><label>Name<input id="bname" value="${esc(BREAK_NAME)}"></label><label>First day<input id="bstart" type="date"></label><label>Last day<input id="bend" type="date"></label></div>
       <div class="btns"><button class="btn" id="addbreak">Add break</button></div>
       <h2>👤 About</h2>
       <label>Nickname (shown in the app and saved with results; avoid full names because the repo is public)<input id="nick" value="${esc(s.nickname)}"></label>
-      <label>Selective test date<input id="exam" type="date" value="${esc(s.examDate)}"></label>
+      <label>${esc(PACK.shortName)} test date<input id="exam" type="date" value="${esc(s.examDate)}"></label>
       <label>Parent emails (for the 📧 Email us button; separate with commas; stored only in this browser)<input id="pemails" type="text" placeholder="you@example.com, partner@example.com" value="${esc(s.parentEmails || '')}"></label>
       <h2>Save results to GitHub</h2>
       <p class="muted">Results are saved as files in <code>${esc(s.github.path)}/</code> of the repository, so progress follows ${esc(s.nickname)} to any computer. Set this up once on each computer.</p>
