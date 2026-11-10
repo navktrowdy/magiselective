@@ -1,0 +1,152 @@
+{
+  "id": "2026-11-10T10-45-05-454Z-reading-mini",
+  "subject": "reading",
+  "mode": "mini",
+  "topicLabel": "",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-10T10:45:05.455Z",
+  "finishedAt": "2026-11-10T10:50:57.650Z",
+  "durationSec": 352,
+  "limitSec": 1200,
+  "timeUp": false,
+  "score": 10,
+  "total": 12,
+  "byStrand": {
+    "Narrative": {
+      "correct": 6,
+      "total": 6
+    },
+    "Comparing Texts": {
+      "correct": 4,
+      "total": 6
+    }
+  },
+  "byTopic": {
+    "Character and Theme": {
+      "correct": 3,
+      "total": 3
+    },
+    "Figurative Language": {
+      "correct": 1,
+      "total": 1
+    },
+    "Inference": {
+      "correct": 2,
+      "total": 2
+    },
+    "Comparing Texts": {
+      "correct": 4,
+      "total": 6
+    }
+  },
+  "items": [
+    {
+      "qid": "r10q1",
+      "topic": "Character and Theme",
+      "strand": "Narrative",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 185,
+      "flagged": false
+    },
+    {
+      "qid": "r10q2",
+      "topic": "Figurative Language",
+      "strand": "Narrative",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 9,
+      "flagged": false
+    },
+    {
+      "qid": "r10q3",
+      "topic": "Inference",
+      "strand": "Narrative",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "r10q4",
+      "topic": "Inference",
+      "strand": "Narrative",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 11,
+      "flagged": false
+    },
+    {
+      "qid": "r10q5",
+      "topic": "Character and Theme",
+      "strand": "Narrative",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "r10q6",
+      "topic": "Character and Theme",
+      "strand": "Narrative",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "r6q1",
+      "topic": "Comparing Texts",
+      "strand": "Comparing Texts",
+      "chosen": 0,
+      "correct": false,
+      "timeSec": 89,
+      "flagged": false
+    },
+    {
+      "qid": "r6q2",
+      "topic": "Comparing Texts",
+      "strand": "Comparing Texts",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 12,
+      "flagged": false
+    },
+    {
+      "qid": "r6q3",
+      "topic": "Comparing Texts",
+      "strand": "Comparing Texts",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "r6q4",
+      "topic": "Comparing Texts",
+      "strand": "Comparing Texts",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "r6q5",
+      "topic": "Comparing Texts",
+      "strand": "Comparing Texts",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "r6q6",
+      "topic": "Comparing Texts",
+      "strand": "Comparing Texts",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 6,
+      "flagged": false
+    }
+  ]
+}
