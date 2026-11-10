@@ -1,0 +1,118 @@
+{
+  "id": "2026-11-10T10-27-07-842Z-thinking-practice",
+  "subject": "thinking",
+  "mode": "practice",
+  "topicLabel": "Identifying Inferences and Assumptions",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-10T10:27:07.842Z",
+  "finishedAt": "2026-11-10T10:30:09.442Z",
+  "durationSec": 182,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 10,
+  "total": 10,
+  "byStrand": {
+    "Critical Thinking": {
+      "correct": 10,
+      "total": 10
+    }
+  },
+  "byTopic": {
+    "Identifying Inferences and Assumptions": {
+      "correct": 10,
+      "total": 10
+    }
+  },
+  "items": [
+    {
+      "qid": "t71",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 14,
+      "flagged": false
+    },
+    {
+      "qid": "t06",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 12,
+      "flagged": false
+    },
+    {
+      "qid": "t70",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 24,
+      "flagged": false
+    },
+    {
+      "qid": "t105",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 11,
+      "flagged": false
+    },
+    {
+      "qid": "t108",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 9,
+      "flagged": false
+    },
+    {
+      "qid": "t07",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 32,
+      "flagged": false
+    },
+    {
+      "qid": "t107",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 14,
+      "flagged": false
+    },
+    {
+      "qid": "t10",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 27,
+      "flagged": false
+    },
+    {
+      "qid": "t09",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 14,
+      "flagged": false
+    },
+    {
+      "qid": "t106",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 24,
+      "flagged": false
+    }
+  ]
+}
