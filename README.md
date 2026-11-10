@@ -30,7 +30,7 @@ Test formats follow the [NSW Department of Education](https://education.nsw.gov.
 - **Writing:** 15 tasks across narrative, persuasive, speech, newspaper report, diary, letter, recount, explanation, guide, advice sheet, descriptive and discussion, each with a model answer. A built-in **writing guide** (adapted from her tutor's notes) covers every style's structure, improvements, mistakes and checklist, plus language techniques and vocabulary. The writing timer shows the 30-minute plan (plan → write → proofread → check).
 
 ### Weekly plan
-The plan fits around Magizhini's routine (tuition Wed/Thu, boxing Fri, Tamil school Sat afternoon). That's about 2¼ hours of app time a week, with no app work on tuition days. Planned rest days never break the 🔥 streak. To change the routine, edit `ROUTINE` in `js/data/config.js`.
+The plan fits around the family's weekly routine, with no app work on the busiest days. Planned rest days never break the 🔥 streak. To change the routine, edit `routine` in `data/family.json`.
 
 ## One-time setup (parent)
 
@@ -48,7 +48,7 @@ Each finished test is committed as a file in `data/results/`, and the pet's prof
 
 ## Adding more questions
 
-Questions live in `js/data/` (`maths.js`, `thinking.js`, `reading.js`, `writing.js`), and the concept notes are in `concepts.js`. After editing, run:
+Questions live in the exam pack, `js/packs/nsw-selective/content/` (`maths.js`, `thinking.js`, `reading.js`, `writing.js`), with the concept notes in `concepts.js`. Family data (external test results, routine, breaks) is in `data/family.json`. See `docs/ARCHITECTURE.md` for how the engine, exam packs and family data fit together. After editing, run:
 
 ```bash
 node tools/validate.mjs     # checks the hand-written banks
@@ -65,7 +65,7 @@ With a Claude API key in ⚙️ Settings (stored only in that browser), a finish
 
 ### 🚩 Reported questions
 
-If a question ever looks wrong, Magizhini can press **🚩 Something looks wrong with this question** (after checking an answer in practice, or in a test's review). It is taken out of every future test at once (for a generated question, the whole question type is paused) and listed on the 👪 Parent page and in the weekly email, with her note. Press **It's fine, bring it back** if it was OK, or get it fixed first. To run the app locally, use `python3 -m http.server` and open http://localhost:8000.
+If a question ever looks wrong, she can press **🚩 Something looks wrong with this question** (after checking an answer in practice, or in a test's review). It is taken out of every future test at once (for a generated question, the whole question type is paused) and listed on the 👪 Parent page and in the weekly email, with her note. Press **It's fine, bring it back** if it was OK, or get it fixed first. To run the app locally, use `python3 -m http.server` and open http://localhost:8000.
 
 ## Weekly summary email (parents)
 

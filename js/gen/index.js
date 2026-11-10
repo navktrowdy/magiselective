@@ -1,12 +1,9 @@
 // Registry for generated questions. ID format: g:<subject>:<key>:<seed>
 import { rng } from './util.js';
-import mathsGen from './mathsGen.js';
-import thinkingGen from './thinkingGen.js';
-import anglesGen from './anglesGen.js';
-import spaceGen from './spaceGen.js';
+import { GENERATORS } from '../pack.js';
 
 export const SEEDS = 6; // versions of each generator that appear in the question pools
-const GENS = { maths: [...mathsGen, ...anglesGen, ...spaceGen], thinking: thinkingGen };
+const GENS = GENERATORS; // which generators apply is decided by the active exam pack
 const hash = s => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 
 export function generate(subject, key, seed) {

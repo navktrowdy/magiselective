@@ -1,6 +1,6 @@
 // Parent summary: progress, habits, trends and suggested actions on one printable page.
-import { SUBJECTS, BASELINE, CS_EXAMS, ROUTINE } from './data/config.js';
-import { RUBRIC, RUBRIC_TOTAL } from './data/writing.js';
+import { PACK, SUBJECTS, RUBRIC, RUBRIC_TOTAL } from './pack.js';
+import { BASELINE, EXTERNAL_TESTS, ROUTINE, WEEKLY_MINUTES } from './family.js';
 import * as store from './store.js';
 import { topicMastery, topicsFor, mistakesCount, unreportQuestion } from './bank.js';
 import { computeProgress } from './pet.js';
@@ -47,7 +47,7 @@ export function parentView() {
           ${row('Time spent', s0.minutes, s1.minutes, ' min')}
           ${row('Accuracy', s0.acc, s1.acc, '%')}
         </tbody></table>
-        <p class="muted">The plan targets about 2¼ hours a week. Tuition days and holidays don't count as planned days.</p></div>
+        <p class="muted">The plan targets about ${Math.round(WEEKLY_MINUTES / 6) / 10} hours a week. Rest days and holidays don't count as planned days.</p></div>
       <div class="card"><h2>🗓 Last 8 weeks</h2>
         <div class="heat"><div class="hmlabels">${['Mon', '', 'Wed', '', 'Fri', '', 'Sun'].map(x => `<span>${x}</span>`).join('')}</div>${cells}</div>
         <div class="legend hmlegend"><span><i class="l3"></i>30+ min</span><span><i class="l2"></i>15–30</span><span><i class="l1"></i>&lt;15</span><span><i class="miss"></i>planned, missed</span><span><i class="rest"></i>rest/tuition day</span><span><i class="brk"></i>holiday</span></div></div>
@@ -85,7 +85,7 @@ export function parentView() {
     ${trialCard()}
     <div class="card"><h2>🏆 External test history</h2>
       <table class="tbl"><thead><tr><th>Date</th><th>Exam</th><th>Subject</th><th>Score</th><th>Class avg</th><th>Rank</th></tr></thead><tbody>
-      ${[...CS_EXAMS, ...all.filter(r => r.mode === 'exam').map(r => ({ date: localDay(r.finishedAt), name: r.topicLabel, subject: r.subject, score: r.score, total: r.total, avg: r.avg, rank: r.rank, rankOf: r.rankOf }))]
+      ${[...EXTERNAL_TESTS, ...all.filter(r => r.mode === 'exam').map(r => ({ date: localDay(r.finishedAt), name: r.topicLabel, subject: r.subject, score: r.score, total: r.total, avg: r.avg, rank: r.rank, rankOf: r.rankOf }))]
         .sort((a, b) => b.date.localeCompare(a.date)).map(e => `<tr><td>${fmtShort(e.date)}</td><td>${esc(e.name)}</td><td>${SUBJECTS[e.subject].icon} ${name(e.subject)}</td>
         <td><b>${e.score}/${e.total}</b> <span class="pct ${lvl(pct(e.score, e.total))}">${pct(e.score, e.total)}%</span></td><td>${e.avg ? Math.round(e.avg) + '%' : '–'}</td><td>${e.rank ? `${e.rank}/${e.rankOf}` : '–'}</td></tr>`).join('')}
       </tbody></table><p class="muted noprint">Add new external test results on the <a href="#/exams">Exams</a> page.</p></div>
@@ -96,7 +96,7 @@ export function parentView() {
   document.getElementById('email').onclick = () => {
     const to = (store.getSettings().parentEmails || '').trim();
     if (!to) { toast('Add your email addresses in ⚙️ Settings → Parent emails first.', 'warn'); location.hash = '#/settings'; return; }
-    const subject = `${s.nickname}'s Selective prep summary – ${fmtShort(t)}`;
+    const subject = `${s.nickname}'s ${PACK.shortName} prep summary – ${fmtShort(t)}`;
     const body = `${summaryText()}\n\nSuggested actions:\n${tips.map(x => '• ' + x.replace(/<[^>]+>/g, '')).join('\n')}\n\nFull page: ${location.origin}${location.pathname}#/parent`;
     location.href = `mailto:${encodeURIComponent(to).replace(/%2C/g, ',').replace(/%40/g, '@')}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
