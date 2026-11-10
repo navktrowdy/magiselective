@@ -1,0 +1,55 @@
+{
+  "id": "2026-11-06T12-51-50-344Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Whole Numbers",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-06T12:51:50.344Z",
+  "finishedAt": "2026-11-06T12:54:07.586Z",
+  "durationSec": 137,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 2,
+  "total": 3,
+  "byStrand": {
+    "Number and Algebra": {
+      "correct": 2,
+      "total": 3
+    }
+  },
+  "byTopic": {
+    "Whole Numbers": {
+      "correct": 2,
+      "total": 3
+    }
+  },
+  "items": [
+    {
+      "qid": "m01",
+      "topic": "Whole Numbers",
+      "strand": "Number and Algebra",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 49,
+      "flagged": false
+    },
+    {
+      "qid": "m03",
+      "topic": "Whole Numbers",
+      "strand": "Number and Algebra",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 50,
+      "flagged": false
+    },
+    {
+      "qid": "m02",
+      "topic": "Whole Numbers",
+      "strand": "Number and Algebra",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 38,
+      "flagged": false
+    }
+  ]
+}
