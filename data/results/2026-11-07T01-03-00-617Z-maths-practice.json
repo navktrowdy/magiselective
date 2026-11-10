@@ -1,0 +1,63 @@
+{
+  "id": "2026-11-07T01-03-00-617Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-07T01:03:00.617Z",
+  "finishedAt": "2026-11-07T01:04:26.275Z",
+  "durationSec": 86,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 2,
+  "total": 3,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 1,
+      "total": 2
+    },
+    "Number and Algebra": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "2D Space": {
+      "correct": 1,
+      "total": 2
+    },
+    "Whole Numbers": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "m48",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 9,
+      "flagged": false
+    },
+    {
+      "qid": "m02",
+      "topic": "Whole Numbers",
+      "strand": "Number and Algebra",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 15,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:polygon:4",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 62,
+      "flagged": false
+    }
+  ]
+}
