@@ -1,0 +1,37 @@
+{
+  "id": "2026-11-07T01-04-33-320Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-07T01:04:33.320Z",
+  "finishedAt": "2026-11-07T01:04:41.277Z",
+  "durationSec": 8,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 1,
+  "total": 1,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "2D Space": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:polygon:4",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 8,
+      "flagged": false
+    }
+  ]
+}
