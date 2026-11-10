@@ -1,0 +1,24 @@
+{
+  "owned": [],
+  "spent": 0,
+  "seenBadges": [
+    "liftoff",
+    "explorer",
+    "q100",
+    "perfect",
+    "mission",
+    "noblanks",
+    "skillstar",
+    "abovecrowd"
+  ],
+  "seenStage": 1,
+  "pet": {
+    "equipped": {
+      "bg": "moon"
+    },
+    "species": "spudnik",
+    "name": "King Chips 👑🍟"
+  },
+  "updatedAt": "2026-11-10T10:50:57.666Z",
+  "theme": "cosmic"
+}
