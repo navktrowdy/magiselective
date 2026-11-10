@@ -111,7 +111,46 @@ const S = {
     if (/What type/.test(q)) return a === 90 ? 'Right' : a === 180 ? 'Straight' : a < 90 ? 'Acute' : a < 180 ? 'Obtuse' : 'Reflex';
     return ['near', a]; },
   angIsoExt: (q, o, h) => { const e = degs(h)[0]; return 180 - 2 * (180 - e); },
+  // ---- 2D/3D space & perimeter/area (spaceGen) ----
+  cubeSee: q => { const n = +q.match(/\((\d+) × /)[1]; const table = /glued to a table/.test(q); let hid = 0;
+    for (let x = 0; x < n; x++) for (let y = 0; y < n; y++) for (let z = 0; z < n; z++) { // z = 0 is the bottom layer
+      const seen = x === 0 || x === n - 1 || y === 0 || y === n - 1 || z === n - 1 || (!table && z === 0); if (!seen) hid++; }
+    return hid; },
+  cuboidPaint: q => { const m = q.match(/block (\d+) × (\d+) × (\d+)/); const [a, b, c] = [+m[1], +m[2], +m[3]]; const want = q.match(/paint on (no faces|exactly one face|exactly two faces|one face or no faces)/)[1]; let k = 0;
+    for (let x = 0; x < a; x++) for (let y = 0; y < b; y++) for (let z = 0; z < c; z++) { const f = (x === 0) + (x === a - 1) + (y === 0) + (y === b - 1) + (z === 0) + (z === c - 1);
+      if ({ 'no faces': f === 0, 'exactly one face': f === 1, 'exactly two faces': f === 2, 'one face or no faces': f <= 1 }[want]) k++; }
+    return k; },
+  netSolid: q => { const cnt = {}; for (const m of q.match(/exactly (.*?) \(all/)[1].matchAll(/(\d+) (triangle|square|pentagon|hexagon|rectangle)s?/g)) cnt[m[2]] = +m[1];
+    const sides = { triangle: 3, square: 4, pentagon: 5, hexagon: 6 }, adj = { 3: 'Triangular', 4: 'Square', 5: 'Pentagonal', 6: 'Hexagonal' }; const ks = Object.keys(cnt);
+    if (ks.length === 1 && cnt.square === 6) return 'Cube';
+    if (ks.length === 1 && cnt.triangle === 4) return 'Triangular pyramid';
+    const base = ks.find(k => k !== 'rectangle' && k !== 'triangle') || 'triangle';
+    if (cnt[base] === 2 && cnt.rectangle === sides[base]) return base === 'square' ? 'Rectangular prism' : `${adj[sides[base]]} prism`;
+    if (cnt[base] === 1 && cnt.triangle === sides[base]) return `${adj[sides[base]]} pyramid`; },
+  cubeNet: (q, o) => { const folds = svg => { const cells = [...svg.matchAll(/class="cell" x="(\d+)" y="(\d+)"/g)].map(m => [m[1] / 22, m[2] / 22]);
+      // roll a die across the net: state = [down, up, north, south, east, west]
+      const at = new Map([[cells[0].join(), ['D', 'U', 'N', 'S', 'E', 'W']]]); const todo = [cells[0]];
+      const roll = (st, dx, dy) => { const [d, u, n, s, e, w] = st; if (dx === 1) return [e, w, n, s, u, d]; if (dx === -1) return [w, e, n, s, d, u]; if (dy === 1) return [s, n, d, u, e, w]; return [n, s, u, d, e, w]; };
+      while (todo.length) { const [x, y] = todo.pop(); for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const k = [x + dx, y + dy].join(); if (!at.has(k) && cells.some(c => c.join() === k)) { at.set(k, roll(at.get([x, y].join()), dx, dy)); todo.push([x + dx, y + dy]); } } }
+      return cells.length === 6 && new Set([...at.values()].map(st => st[0])).size === 6; };
+    const ok = o.map(folds); const want = !/will not make/.test(q); const hits = o.filter((_, i) => ok[i] === want); return hits.length === 1 ? ['eq', hits[0]] : ['eq', 'AMBIGUOUS']; },
+  foldPunch: (q, o, h) => { const S = 22, G = 4; const two = /again from bottom to top/.test(q);
+    const punches = [...h.matchAll(/class="punch" cx="([\d.]+)" cy="([\d.]+)"/g)].map(m => [(m[1] - S / 2) / S, (m[2] - S / 2) / S]);
+    let holes = punches.map(p => p.join()); const mir = (list, f) => [...new Set([...list, ...list.map(s => f(s.split(',').map(Number)).join())])];
+    if (two) holes = mir(holes, ([x, y]) => [x, G - 1 - y]); // undo the last fold first
+    holes = mir(holes, ([x, y]) => [G - 1 - x, y]); const want = holes.sort().join(' ');
+    const hits = o.filter(svg => [...svg.matchAll(/class="hole" cx="([\d.]+)" cy="([\d.]+)"/g)].map(m => [(m[1] - S / 2) / S, (m[2] - S / 2) / S].join()).sort().join(' ') === want);
+    return hits.length === 1 ? ['eq', hits[0]] : ['eq', 'AMBIGUOUS']; },
+  symFill: (q, o, h) => { const S = 20; const mx = +h.match(/class="mirror" x1="([\d.]+)"/)[1] / S; const t = new Set([...h.matchAll(/class="tile" x="(\d+)" y="(\d+)"/g)].map(m => `${m[1] / S},${m[2] / S}`));
+    return [...t].filter(c => { const [x, y] = c.split(',').map(Number); return !t.has(`${2 * mx - 1 - x},${y}`); }).length; },
+  sqCut: q => { const m = q.match(/perimeter of (\d+) cm\. It is cut into (\d+) equal/); const P = +m[1], n = +m[2], k = Math.round(Math.sqrt(n)), s = P / 4 / k;
+    return /perimeter of one small/.test(q) ? 4 * s : /total perimeter of all the small squares added/.test(q) ? n * 4 * s : n * 4 * s - P; },
+  rectSquares: (q, o, h) => { const P = +q.match(/perimeter of (\d+) m/)[1]; const m = h.match(/<rect x="0" y="0" width="(\d+)" height="(\d+)" fill="none"/); const cc = m[1] / 30, rr = m[2] / 30; const s = P / (2 * (cc + rr)); const d = 4 * cc * rr * s - P;
+    return ['eq', d >= 0 ? `Larger by ${d} m` : `Smaller by ${-d} m`]; },
+  pinwheel: q => { const m = q.match(/(\d+) cm wide and has an area of (\d+) cm²/); const w = +m[1], L = +m[2] / w;
+    return /side length of the shaded/.test(q) ? L - w : /area of the shaded/.test(q) ? (L - w) ** 2 : (L + w) ** 2; },
 };
+
 
 let total = 0, bad = 0, skipped = new Set(); const fails = [];
 for (const subject of ['maths', 'thinking']) for (const g of generatorsFor(subject)) {
