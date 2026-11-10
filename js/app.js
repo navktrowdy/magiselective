@@ -467,6 +467,10 @@ async function finishSession(timeUp = false) {
     const q = getQuestion(id); const chosen = s.answers[id] ?? null;
     return { qid: id, topic: q.topic, strand: q.strand, chosen, correct: chosen === q.a, timeSec: Math.round(s.qTime[id] || 0), flagged: !!s.flags[id] };
   });
+  const answered = items.filter(i => i.chosen !== null).length;
+  if (!timeUp && answered <= 1 && Date.now() - s.startedAt < 120000) { // opened and closed straight away: don't count it
+    store.clearInProgress(); session = null; location.hash = '#/'; toast('Test closed before it really started, so it was not saved.'); return;
+  }
   const sc = scoreItems(items);
   const result = {
     id: s.id, subject: s.subject, mode: s.mode, topicLabel: s.topicLabel, nickname: store.getSettings().nickname,
@@ -900,4 +904,4 @@ window.addEventListener('beforeunload', (e) => { if (location.hash === '#/run' &
 route();
 // Pull results made on other devices in the background.
 applyTheme(store.getProfile()?.theme || localStorage.getItem('ms.theme') || 'sand');
-store.syncAll().then(r => { applyTheme(store.getProfile()?.theme || 'sand'); if (r.downloaded) { toast(`Loaded ${r.downloaded} result(s) from GitHub`, 'ok'); if (['', '#/', '#/history'].includes(location.hash)) route(); } }).catch(() => {});
+store.syncAll().then(r => { applyTheme(store.getProfile()?.theme || 'sand'); if (r.downloaded || r.removed) { if (r.downloaded) toast(`Loaded ${r.downloaded} result(s) from GitHub`, 'ok'); if (['', '#/', '#/history'].includes(location.hash)) route(); } }).catch(() => {});
