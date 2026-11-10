@@ -1,0 +1,205 @@
+{
+  "id": "2026-11-08T00-53-02-509Z-maths-mini",
+  "subject": "maths",
+  "mode": "mini",
+  "topicLabel": "",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-08T00:53:02.509Z",
+  "finishedAt": "2026-11-08T01:06:01.198Z",
+  "durationSec": 779,
+  "limitSec": 900,
+  "timeUp": false,
+  "score": 7,
+  "total": 13,
+  "byStrand": {
+    "Number and Algebra": {
+      "correct": 2,
+      "total": 3
+    },
+    "Statistics and Probability": {
+      "correct": 1,
+      "total": 2
+    },
+    "Measurement and Geometry": {
+      "correct": 4,
+      "total": 5
+    },
+    "Data Interpretation": {
+      "correct": 0,
+      "total": 2
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Whole Numbers": {
+      "correct": 1,
+      "total": 1
+    },
+    "Data": {
+      "correct": 0,
+      "total": 1
+    },
+    "Addition and Subtraction": {
+      "correct": 1,
+      "total": 1
+    },
+    "Angles": {
+      "correct": 1,
+      "total": 1
+    },
+    "Data Interpretation": {
+      "correct": 0,
+      "total": 2
+    },
+    "Area": {
+      "correct": 1,
+      "total": 1
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 1
+    },
+    "Probability": {
+      "correct": 1,
+      "total": 1
+    },
+    "Patterns": {
+      "correct": 0,
+      "total": 1
+    },
+    "Time": {
+      "correct": 1,
+      "total": 1
+    },
+    "Mass": {
+      "correct": 0,
+      "total": 1
+    },
+    "Volume and Capacity": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:round:3",
+      "topic": "Whole Numbers",
+      "strand": "Number and Algebra",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 16,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:median:2",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 15,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:change:2",
+      "topic": "Addition and Subtraction",
+      "strand": "Number and Algebra",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 65,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:pointline:4",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 39,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:bus:1",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 24,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lshape:1",
+      "topic": "Area",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 76,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:sumdiff:5",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 0,
+      "correct": false,
+      "timeSec": 106,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:spin:6",
+      "topic": "Probability",
+      "strand": "Statistics and Probability",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 28,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:match:4",
+      "topic": "Patterns",
+      "strand": "Number and Algebra",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 26,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:dayof:6",
+      "topic": "Time",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 63,
+      "flagged": false
+    },
+    {
+      "qid": "m73",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 8,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:tank:3",
+      "topic": "Volume and Capacity",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 258,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:pie:2",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 55,
+      "flagged": false
+    }
+  ]
+}
