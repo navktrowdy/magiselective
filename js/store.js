@@ -130,6 +130,7 @@ export const pendingCount = () => read(K_PENDING, []).length;
 export async function syncAll() {
   const { github } = getSettings();
   const report = { uploaded: 0, downloaded: 0, errors: [] };
+  const pendingAtStart = new Set(read(K_PENDING, [])); // just uploaded: GitHub's file list can lag behind
   if (syncConfigured()) {
     for (const id of read(K_PENDING, [])) {
       const r = getResult(id);
@@ -143,7 +144,13 @@ export async function syncAll() {
     if (res.status === 404) { await syncProfile(report); return report; } // no results folder yet
     if (!res.ok) throw new Error(`GitHub list failed (${res.status})`);
     const files = (await res.json()).filter(f => f.name.endsWith('.json'));
-    const have = new Set(read(K_RESULTS, []).map(r => r.id));
+    // A result deleted on GitHub (e.g. an empty attempt a parent removed) is removed here too,
+    // unless it is still waiting to be uploaded from this device.
+    const remote = new Set(files.map(f => f.name.replace(/\.json$/, '')));
+    const kept = read(K_RESULTS, []).filter(r => remote.has(r.id) || pendingAtStart.has(r.id));
+    report.removed = read(K_RESULTS, []).length - kept.length;
+    if (report.removed) write(K_RESULTS, kept);
+    const have = new Set(kept.map(r => r.id));
     for (const f of files) {
       const id = f.name.replace(/\.json$/, '');
       if (have.has(id)) continue;
