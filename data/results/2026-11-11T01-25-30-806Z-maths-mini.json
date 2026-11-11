@@ -1,0 +1,209 @@
+{
+  "id": "2026-11-11T01-25-30-806Z-maths-mini",
+  "subject": "maths",
+  "mode": "mini",
+  "topicLabel": "",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-11T01:25:30.807Z",
+  "finishedAt": "2026-11-11T01:30:59.782Z",
+  "durationSec": 329,
+  "limitSec": 900,
+  "timeUp": false,
+  "score": 7,
+  "total": 13,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 2,
+      "total": 6
+    },
+    "Number and Algebra": {
+      "correct": 2,
+      "total": 3
+    },
+    "Statistics and Probability": {
+      "correct": 2,
+      "total": 2
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 1
+    },
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Time": {
+      "correct": 1,
+      "total": 1
+    },
+    "Area": {
+      "correct": 1,
+      "total": 1
+    },
+    "Volume and Capacity": {
+      "correct": 0,
+      "total": 1
+    },
+    "2D Space": {
+      "correct": 0,
+      "total": 1
+    },
+    "Fractions": {
+      "correct": 1,
+      "total": 1
+    },
+    "Mass": {
+      "correct": 0,
+      "total": 1
+    },
+    "Probability": {
+      "correct": 1,
+      "total": 1
+    },
+    "Data": {
+      "correct": 1,
+      "total": 1
+    },
+    "Addition and Subtraction": {
+      "correct": 0,
+      "total": 1
+    },
+    "Decimals": {
+      "correct": 1,
+      "total": 1
+    },
+    "3D Space": {
+      "correct": 0,
+      "total": 1
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 1
+    },
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:endtime:3",
+      "topic": "Time",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 9,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:tri:4",
+      "topic": "Area",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 59,
+      "flagged": false
+    },
+    {
+      "qid": "m32",
+      "topic": "Volume and Capacity",
+      "strand": "Measurement and Geometry",
+      "chosen": 0,
+      "correct": false,
+      "timeSec": 29,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:coord:5",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 21,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:fracwhole:5",
+      "topic": "Fractions",
+      "strand": "Number and Algebra",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 23,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:mass:4",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:spin:2",
+      "topic": "Probability",
+      "strand": "Statistics and Probability",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 23,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:mean:3",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:missdig:3",
+      "topic": "Addition and Subtraction",
+      "strand": "Number and Algebra",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 3,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:decdiv:2",
+      "topic": "Decimals",
+      "strand": "Number and Algebra",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 68,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:paint:1",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:ages:1",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 9,
+      "flagged": false
+    },
+    {
+      "qid": "m67",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 69,
+      "flagged": false
+    }
+  ]
+}
