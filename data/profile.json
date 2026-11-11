@@ -1,6 +1,8 @@
 {
-  "owned": [],
-  "spent": 0,
+  "owned": [
+    "bowtie"
+  ],
+  "spent": 60,
   "seenBadges": [
     "liftoff",
     "explorer",
@@ -14,11 +16,12 @@
   "seenStage": 2,
   "pet": {
     "equipped": {
-      "bg": "moon"
+      "bg": "moon",
+      "neck": "bowtie"
     },
     "species": "spudnik",
     "name": "King Chips 👑🍟"
   },
-  "updatedAt": "2026-11-11T01:47:39.999Z",
+  "updatedAt": "2026-11-11T11:13:31.567Z",
   "theme": "cosmic"
 }
