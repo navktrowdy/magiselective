@@ -1,0 +1,199 @@
+{
+  "id": "2026-11-11T03-29-17-826Z-thinking-mini",
+  "subject": "thinking",
+  "mode": "mini",
+  "topicLabel": "",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-11T03:29:17.826Z",
+  "finishedAt": "2026-11-11T11:12:46.000Z",
+  "durationSec": 27808,
+  "limitSec": 900,
+  "timeUp": true,
+  "score": 0,
+  "total": 15,
+  "byStrand": {
+    "Problem Solving": {
+      "correct": 0,
+      "total": 10
+    },
+    "Critical Thinking": {
+      "correct": 0,
+      "total": 5
+    }
+  },
+  "byTopic": {
+    "Spatial Reasoning": {
+      "correct": 0,
+      "total": 3
+    },
+    "Identifying Similarities and Patterns": {
+      "correct": 0,
+      "total": 3
+    },
+    "Matching Arguments": {
+      "correct": 0,
+      "total": 1
+    },
+    "Relevant Selection": {
+      "correct": 0,
+      "total": 2
+    },
+    "Finding Procedures": {
+      "correct": 0,
+      "total": 2
+    },
+    "Detecting Reasoning Error": {
+      "correct": 0,
+      "total": 1
+    },
+    "Identifying Inferences and Assumptions": {
+      "correct": 0,
+      "total": 1
+    },
+    "Strengthening and Weakening": {
+      "correct": 0,
+      "total": 1
+    },
+    "Finding the Main Conclusion": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "t60",
+      "topic": "Spatial Reasoning",
+      "strand": "Problem Solving",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:thinking:oddone:1",
+      "topic": "Identifying Similarities and Patterns",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "t24",
+      "topic": "Matching Arguments",
+      "strand": "Critical Thinking",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "t62",
+      "topic": "Identifying Similarities and Patterns",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:thinking:recipe:4",
+      "topic": "Relevant Selection",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:thinking:lettergap:4",
+      "topic": "Identifying Similarities and Patterns",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "t41",
+      "topic": "Finding Procedures",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "t131",
+      "topic": "Detecting Reasoning Error",
+      "strand": "Critical Thinking",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "t08",
+      "topic": "Identifying Inferences and Assumptions",
+      "strand": "Critical Thinking",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:thinking:fold:6",
+      "topic": "Spatial Reasoning",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:thinking:fold:2",
+      "topic": "Spatial Reasoning",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "t16",
+      "topic": "Strengthening and Weakening",
+      "strand": "Critical Thinking",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "t05",
+      "topic": "Finding the Main Conclusion",
+      "strand": "Critical Thinking",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "t46",
+      "topic": "Relevant Selection",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    },
+    {
+      "qid": "g:thinking:swap:2",
+      "topic": "Finding Procedures",
+      "strand": "Problem Solving",
+      "chosen": null,
+      "correct": false,
+      "timeSec": 0,
+      "flagged": false
+    }
+  ]
+}
