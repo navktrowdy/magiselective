@@ -173,6 +173,38 @@ const S = {
     const three = (N - seen) / (k + 1); return /How many children have 2 pets/.test(q) ? k * three : three; },
   meanNew: q => { const [, n, m] = q.match(/(\d+) students sat a \w+ test and their average mark was (\d+)/); const m2 = +q.match(/rose to (\d+)/)[1]; return (+n + 1) * m2 - n * m; },
   kthRow: (q, o, h) => { const cells = rows(h); const vals = cells[1].slice(1).map(Number); const k = +q.match(/the (\d+)\w\w largest/)[1]; const v = [...vals].sort((a, b) => b - a)[k - 1]; return ['eq', `${cells[0][0]} ${vals.indexOf(v) + 1}`]; },
+  // ---- problemGen ----
+  repSub: (q, o) => { const k = +q.match(/keeps subtracting (\d+),/)[1]; const left = o.map(x => { let n = +x; while (n - k >= 0) n -= k; return n; }); const mx = Math.max(...left); return left.filter(v => v === mx).length === 1 ? ['eq', o[left.indexOf(mx)]] : ['eq', 'AMBIGUOUS']; },
+  primeRem: q => { const [, lo, hi] = q.match(/between (\d+) and (\d+)\./); const m = +q.match(/divided by (\d+)\./)[1]; const rs = new Set();
+    for (let n = +lo + 1; n < +hi; n++) { let p = n > 1; for (let d = 2; d < n; d++) if (n % d === 0) p = false; if (p) rs.add(n % m); } return ['eq', [...rs].sort((a, b) => a - b).join(', ')]; },
+  seqDigit: q => { const shown = q.match(/appears: (.*?), …/)[1].split(', '); const ok = [];
+    for (let c = 0; c <= 9; c++) { const v = shown.map(s => s.replaceAll('☺', String(c))); if (v.some(s => /^0\d/.test(s))) continue; const n = v.map(Number); const d = n[1] - n[0]; if (d > 0 && n.every((x, i) => i === 0 || x - n[i - 1] === d)) ok.push(c); } return ['unique', ok]; },
+  symEq: q => { const [, a, b] = q.match(/■ × ■ − (\d+) = (\d+)/); const [, c, d] = q.match(/\(■ × △\) ÷ (\d+) = (\d+)/); for (let s = 1; s < 100; s++) if (s * s - a === +b) return d * c / s; },
+  circlePat: (q, o, h) => { const L = labels(h).slice(0, 9); const c1 = L.slice(0, 3).map(Number), c2 = L.slice(3, 6).map(Number), t3 = +L[6], r3 = +L[8]; const preds = new Set();
+    const fams = []; for (let j = 0; j <= 12; j++) fams.push((x, y) => j * (x + y), (x, y) => x * y + j, (x, y) => x * y - j, (x, y) => x * j + y, (x, y) => y * j + x, (x, y) => x + y + j);
+    for (const f of fams) if (f(c1[0], c1[2]) === c1[1] && f(c2[0], c2[2]) === c2[1]) preds.add(f(t3, r3)); return ['unique', [...preds]]; },
+  priceRange: q => { const [a1, a2, c1, c2] = [...q.matchAll(/\$(\d+\.\d+)/g)].map(m => +m[1]); return Math.round((/greatest/.test(q) ? a2 - c1 : a1 - c2) * 100) / 100; },
+  fracChain: q => { const L = +q.match(/large holds (\d+)/)[1]; const [, n1, d1] = q.match(/regular holds (\d+)\/(\d+) of a large/); const [, n2, d2] = q.match(/small holds (\d+)\/(\d+) of a regular/); const R = L / d1 * n1; return /does a small hold/.test(q) ? R / d2 * n2 : R; },
+  unitChain: q => { const nums = [...q.matchAll(/• (\d+) \w+s equal 1/g)].map(m => +m[1]); const m = q.match(/1 \w+ is (half|one-third|one-quarter) of a/);
+    return m ? nums[0] * { half: 2, 'one-third': 3, 'one-quarter': 4 }[m[1]] * nums[1] : nums[0] * nums[1] * nums[2]; },
+  halfChain: q => { const T = +q.match(/sold (\d+) tickets from/)[1], F = +q.match(/On Thursday it sold (\d+)/)[1]; for (let w = 1; w < T; w++) if (4 * w + 2 * w + w + F === T) return /sold on Monday/.test(q) ? 4 * w : 2 * w; },
+  timesCmp: q => { const k = +q.match(/number is (\d+) times/)[1], m = +q.match(/is 1\/(\d+) of/)[1]; return ['eq', frac(k, m)]; },
+  bestBuy: q => { const [, p1, x1] = q.match(/pack of (\d+) cards for \$([\d.]+)/), cents = +q.match(/for (\d+) cents each/)[1], [, p2, x2] = [...q.matchAll(/pack of (\d+) cards for \$([\d.]+)/g)][1], B = Math.round(+q.match(/You have \$([\d.]+)/)[1] * 100);
+    const items = [[Math.round(x1 * 100), +p1], [cents, 1], [Math.round(x2 * 100), +p2]]; const best = Array(B + 1).fill(0);
+    for (let m = 1; m <= B; m++) for (const [c, n] of items) if (c <= m) best[m] = Math.max(best[m], best[m - c] + n); return best[B]; },
+  multRange: q => { const step = +q.match(/multiple of \$(\d+)/)[1], [, n1, X] = q.match(/Selling (\d+) of them earns less than \$(\d+)/), n2 = +q.match(/Selling (\d+) of them earns more than/)[1]; const ps = [];
+    for (let p = step; p <= X; p += step) if (n1 * p < X && n2 * p > X) ps.push(p); return ps[ps.length - 1] - ps[0]; },
+  ratioClass: q => { const N = +q.match(/class of (\d+) students/)[1], r1 = +q.match(/likes English, (\d+) students like Maths/)[1], r2 = +q.match(/Maths to Science is 1 : (\d+)/)[1];
+    for (let e = 1; e <= N; e++) { const m = r1 * e, s = r2 * m; if (e + m + s === N) { const w = q.match(/students liked (either Maths or Science|Maths|Science|English)\?/)[1]; return { 'either Maths or Science': m + s, Maths: m, Science: s, English: e }[w]; } } },
+  twoEq: q => { const lines = [...q.matchAll(/([★♥ ]+) = (\d+) points/g)].map(m => [[...m[1]].filter(c => c === '★').length, [...m[1]].filter(c => c === '♥').length, +m[2]]); const sols = [];
+    for (let s = 1; s < 40; s++) for (let hh = 1; hh < 40; hh++) if (lines.every(([a, b, t]) => a * s + b * hh === t)) sols.push(/one ★ and one ♥/.test(q) ? s + hh : /is one ★ worth/.test(q) ? s : hh); return ['unique', [...new Set(sols)]]; },
+  moneyBack: q => { const M = +q.match(/had \$(\d+)\./)[1], qq = +q.match(/spent 1\/(\d+) of that gift/)[1], L = +q.match(/which cost \$(\d+)/)[1]; return M - L * qq * 2; },
+  lineDist: q => { const order = q.match(/in this order: (.*?)\./)[1].split(', '); const [P, Q, R, S, T] = order; const PR = +q.match(new RegExp(`${P} lives (\\d+) m from ${R}`))[1], PT = +q.match(new RegExp(`and (\\d+) m from ${T}`))[1], k = +q.match(/lives (\d+) times as far from/)[1];
+    const QR = PR / (k + 1), posS = PR + QR; return PT - posS; },
+  compassWalk: q => { let x = 0, y = 0; for (const m of q.match(/walks (.*?)\. Where/)[1].matchAll(/(\d+) km (north|south|east|west)/g)) { const k = +m[1]; if (m[2] === 'north') y += k; if (m[2] === 'south') y -= k; if (m[2] === 'east') x += k; if (m[2] === 'west') x -= k; }
+    return ['eq', `${Math.abs(x)} km ${x > 0 ? 'east' : 'west'} and ${Math.abs(y)} km ${y > 0 ? 'north' : 'south'}`]; },
+  robotTurns: q => { const D = ['north', 'north-east', 'east', 'south-east', 'south', 'south-west', 'west', 'north-west']; let deg = D.indexOf(q.match(/is facing (\S+?)\. It makes/)[1]) * 45;
+    const cw = +q.match(/(\d+) quarter-turns clockwise/)[1], acw = +q.match(/(\d+) quarter-turns anticlockwise/)[1]; for (let i = 0; i < cw; i++) deg += 90; for (let i = 0; i < acw; i++) deg -= 90; return ['eq', D[((deg % 360) + 360) % 360 / 45]]; },
 };
 
 
