@@ -1,0 +1,264 @@
+{
+  "id": "2026-11-17T09-16-40-764Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-17T09:16:40.764Z",
+  "finishedAt": "2026-11-17T10:10:02.493Z",
+  "durationSec": 3202,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 5,
+  "total": 20,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 4,
+      "total": 13
+    },
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 3
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 2
+    },
+    "Statistics and Probability": {
+      "correct": 0,
+      "total": 1
+    },
+    "Number and Algebra": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "3D Space": {
+      "correct": 1,
+      "total": 5
+    },
+    "Length": {
+      "correct": 1,
+      "total": 2
+    },
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 3
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 2
+    },
+    "Mass": {
+      "correct": 1,
+      "total": 1
+    },
+    "Angles": {
+      "correct": 0,
+      "total": 2
+    },
+    "Perimeter": {
+      "correct": 0,
+      "total": 1
+    },
+    "Data": {
+      "correct": 0,
+      "total": 1
+    },
+    "Fractions": {
+      "correct": 0,
+      "total": 1
+    },
+    "2D Space": {
+      "correct": 0,
+      "total": 1
+    },
+    "Time": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:paint:1",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 11,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:posts:3",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 24,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:paint:2",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:paint:4",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 10,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:bus:2",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "m52",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "m65",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 1213,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:bus:4",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 0,
+      "correct": false,
+      "timeSec": 15,
+      "flagged": false
+    },
+    {
+      "qid": "m72",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 146,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:angExt:3",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 14,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:rectSquares:1",
+      "topic": "Perimeter",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:timesCmp:6",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:missingBars:5",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:angIsoExt:1",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:meanNew:4",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 3,
+      "flagged": false
+    },
+    {
+      "qid": "m13",
+      "topic": "Fractions",
+      "strand": "Number and Algebra",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 2,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:polygon:1",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 3,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:cubeSee:3",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 8,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lencmp:1",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:dayof:2",
+      "topic": "Time",
+      "strand": "Measurement and Geometry",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 35,
+      "flagged": false
+    }
+  ]
+}
