@@ -1,0 +1,150 @@
+{
+  "id": "2026-11-21T08-04-58-766Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-21T08:04:58.767Z",
+  "finishedAt": "2026-11-21T08:12:17.232Z",
+  "durationSec": 438,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 6,
+  "total": 10,
+  "byStrand": {
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 1
+    },
+    "Measurement and Geometry": {
+      "correct": 4,
+      "total": 6
+    },
+    "Statistics and Probability": {
+      "correct": 0,
+      "total": 2
+    },
+    "Problem Solving": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 1
+    },
+    "Mass": {
+      "correct": 3,
+      "total": 4
+    },
+    "Angles": {
+      "correct": 1,
+      "total": 1
+    },
+    "Data": {
+      "correct": 0,
+      "total": 2
+    },
+    "Problem Solving": {
+      "correct": 1,
+      "total": 1
+    },
+    "Length": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:pie:5",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 119,
+      "flagged": false
+    },
+    {
+      "qid": "m73",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 90,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:angExt:3",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 87,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:containerMass:6",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 11,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:meanNew:4",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:bestBuy:3",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 8,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:mass:1",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 106,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:meanNew:1",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:containerMass:2",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lencmp:5",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    }
+  ]
+}
