@@ -1,0 +1,61 @@
+name: AI question review
+
+# Claude solves each new or edited question without seeing the answer key, then double-checks any
+# disagreement. A red ✘ means Claude is confident an answer key is wrong. Ambiguity and wording
+# notes appear in the run summary as warnings.
+# Needs the repository secret ANTHROPIC_API_KEY. Without it the check is skipped (stays green).
+on:
+  pull_request:
+    paths:
+      - 'js/packs/**'
+      - 'js/gen/**'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'What to check'
+        type: choice
+        options: [sample, all, ids]
+        default: sample
+      size:
+        description: 'Sample size (for "sample")'
+        default: '40'
+      ids:
+        description: 'Comma-separated ids (for "ids"), e.g. t149,m12,g:maths:pctOf:3'
+        default: ''
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-review-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Review changed questions
+        if: github.event_name == 'pull_request'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node tools/ai-review.mjs --changed origin/${{ github.base_ref }}
+      - name: Review on demand
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MODE: ${{ inputs.mode }}
+          SIZE: ${{ inputs.size }}
+          IDS: ${{ inputs.ids }}
+        run: |
+          case "$MODE" in
+            all) node tools/ai-review.mjs --all ;;
+            ids) node tools/ai-review.mjs --ids "$IDS" ;;
+            *)   node tools/ai-review.mjs --sample "$SIZE" ;;
+          esac

@@ -59,6 +59,12 @@ node tools/answer-key.mjs   # independent answer key for every hand-written Math
 
 This checks IDs, answers, option counts and topics. The same four checks run automatically on GitHub for every push and pull request (`.github/workflows/quality.yml`); a red ✘ means a question or answer is wrong, so don't merge until it's green. A new hand-written Maths question needs its own line in `tools/answer-key.mjs`, or the check fails.
 
+**AI question review** (`tools/ai-review.mjs`, workflow `.github/workflows/ai-review.yml`): Claude solves each new or edited question without seeing the answer key. When it disagrees, a second call shows it the key and explanation and asks whether the key is wrong or the question ambiguous. It runs on pull requests that change questions, and on demand from the Actions tab (sample, all, or chosen ids). A ✘ means Claude is confident a key is wrong; ambiguity and wording notes are listed in the run summary. It needs the repository secret `ANTHROPIC_API_KEY` (without it the check is skipped). A pull request usually costs a few cents; a full run of the whole bank costs roughly $15–25.
+
+```bash
+ANTHROPIC_API_KEY=... node tools/ai-review.mjs --sample 20      # or --all, --ids t149,m12, --changed origin/main, --dry-run
+```
+
 ### 🤖 AI writing marker
 
 With a Claude API key in ⚙️ Settings (stored only in that browser), a finished writing piece is marked automatically by Claude (`js/marker.js`) against the same 7-criterion rubric (total 25) as the external writing reports. She gets a score and comment for each criterion, strengths, next steps and one of her sentences rewritten. The scores fill in the rubric, and a parent can change any of them before saving. Older saved pieces have a **Get AI feedback** button. Costs about 5 US cents per piece. The SDK is bundled in `js/vendor/anthropic.mjs`, so there's no build step and no CDN.
