@@ -1,0 +1,67 @@
+{
+  "id": "2026-11-21T08-02-02-849Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-21T08:02:02.849Z",
+  "finishedAt": "2026-11-21T08:04:48.425Z",
+  "durationSec": 166,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 0,
+  "total": 3,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 0,
+      "total": 2
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Length": {
+      "correct": 0,
+      "total": 1
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 1
+    },
+    "Mass": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:lencmp:5",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 33,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:bestBuy:3",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 0,
+      "correct": false,
+      "timeSec": 110,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:mass:6",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 7,
+      "flagged": false
+    }
+  ]
+}
