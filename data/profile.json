@@ -18,13 +18,12 @@
   "pet": {
     "equipped": {
       "bg": "moon",
-      "neck": "bowtie",
       "head": "crown"
     },
     "species": "spudnik",
     "name": "King Chips 👑🍟"
   },
-  "updatedAt": "2026-11-21T08:00:54.334Z",
+  "updatedAt": "2026-11-21T08:12:50.323Z",
   "theme": "cosmic",
   "reported": []
 }
