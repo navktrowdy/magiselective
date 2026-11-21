@@ -1,0 +1,224 @@
+{
+  "id": "2026-11-21T07-30-03-149Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-21T07:30:03.149Z",
+  "finishedAt": "2026-11-21T07:34:21.348Z",
+  "durationSec": 258,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 4,
+  "total": 16,
+  "byStrand": {
+    "Problem Solving": {
+      "correct": 2,
+      "total": 4
+    },
+    "Measurement and Geometry": {
+      "correct": 0,
+      "total": 7
+    },
+    "Data Interpretation": {
+      "correct": 0,
+      "total": 1
+    },
+    "Statistics and Probability": {
+      "correct": 1,
+      "total": 2
+    },
+    "Number and Algebra": {
+      "correct": 1,
+      "total": 2
+    }
+  },
+  "byTopic": {
+    "Problem Solving": {
+      "correct": 2,
+      "total": 4
+    },
+    "Length": {
+      "correct": 0,
+      "total": 1
+    },
+    "Data Interpretation": {
+      "correct": 0,
+      "total": 1
+    },
+    "2D Space": {
+      "correct": 0,
+      "total": 3
+    },
+    "Probability": {
+      "correct": 0,
+      "total": 1
+    },
+    "Angles": {
+      "correct": 0,
+      "total": 2
+    },
+    "Addition and Subtraction": {
+      "correct": 1,
+      "total": 1
+    },
+    "3D Space": {
+      "correct": 0,
+      "total": 1
+    },
+    "Data": {
+      "correct": 1,
+      "total": 1
+    },
+    "Percentages": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:ages:6",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:ages:1",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 9,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lencmp:5",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:missingBars:5",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lineDist:6",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 8,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:bestBuy:1",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 48,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:twoDice:1",
+      "topic": "Probability",
+      "strand": "Statistics and Probability",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 27,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lineDist:5",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 8,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:polygon:1",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:angIsoExt:1",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 9,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:missdig:6",
+      "topic": "Addition and Subtraction",
+      "strand": "Number and Algebra",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 12,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:cubeSee:3",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 9,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:median:3",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 24,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:angExt:3",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:discount:6",
+      "topic": "Percentages",
+      "strand": "Number and Algebra",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 43,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:sumdiff:5",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 0,
+      "correct": false,
+      "timeSec": 33,
+      "flagged": false
+    }
+  ]
+}
