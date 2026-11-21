@@ -1,2 +1,3 @@
 node_modules/
 weekly-email.html
+.claude/settings.local.json
