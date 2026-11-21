@@ -25,15 +25,9 @@
     "species": "spudnik",
     "name": "King Chips 👑🍟"
   },
-  "updatedAt": "2026-11-21T06:01:22.180Z",
+  "updatedAt": "2026-11-21T06:01:34.612Z",
   "theme": "cosmic",
   "reported": [
-    {
-      "key": "g:maths:sumdiff",
-      "id": "g:maths:sumdiff:5",
-      "note": "Nothing is wrong pressed the wrong thing it was 40m",
-      "at": "2026-11-17T07:06:30.242Z"
-    },
     {
       "key": "g:maths:twoDice",
       "id": "g:maths:twoDice:1",
