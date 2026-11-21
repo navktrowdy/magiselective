@@ -1373,6 +1373,161 @@
     "Use more complex sentences and vary sentence length.",
     "Watch spelling: separately, passersby, witnesses. Use apostrophes for possession (the students' parents)."
    ]
+  },
+  {
+   "id": "ext25-maths",
+   "name": "External test No. 25",
+   "date": "2026-11-12",
+   "subject": "maths",
+   "score": 10,
+   "total": 35,
+   "avg": 58.33,
+   "rank": 362,
+   "rankOf": 392,
+   "blanks": 5,
+   "strands": {
+    "Number and Algebra": [
+     20.0,
+     64.67
+    ],
+    "Measurement and Geometry": [
+     33.33,
+     60.16
+    ],
+    "Statistics and Probability": [
+     14.29,
+     51.79
+    ],
+    "Problem Solving": [
+     50.0,
+     51.74
+    ]
+   },
+   "topics": {
+    "Patterns": [
+     0,
+     2
+    ],
+    "Mass": [
+     0,
+     1
+    ],
+    "Percentages": [
+     0,
+     1
+    ],
+    "Probability": [
+     0,
+     2
+    ],
+    "Data": [
+     1,
+     5
+    ],
+    "Multiplication and Division": [
+     0,
+     2
+    ],
+    "Problem Solving": [
+     3,
+     6
+    ],
+    "Area": [
+     2,
+     2
+    ],
+    "3D Space": [
+     1,
+     2
+    ],
+    "Time": [
+     0,
+     1
+    ],
+    "2D Space": [
+     0,
+     1
+    ],
+    "Length": [
+     0,
+     1
+    ],
+    "Volume and Capacity": [
+     0,
+     2
+    ],
+    "Fractions": [
+     1,
+     2
+    ],
+    "Whole Numbers": [
+     1,
+     2
+    ],
+    "Decimals": [
+     0,
+     1
+    ],
+    "Perimeter": [
+     1,
+     2
+    ]
+   }
+  },
+  {
+   "id": "ext25-thinking",
+   "name": "External test No. 25",
+   "date": "2026-11-12",
+   "subject": "thinking",
+   "score": 19,
+   "total": 40,
+   "avg": 63.28,
+   "rank": 334,
+   "rankOf": 391,
+   "strands": {
+    "Problem Solving": [
+     45.0,
+     55.96
+    ],
+    "Critical Thinking": [
+     50.0,
+     70.6
+    ]
+   },
+   "topics": {
+    "Finding Procedures": [
+     3,
+     7
+    ],
+    "Matching Arguments": [
+     3,
+     4
+    ],
+    "Applying Principles": [
+     0,
+     4
+    ],
+    "Detecting Reasoning Error": [
+     1,
+     4
+    ],
+    "Relevant Selection": [
+     4,
+     8
+    ],
+    "Identifying Similarities and Patterns": [
+     2,
+     5
+    ],
+    "Finding the Main Conclusion": [
+     3,
+     4
+    ],
+    "Identifying Inferences and Assumptions": [
+     3,
+     4
+    ]
+   }
   }
  ],
  "trials": [
