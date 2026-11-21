@@ -19,6 +19,7 @@ import spaceGen from '../../gen/spaceGen.js';
 import numberGen from '../../gen/numberGen.js';
 import problemGen from '../../gen/problemGen.js';
 import thinkingGen from '../../gen/thinkingGen.js';
+import { retestMaths, retestThinking } from '../../gen/retestGen.js';
 
 // Official test format (computer-based). Mini mocks are short, all-category tests for school nights.
 const sections = {
@@ -106,5 +107,5 @@ export default {
   writing: { rubric: RUBRIC, tips: TIPS, tasks: writing, guide: writingGuide },
   concepts,
   banks: { maths, thinking: [...thinking1, ...thinking2, ...thinking3], reading: [...reading1, ...reading2] },
-  generators: { maths: [...mathsGen, ...anglesGen, ...spaceGen, ...numberGen, ...problemGen], thinking: thinkingGen },
+  generators: { maths: [...mathsGen, ...anglesGen, ...spaceGen, ...numberGen, ...problemGen, ...retestMaths], thinking: [...thinkingGen, ...retestThinking] },
 };

@@ -203,6 +203,24 @@ const S = {
     const QR = PR / (k + 1), posS = PR + QR; return PT - posS; },
   compassWalk: q => { let x = 0, y = 0; for (const m of q.match(/walks (.*?)\. Where/)[1].matchAll(/(\d+) km (north|south|east|west)/g)) { const k = +m[1]; if (m[2] === 'north') y += k; if (m[2] === 'south') y -= k; if (m[2] === 'east') x += k; if (m[2] === 'west') x -= k; }
     return ['eq', `${Math.abs(x)} km ${x > 0 ? 'east' : 'west'} and ${Math.abs(y)} km ${y > 0 ? 'north' : 'south'}`]; },
+  pctOf: q => { const [, p, mode] = q.match(/is (\d+)% (of|off) the original/); const S = +q.match(/sale price is \$([\d ]+)\. What/)[1].replace(/ /g, ''); return S * 100 / (mode === 'of' ? +p : 100 - +p); },
+  cutPieces: q => { const n = +q.match(/There were (\d+)/)[1], k = +q.match(/into (\d+) pieces each/)[1], m = +q.match(/Now there are (\d+) pieces/)[1]; return (m - n) / (k - 1); },
+  cubePrism: q => { const N = +q.match(/all (\d+) cubes/)[1], P = +q.match(/perimeter of (\d+) cm/)[1]; const hs = [];
+    for (let a = 1; a < P / 2; a++) { const b = P / 2 - a; if (a <= b && N % (a * b) === 0) hs.push(N / (a * b)); } return ['unique', hs]; },
+  roundErr: q => { const [, x, y] = q.match(/work out (\d+\.\d+) × (\d+\.\d+)/).map(Number); const w = Math.round(x) * Math.round(y), t = (Math.round(x * 10) / 10) * (Math.round(y * 10) / 10); return Math.round(Math.abs(t - w) * 100) / 100; },
+  oppTravel: q => { const [, s1, t1] = q.match(/rides at (\d+) m per minute and stops after (\d+) minutes/).map(Number); const [, s2, e] = q.match(/rides at (\d+) m per minute and stops (\d+) minutes after/).map(Number); return s1 * t1 + s2 * (t1 + e); },
+  nextDistinct: q => { const n = +q.match(/shows ([\d ]+) km/)[1].replace(/ /g, ''); for (let k = 1; ; k++) { const t = String(n + k); if (new Set(t).size === t.length) return k; } },
+  quadVenn: (q, opts) => { const G = { Square: [2, 4, 4], Rectangle: [2, 4, 2], Rhombus: [2, 0, 4], Parallelogram: [2, 0, 2], Trapezium: [1, 0, 0], Kite: [0, 0, 0] }; // [parallel pairs, right angles, equal sides]
+    const T = { 'two pairs of parallel sides': g => g[0] === 2, 'at least one pair of parallel sides': g => g[0] >= 1, 'four right angles': g => g[1] === 4, 'four equal sides': g => g[2] === 4 };
+    const B = T[q.match(/Circle B holds quadrilaterals with (.*?)\. •/)[1]], C = T[q.match(/Circle C holds quadrilaterals with (.*?)\. Each/)[1]];
+    const reg = /inside both/.test(q) ? 'both' : /inside circle B but outside/.test(q) ? 'b' : 'c';
+    const ok = s => { const b = B(G[s]), c = C(G[s]); return reg === 'both' ? b && c : reg === 'b' ? b && !c : !b && c; }; const v = opts.filter(ok); return ['eq', v.length === 1 ? v[0] : `${v.length} valid options`]; },
+  spendCombo: q => { const [, a, b, T] = q.match(/at \$([\d.]+) each and some .*? at \$([\d.]+) each, spending exactly \$([\d.]+)/).map(x => Math.round(parseFloat(x) * 100)); const tot = [];
+    for (let i = 1; i * a < T; i++) { const rest = T - i * a; if (rest % b === 0 && rest / b > i) tot.push(i + rest / b); } return ['unique', tot]; },
+  breakEven: q => { const N = +q.match(/buys ([\d ]+) shares/)[1].replace(/ /g, ''), p = parseFloat(q.match(/shares at \$([\d.]+) each/)[1]), F = +q.match(/a \$(\d+) fee to buy/)[1]; return Math.round((N * p + 2 * F) / N * 100) / 100; },
+  areaChange: q => { const u = +q.match(/increased by (\d+)%/)[1], d = +q.match(/decreased by (\d+)%/)[1]; return (100 + u) * (100 - d) / 100; },
+  avgCount: q => { const [, A, ta] = q.match(/term, (\w+) spent (\d+) minutes/), [, B, tb] = q.match(/and (\w+) spent (\d+) minutes\./); const la = +q.match(new RegExp(`${A}'s \\w+ were (\\d+) minutes`))[1], lb = +q.match(new RegExp(`${B}'s were (\\d+) minutes`))[1];
+    const na = ta / la, nb = tb / lb; return ['eq', `${na > nb ? A : B}, ${Math.abs(na - nb)} more`]; },
   robotTurns: q => { const D = ['north', 'north-east', 'east', 'south-east', 'south', 'south-west', 'west', 'north-west']; let deg = D.indexOf(q.match(/is facing (\S+?)\. It makes/)[1]) * 45;
     const cw = +q.match(/(\d+) quarter-turns clockwise/)[1], acw = +q.match(/(\d+) quarter-turns anticlockwise/)[1]; for (let i = 0; i < cw; i++) deg += 90; for (let i = 0; i < acw; i++) deg -= 90; return ['eq', D[((deg % 360) + 360) % 360 / 45]]; },
 };
