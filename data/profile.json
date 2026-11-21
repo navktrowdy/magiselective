@@ -12,10 +12,9 @@
     "mission",
     "noblanks",
     "comeback",
-    "skillstar",
-    "abovecrowd"
+    "skillstar"
   ],
-  "seenStage": 2,
+  "seenStage": 3,
   "pet": {
     "equipped": {
       "bg": "moon",
@@ -25,7 +24,7 @@
     "species": "spudnik",
     "name": "King Chips 👑🍟"
   },
-  "updatedAt": "2026-11-21T07:28:09.676Z",
+  "updatedAt": "2026-11-21T08:00:54.334Z",
   "theme": "cosmic",
   "reported": []
 }
