@@ -1,0 +1,63 @@
+{
+  "id": "2026-11-21T08-17-43-158Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-21T08:17:43.159Z",
+  "finishedAt": "2026-11-21T08:18:55.386Z",
+  "durationSec": 72,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 3,
+  "total": 3,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 2,
+      "total": 2
+    },
+    "Statistics and Probability": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Mass": {
+      "correct": 2,
+      "total": 2
+    },
+    "Data": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:mass:6",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 34,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:meanNew:4",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 31,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:containerMass:2",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 7,
+      "flagged": false
+    }
+  ]
+}
