@@ -1,0 +1,154 @@
+{
+  "id": "2026-11-17T08-32-02-418Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-17T08:32:02.418Z",
+  "finishedAt": "2026-11-17T08:35:38.192Z",
+  "durationSec": 216,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 4,
+  "total": 10,
+  "byStrand": {
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 2
+    },
+    "Measurement and Geometry": {
+      "correct": 3,
+      "total": 7
+    },
+    "Number and Algebra": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 2
+    },
+    "Time": {
+      "correct": 1,
+      "total": 1
+    },
+    "3D Space": {
+      "correct": 0,
+      "total": 1
+    },
+    "Angles": {
+      "correct": 1,
+      "total": 2
+    },
+    "Mass": {
+      "correct": 0,
+      "total": 1
+    },
+    "Whole Numbers": {
+      "correct": 0,
+      "total": 1
+    },
+    "Area": {
+      "correct": 0,
+      "total": 1
+    },
+    "Length": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:missingBars:6",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 18,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:dur24:2",
+      "topic": "Time",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:cubeSee:3",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 9,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:angExt:3",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 16,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:mass:6",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 13,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:repSub:3",
+      "topic": "Whole Numbers",
+      "strand": "Number and Algebra",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 19,
+      "flagged": false
+    },
+    {
+      "qid": "m28",
+      "topic": "Area",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 21,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:robotTurns:3",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 91,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lencmp:3",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:pie:2",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 16,
+      "flagged": false
+    }
+  ]
+}

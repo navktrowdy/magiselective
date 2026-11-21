@@ -1,0 +1,73 @@
+{
+  "id": "2026-11-17T00-48-18-306Z-thinking-practice",
+  "subject": "thinking",
+  "mode": "practice",
+  "topicLabel": "Identifying Similarities and Patterns",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-17T00:48:18.306Z",
+  "finishedAt": "2026-11-17T00:53:25.028Z",
+  "durationSec": 307,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 5,
+  "total": 5,
+  "byStrand": {
+    "Problem Solving": {
+      "correct": 5,
+      "total": 5
+    }
+  },
+  "byTopic": {
+    "Identifying Similarities and Patterns": {
+      "correct": 5,
+      "total": 5
+    }
+  },
+  "items": [
+    {
+      "qid": "t53",
+      "topic": "Identifying Similarities and Patterns",
+      "strand": "Problem Solving",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 30,
+      "flagged": false
+    },
+    {
+      "qid": "t64",
+      "topic": "Identifying Similarities and Patterns",
+      "strand": "Problem Solving",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 28,
+      "flagged": false
+    },
+    {
+      "qid": "g:thinking:shiftcode:6",
+      "topic": "Identifying Similarities and Patterns",
+      "strand": "Problem Solving",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 57,
+      "flagged": false
+    },
+    {
+      "qid": "t68",
+      "topic": "Identifying Similarities and Patterns",
+      "strand": "Problem Solving",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 92,
+      "flagged": false
+    },
+    {
+      "qid": "g:thinking:lettergap:3",
+      "topic": "Identifying Similarities and Patterns",
+      "strand": "Problem Solving",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 98,
+      "flagged": false
+    }
+  ]
+}
