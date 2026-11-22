@@ -1,0 +1,150 @@
+{
+  "id": "2026-11-22T05-01-35-457Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-22T05:01:35.457Z",
+  "finishedAt": "2026-11-22T05:11:13.759Z",
+  "durationSec": 578,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 6,
+  "total": 10,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 5,
+      "total": 8
+    },
+    "Problem Solving": {
+      "correct": 1,
+      "total": 1
+    },
+    "Number and Algebra": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Length": {
+      "correct": 2,
+      "total": 2
+    },
+    "Problem Solving": {
+      "correct": 1,
+      "total": 1
+    },
+    "3D Space": {
+      "correct": 1,
+      "total": 2
+    },
+    "Mass": {
+      "correct": 1,
+      "total": 2
+    },
+    "Angles": {
+      "correct": 1,
+      "total": 1
+    },
+    "Volume and Capacity": {
+      "correct": 0,
+      "total": 1
+    },
+    "Decimals": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:oppTravel:2",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:twoEq:6",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:netSolid:4",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:containerMass:4",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 3,
+      "flagged": false
+    },
+    {
+      "qid": "m43",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 3,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:containerMass:1",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 100,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:posts:2",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 35,
+      "flagged": false
+    },
+    {
+      "qid": "m53",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 35,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:cubePrism:6",
+      "topic": "Volume and Capacity",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 34,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:roundErr:2",
+      "topic": "Decimals",
+      "strand": "Number and Algebra",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 320,
+      "flagged": false
+    }
+  ]
+}
