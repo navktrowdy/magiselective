@@ -1,0 +1,89 @@
+{
+  "id": "2026-11-22T06-01-27-764Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-22T06:01:27.764Z",
+  "finishedAt": "2026-11-22T06:01:53.486Z",
+  "durationSec": 26,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 4,
+  "total": 5,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 3,
+      "total": 4
+    },
+    "Number and Algebra": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Mass": {
+      "correct": 1,
+      "total": 1
+    },
+    "Area": {
+      "correct": 1,
+      "total": 1
+    },
+    "Patterns": {
+      "correct": 1,
+      "total": 1
+    },
+    "Perimeter": {
+      "correct": 1,
+      "total": 2
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:containerMass:5",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 8,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:pinwheel:4",
+      "topic": "Area",
+      "strand": "Measurement and Geometry",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:seqDigit:1",
+      "topic": "Patterns",
+      "strand": "Number and Algebra",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:sqCut:2",
+      "topic": "Perimeter",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:rectSquares:4",
+      "topic": "Perimeter",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    }
+  ]
+}
