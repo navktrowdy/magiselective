@@ -1,0 +1,93 @@
+{
+  "id": "2026-11-22T09-10-42-922Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-22T09:10:42.922Z",
+  "finishedAt": "2026-11-22T09:12:14.361Z",
+  "durationSec": 91,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 1,
+  "total": 5,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 1,
+      "total": 4
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Length": {
+      "correct": 0,
+      "total": 1
+    },
+    "Area": {
+      "correct": 0,
+      "total": 1
+    },
+    "Problem Solving": {
+      "correct": 0,
+      "total": 1
+    },
+    "Volume and Capacity": {
+      "correct": 1,
+      "total": 1
+    },
+    "Angles": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:lencmp:4",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:pinwheel:5",
+      "topic": "Area",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:legs:4",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 5,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:tank:2",
+      "topic": "Volume and Capacity",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": true,
+      "timeSec": 61,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:angRightTri:1",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 13,
+      "flagged": false
+    }
+  ]
+}
