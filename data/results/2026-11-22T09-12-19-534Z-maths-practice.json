@@ -1,0 +1,89 @@
+{
+  "id": "2026-11-22T09-12-19-534Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-22T09:12:19.534Z",
+  "finishedAt": "2026-11-22T09:14:51.186Z",
+  "durationSec": 152,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 2,
+  "total": 5,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 2,
+      "total": 5
+    }
+  },
+  "byTopic": {
+    "Mass": {
+      "correct": 1,
+      "total": 1
+    },
+    "Area": {
+      "correct": 0,
+      "total": 1
+    },
+    "Perimeter": {
+      "correct": 0,
+      "total": 1
+    },
+    "2D Space": {
+      "correct": 0,
+      "total": 1
+    },
+    "3D Space": {
+      "correct": 1,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:mass:2",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "m29",
+      "topic": "Area",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 10,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:perarea:3",
+      "topic": "Perimeter",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 19,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:quadVenn:5",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:netSolid:4",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 4,
+      "flagged": false
+    }
+  ]
+}
