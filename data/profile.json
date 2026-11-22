@@ -2,9 +2,10 @@
   "owned": [
     "bowtie",
     "crown",
-    "cape"
+    "cape",
+    "starglasses"
   ],
-  "spent": 1060,
+  "spent": 1210,
   "seenBadges": [
     "liftoff",
     "explorer",
@@ -21,12 +22,13 @@
     "equipped": {
       "bg": "moon",
       "head": "crown",
-      "neck": "cape"
+      "neck": "cape",
+      "face": "starglasses"
     },
     "species": "spudnik",
     "name": "King Chips 👑🍟"
   },
-  "updatedAt": "2026-11-22T04:39:41.552Z",
+  "updatedAt": "2026-11-22T09:50:29.326Z",
   "theme": "cosmic",
   "reported": []
 }
