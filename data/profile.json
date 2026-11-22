@@ -8,6 +8,7 @@
     "liftoff",
     "explorer",
     "q100",
+    "q500",
     "perfect",
     "mission",
     "noblanks",
@@ -18,12 +19,13 @@
   "pet": {
     "equipped": {
       "bg": "moon",
-      "head": "crown"
+      "head": "crown",
+      "neck": "bowtie"
     },
     "species": "spudnik",
     "name": "King Chips 👑🍟"
   },
-  "updatedAt": "2026-11-21T08:12:50.323Z",
+  "updatedAt": "2026-11-22T02:20:45.756Z",
   "theme": "cosmic",
   "reported": []
 }
