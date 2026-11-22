@@ -1,0 +1,101 @@
+{
+  "id": "2026-11-22T06-00-35-887Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-22T06:00:35.887Z",
+  "finishedAt": "2026-11-22T06:01:23.509Z",
+  "durationSec": 48,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 2,
+  "total": 5,
+  "byStrand": {
+    "Problem Solving": {
+      "correct": 1,
+      "total": 1
+    },
+    "Number and Algebra": {
+      "correct": 0,
+      "total": 1
+    },
+    "Measurement and Geometry": {
+      "correct": 1,
+      "total": 2
+    },
+    "Statistics and Probability": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Problem Solving": {
+      "correct": 1,
+      "total": 1
+    },
+    "Whole Numbers": {
+      "correct": 0,
+      "total": 1
+    },
+    "Length": {
+      "correct": 1,
+      "total": 1
+    },
+    "Data": {
+      "correct": 0,
+      "total": 1
+    },
+    "Mass": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:ratioClass:5",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lcmTrays:5",
+      "topic": "Whole Numbers",
+      "strand": "Number and Algebra",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 23,
+      "flagged": false
+    },
+    {
+      "qid": "m23",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 7,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:mean:5",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:mass:5",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    }
+  ]
+}
