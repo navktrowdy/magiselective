@@ -1,0 +1,435 @@
+{
+  "id": "2026-11-22T04-01-42-480Z-maths-mock",
+  "subject": "maths",
+  "mode": "mock",
+  "topicLabel": "",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-22T04:01:42.480Z",
+  "finishedAt": "2026-11-22T04:39:24.066Z",
+  "durationSec": 2262,
+  "limitSec": 2400,
+  "timeUp": false,
+  "score": 16,
+  "total": 35,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 5,
+      "total": 17
+    },
+    "Number and Algebra": {
+      "correct": 8,
+      "total": 10
+    },
+    "Statistics and Probability": {
+      "correct": 1,
+      "total": 3
+    },
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 2
+    },
+    "Problem Solving": {
+      "correct": 1,
+      "total": 3
+    }
+  },
+  "byTopic": {
+    "Angles": {
+      "correct": 1,
+      "total": 2
+    },
+    "Addition and Subtraction": {
+      "correct": 1,
+      "total": 1
+    },
+    "Percentages": {
+      "correct": 1,
+      "total": 1
+    },
+    "Patterns": {
+      "correct": 2,
+      "total": 2
+    },
+    "Data": {
+      "correct": 1,
+      "total": 2
+    },
+    "Time": {
+      "correct": 2,
+      "total": 2
+    },
+    "Multiplication and Division": {
+      "correct": 1,
+      "total": 1
+    },
+    "Data Interpretation": {
+      "correct": 1,
+      "total": 2
+    },
+    "Decimals": {
+      "correct": 2,
+      "total": 2
+    },
+    "Fractions": {
+      "correct": 1,
+      "total": 2
+    },
+    "Length": {
+      "correct": 0,
+      "total": 2
+    },
+    "2D Space": {
+      "correct": 2,
+      "total": 2
+    },
+    "3D Space": {
+      "correct": 0,
+      "total": 2
+    },
+    "Problem Solving": {
+      "correct": 1,
+      "total": 3
+    },
+    "Whole Numbers": {
+      "correct": 0,
+      "total": 1
+    },
+    "Perimeter": {
+      "correct": 0,
+      "total": 2
+    },
+    "Mass": {
+      "correct": 0,
+      "total": 2
+    },
+    "Volume and Capacity": {
+      "correct": 0,
+      "total": 2
+    },
+    "Area": {
+      "correct": 0,
+      "total": 1
+    },
+    "Probability": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:angTriD:8",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": true,
+      "timeSec": 55,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:change:3",
+      "topic": "Addition and Subtraction",
+      "strand": "Number and Algebra",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 88,
+      "flagged": false
+    },
+    {
+      "qid": "m43",
+      "topic": "Angles",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 44,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:discount:1",
+      "topic": "Percentages",
+      "strand": "Number and Algebra",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 61,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:machine:2",
+      "topic": "Patterns",
+      "strand": "Number and Algebra",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 64,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:median:5",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 27,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:machine:6",
+      "topic": "Patterns",
+      "strand": "Number and Algebra",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 26,
+      "flagged": false
+    },
+    {
+      "qid": "m34",
+      "topic": "Time",
+      "strand": "Measurement and Geometry",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 61,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:boxes:5",
+      "topic": "Multiplication and Division",
+      "strand": "Number and Algebra",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 85,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:missingBars:3",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "m15",
+      "topic": "Decimals",
+      "strand": "Number and Algebra",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 34,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:wallPaint:2",
+      "topic": "Fractions",
+      "strand": "Number and Algebra",
+      "chosen": 3,
+      "correct": true,
+      "timeSec": 72,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:dur24:5",
+      "topic": "Time",
+      "strand": "Measurement and Geometry",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 39,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:decdiv:1",
+      "topic": "Decimals",
+      "strand": "Number and Algebra",
+      "chosen": 4,
+      "correct": true,
+      "timeSec": 43,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:posts:2",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 100,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:compassWalk:6",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 134,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:coord:4",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 30,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:netSolid:4",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 316,
+      "flagged": false
+    },
+    {
+      "qid": "m53",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 30,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:fraccmp:1",
+      "topic": "Fractions",
+      "strand": "Number and Algebra",
+      "chosen": 4,
+      "correct": false,
+      "timeSec": 59,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:sumdiff:2",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 70,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lcmTrays:5",
+      "topic": "Whole Numbers",
+      "strand": "Number and Algebra",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 72,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:tblsales:5",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 0,
+      "correct": true,
+      "timeSec": 26,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:sqCut:3",
+      "topic": "Perimeter",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 57,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:containerMass:1",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:cubePrism:6",
+      "topic": "Volume and Capacity",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 125,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:twoEq:6",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 112,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:meanNew:6",
+      "topic": "Data",
+      "strand": "Statistics and Probability",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 50,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:oppTravel:5",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 17,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:pinwheel:4",
+      "topic": "Area",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 68,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:cubePrism:2",
+      "topic": "Volume and Capacity",
+      "strand": "Measurement and Geometry",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 17,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:containerMass:5",
+      "topic": "Mass",
+      "strand": "Measurement and Geometry",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 3,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:twoDice:6",
+      "topic": "Probability",
+      "strand": "Statistics and Probability",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 2,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:timesCmp:2",
+      "topic": "Problem Solving",
+      "strand": "Problem Solving",
+      "chosen": 1,
+      "correct": false,
+      "timeSec": 1,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:rectSquares:4",
+      "topic": "Perimeter",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 5,
+      "flagged": false
+    }
+  ]
+}
