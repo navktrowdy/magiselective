@@ -1,9 +1,10 @@
 {
   "owned": [
     "bowtie",
-    "crown"
+    "crown",
+    "cape"
   ],
-  "spent": 660,
+  "spent": 1060,
   "seenBadges": [
     "liftoff",
     "explorer",
@@ -20,12 +21,12 @@
     "equipped": {
       "bg": "moon",
       "head": "crown",
-      "neck": "bowtie"
+      "neck": "cape"
     },
     "species": "spudnik",
     "name": "King Chips 👑🍟"
   },
-  "updatedAt": "2026-11-22T02:20:45.756Z",
+  "updatedAt": "2026-11-22T04:39:41.552Z",
   "theme": "cosmic",
   "reported": []
 }
