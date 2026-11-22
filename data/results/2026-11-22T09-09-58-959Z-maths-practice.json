@@ -1,0 +1,93 @@
+{
+  "id": "2026-11-22T09-09-58-959Z-maths-practice",
+  "subject": "maths",
+  "mode": "practice",
+  "topicLabel": "Mistakes re-try",
+  "nickname": "Potalien",
+  "startedAt": "2026-11-22T09:09:58.960Z",
+  "finishedAt": "2026-11-22T09:10:37.536Z",
+  "durationSec": 39,
+  "limitSec": null,
+  "timeUp": false,
+  "score": 0,
+  "total": 5,
+  "byStrand": {
+    "Measurement and Geometry": {
+      "correct": 0,
+      "total": 4
+    },
+    "Data Interpretation": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "byTopic": {
+    "Perimeter": {
+      "correct": 0,
+      "total": 1
+    },
+    "3D Space": {
+      "correct": 0,
+      "total": 1
+    },
+    "Length": {
+      "correct": 0,
+      "total": 1
+    },
+    "2D Space": {
+      "correct": 0,
+      "total": 1
+    },
+    "Data Interpretation": {
+      "correct": 0,
+      "total": 1
+    }
+  },
+  "items": [
+    {
+      "qid": "g:maths:perarea:3",
+      "topic": "Perimeter",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 18,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:cubeSee:6",
+      "topic": "3D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 6,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:lencmp:4",
+      "topic": "Length",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:quadVenn:5",
+      "topic": "2D Space",
+      "strand": "Measurement and Geometry",
+      "chosen": 2,
+      "correct": false,
+      "timeSec": 4,
+      "flagged": false
+    },
+    {
+      "qid": "g:maths:missingBars:2",
+      "topic": "Data Interpretation",
+      "strand": "Data Interpretation",
+      "chosen": 3,
+      "correct": false,
+      "timeSec": 6,
+      "flagged": false
+    }
+  ]
+}
