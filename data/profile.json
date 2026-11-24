@@ -22,14 +22,14 @@
   "pet": {
     "equipped": {
       "bg": "moon",
-      "head": "headphones",
+      "head": "crown",
       "neck": "cape",
       "face": "starglasses"
     },
     "species": "spudnik",
     "name": "King Chips 👑🍟"
   },
-  "updatedAt": "2026-11-24T10:59:41.146Z",
+  "updatedAt": "2026-11-24T10:59:49.693Z",
   "theme": "cosmic",
   "reported": []
 }
