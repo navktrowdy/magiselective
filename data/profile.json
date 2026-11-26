@@ -4,9 +4,12 @@
     "crown",
     "cape",
     "starglasses",
-    "headphones"
+    "headphones",
+    "bow",
+    "partyhat",
+    "scarf"
   ],
-  "spent": 1360,
+  "spent": 1580,
   "seenBadges": [
     "liftoff",
     "explorer",
@@ -23,13 +26,13 @@
     "equipped": {
       "bg": "moon",
       "head": "crown",
-      "neck": "cape",
-      "face": "starglasses"
+      "face": "starglasses",
+      "neck": "cape"
     },
     "species": "spudnik",
     "name": "King Chips 👑🍟"
   },
-  "updatedAt": "2026-11-24T10:59:49.693Z",
+  "updatedAt": "2026-11-24T11:00:16.398Z",
   "theme": "cosmic",
   "reported": []
 }
