@@ -1684,5 +1684,11 @@
  ],
  "planNote": "Fits around tuition, boxing and Tamil school. Skip a day if school homework is heavy; Potalien will understand 💛",
  "restNote": "No app today. Tuition counts! 💪",
- "breakNameSuggestion": "India trip"
+ "breakNameSuggestion": "India trip",
+ "timeAdjust": {
+  "_note": "Minutes added to (or taken off) a test's normal time. Negative = challenge timing.",
+  "maths": {
+   "mock": -5
+  }
+ }
 }
