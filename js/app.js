@@ -1,6 +1,8 @@
 import { THEMES } from './data/config.js';
 import { PACK, SUBJECTS, SUBJECT_ORDER, CONCEPTS, RUBRIC, RUBRIC_TOTAL, TIPS, WRITING_GUIDE } from './pack.js';
-import { BASELINE, EXTERNAL_TESTS, ROUTINE, WRITING_RECURRING, PLAN_NOTE, REST_NOTE, BREAK_NAME } from './family.js';
+import { BASELINE, EXTERNAL_TESTS, ROUTINE, WRITING_RECURRING, PLAN_NOTE, REST_NOTE, BREAK_NAME, TIME_ADJUST } from './family.js';
+// Test length in minutes, after any family time change (challenge timing).
+const testMins = (subj, mode) => Math.max(1, SUBJECTS[subj][mode].minutes + (Number(TIME_ADJUST[subj]?.[mode]) || 0));
 import { activeBreak, nextBreak, lastEndedBreak, breakEndWithRecovery, breakOn, studyDaysUntil, getBreaks, saveBreaks, addDays, daysBetween, today as todayLocal, fmtShort } from './breaks.js';
 const { TYPES: WTYPES, TYPE_FOR, TIME_PLAN, TECHNIQUES, VOCAB, VOCAB_TIP, TEST_FACTS } = WRITING_GUIDE;
 import * as store from './store.js';
@@ -102,14 +104,14 @@ function weeklyPlan(days) {
     Tue: [P(alt ? 'thinking' : 'maths', 'focus', `${alt ? 'Thinking' : 'Maths'}: weak-topic drill`, 25)],
     Fri: [P('reading', 'Word Meaning in Context', 'Word meaning set (quick)', 15)],
     Sat: [W],
-    Sun: [T(rot, 'mock', `Full ${subjName(rot)} test (${SUBJECTS[rot].mock.minutes} min)`, 45)],
+    Sun: [T(rot, 'mock', `Full ${subjName(rot)} test (${testMins(rot, 'mock')} min)`, 45)],
   };
   else if (phase === 'Build') plan = {
     Mon: [P('maths', wm[0], `Maths: ${wm[0]}`, 25)],
     Tue: [P('thinking', wt[0], `Thinking: ${wt[0]}`, 25)],
     Fri: [P(alt ? 'maths' : 'thinking', 'mistakes', `Re-try ${alt ? 'Maths' : 'Thinking'} mistakes`, 15)],
     Sat: [alt ? W : P('reading', 'all', 'Reading: 1 text + 1 multi-part set', 30)],
-    Sun: [T(rot, 'mock', `Full ${subjName(rot)} test (${SUBJECTS[rot].mock.minutes} min)`, 45)],
+    Sun: [T(rot, 'mock', `Full ${subjName(rot)} test (${testMins(rot, 'mock')} min)`, 45)],
   };
   else plan = {
     Mon: [P('maths', wm[0], `Maths: ${wm[0]} (untimed, 10 Qs)`, 25)],
@@ -168,8 +170,8 @@ function dashboard() {
       <p class="muted">${rs.length} session${rs.length === 1 ? '' : 's'} done${mc ? ` · ${mc} mistake${mc === 1 ? '' : 's'} to re-try` : ''}</p>
       <div class="btns">
         <a class="btn" href="#/practice/${subj}">Practice (untimed)</a>
-        <a class="btn" href="#/test/${subj}/mini">Mini mock · ${S.mini.minutes}m</a>
-        <a class="btn primary" href="#/test/${subj}/mock">Full test · ${S.mock.minutes}m</a>
+        <a class="btn" href="#/test/${subj}/mini">Mini mock · ${testMins(subj, 'mini')}m</a>
+        <a class="btn primary" href="#/test/${subj}/mock">Full test · ${testMins(subj, 'mock')}m</a>
       </div></div>`;
   };
 
@@ -289,23 +291,24 @@ function testIntro(subj, mode) {
   const S = SUBJECTS[subj];
   const f = S[mode];
   const qids = buildTest(subj, mode);
+  const mins = testMins(subj, mode), challenge = mins !== f.minutes;
   $app.innerHTML = `
     <div class="card narrow">
       <h1>${S.icon} ${S.name}: ${MODE_LABEL[mode]}</h1>
       <ul class="rules">
         <li>${subj === 'reading'
-          ? `<b>${mode === 'mock' ? `${f.questions} questions` : '2 texts'} (${f.note}) · ${qids.length} marks · ${f.minutes} minutes</b>${mode === 'mock' ? ` (same format as the real ${esc(PACK.name)})` : ''}`
-          : `<b>${qids.length} questions · ${f.minutes} minutes</b>${mode === 'mock' && qids.length === f.questions ? ` (same as the real ${esc(PACK.name)})` : ''}`}</li>
+          ? `<b>${mode === 'mock' ? `${f.questions} questions` : '2 texts'} (${f.note}) · ${qids.length} marks · ${mins} minutes</b>${mode === 'mock' ? ` (same format as the real ${esc(PACK.name)})` : ''}`
+          : `<b>${qids.length} questions · ${mins} minutes</b>${challenge ? ` · ⚡ challenge timing (the real test gives ${f.minutes} minutes)` : mode === 'mock' && qids.length === f.questions ? ` (same as the real ${esc(PACK.name)})` : ''}`}</li>
         <li>Covers every category: ${S.strands.join(', ')}${subj === 'reading' && mode === 'mini' ? ' (a few text types each time)' : ''}.</li>
         <li>You can move between questions and <b>flag</b> ones to come back to.</li>
         <li>There is <b>no penalty for wrong answers</b>, so never leave a question blank. Guess if time is running out!</li>
         <li>The test submits automatically when time runs out. You'll get full explanations afterwards.</li>
         <li>Keyboard: <kbd>A</kbd>–<kbd>E</kbd> choose · <kbd>←</kbd> <kbd>→</kbd> move · <kbd>F</kbd> flag.</li>
       </ul>
-      <p class="muted">Pacing guide: about ${Math.round((f.minutes * 60) / qids.length)} seconds per ${subj === 'reading' ? 'mark' : 'question'}.</p>
+      <p class="muted">Pacing guide: about ${Math.round((mins * 60) / qids.length)} seconds per ${subj === 'reading' ? 'mark' : 'question'}.</p>
       <div class="btns"><button class="btn primary" id="go">Start the clock ⏱</button> <a class="btn" href="#/">Back</a></div>
     </div>`;
-  document.getElementById('go').onclick = () => startSession({ subject: subj, mode, qids, limitSec: f.minutes * 60 });
+  document.getElementById('go').onclick = () => startSession({ subject: subj, mode, qids, limitSec: mins * 60 });
 }
 
 // =====================================================================
@@ -535,7 +538,7 @@ function resultView(id) {
   const p = pct(r.score, r.total);
   const blanks = r.items.filter(i => i.chosen === null).length;
   const base = BASELINE[r.subject];
-  const target = SUBJECTS[r.subject].mock.minutes * 60 / SUBJECTS[r.subject].mock.questions;
+  const target = testMins(r.subject, 'mock') * 60 / SUBJECTS[r.subject].mock.questions;
   const avgT = r.items.reduce((a, i) => a + i.timeSec, 0) / r.items.length;
   const slow = [...r.items].map((it, n) => ({ ...it, n: n + 1 })).sort((a, b) => b.timeSec - a.timeSec).slice(0, 3);
   const wrongTopics = [...new Set(r.items.filter(i => !i.correct).map(i => i.topic))];

@@ -24,6 +24,8 @@ export const ROUTINE = data.routine || DEFAULT_ROUTINE;
 export const BREAKS = (data.breaks || []).map(b => ({ ...b, builtIn: true }));
 export const EXTERNAL_TESTS = data.externalTests || [];
 export const TRIALS = data.trials || [];
+// Optional per-test time change in minutes, e.g. { maths: { mock: -5 } } for challenge timing.
+export const TIME_ADJUST = data.timeAdjust || {};
 export const WRITING_RECURRING = data.writingRecurring || [];
 export const PLAN_NOTE = data.planNote || 'Fits around school and activities. Skip a day if homework is heavy; your Potalien will understand 💛';
 export const REST_NOTE = data.restNote || 'No app today. Enjoy the rest! 💪';
