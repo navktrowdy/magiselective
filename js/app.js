@@ -16,6 +16,7 @@ import { esc, pct, fmtTime, fmtDate, todayStr, toast, applyTheme } from './util.
 import { adoptView, petView, skillsView, examsView, petWidget, celebrate, progressNow } from './views.js';
 import { say, computeProgress } from './pet.js';
 import { markWriting, aiFeedbackHtml } from './marker.js';
+import { ask as coachAsk, chatKey, getChat, kidMessages, limits as coachLimits, markStuck, clearStuck, setOutcome, minutesToday, DEFAULT_MSGS, DEFAULT_MINS } from './coach.js';
 
 const $app = document.getElementById('app');
 const subjName = s => SUBJECTS[s].short || SUBJECTS[s].name;
@@ -530,6 +531,52 @@ function wireReport() {
   });
 }
 
+// ---------- 💬 question coach (after a test) ----------
+const coachLog = chat => (chat?.msgs || []).map(m => `<div class="cmsg ${m.role === 'user' ? 'kid' : 'bot'}">${m.role === 'user' ? '' : '<b>👽🥔</b> '}${esc(m.text).replace(/\n/g, '<br>')}</div>`).join('');
+function coachBox(r, it, n) {
+  const chat = getChat(chatKey(r.id, it.qid));
+  return `<div class="coach" data-n="${n}">
+    ${chat ? `<div class="clog">${coachLog(chat)}</div>` : ''}
+    ${chat ? '' : '<button class="btn small coachopen">💬 Ask Potalien about this question</button>'}
+    <div class="cbody" ${chat ? '' : 'style="display:none"'}>
+      <textarea rows="2" placeholder="What part don't you understand? e.g. Why isn't my answer right?" maxlength="600"></textarea>
+      <div class="btns"><button class="btn primary small csend">Ask</button>
+        <button class="btn small cgot">✅ I get it now</button><button class="btn small cstuck">😕 Still stuck</button>
+        <span class="muted cleft"></span></div>
+    </div></div>`;
+}
+function wireCoach(r) {
+  const { msgs, mins } = coachLimits();
+  $app.querySelectorAll('.coach').forEach(box => {
+    const it = r.items[Number(box.dataset.n)], q = getQuestion(it.qid), key = chatKey(r.id, it.qid);
+    const ctx = { key, qid: it.qid, resultId: r.id, subject: r.subject, topic: it.topic, q, chosen: it.chosen, timeSec: it.timeSec, passage: q.passageId ? passages.get(q.passageId) : null };
+    const ta = box.querySelector('textarea'), send = box.querySelector('.csend'), left = box.querySelector('.cleft');
+    const showLeft = () => { const used = kidMessages(getChat(key)); left.textContent = `${Math.max(msgs - used, 0)} of ${msgs} questions left${mins ? ` · ${Math.max(Math.round(mins - minutesToday()), 0)} min of coach time left today` : ''}`; };
+    const log = () => box.querySelector('.clog') || box.insertAdjacentElement('afterbegin', Object.assign(document.createElement('div'), { className: 'clog' }));
+    const open = box.querySelector('.coachopen');
+    if (open) open.onclick = () => { open.remove(); box.querySelector('.cbody').style.display = ''; showLeft(); ta.focus(); };
+    else showLeft();
+    send.onclick = async () => {
+      const text = ta.value.trim(); if (!text) return ta.focus();
+      send.disabled = true; send.textContent = 'Thinking…';
+      const l = log(); l.insertAdjacentHTML('beforeend', `<div class="cmsg kid">${esc(text)}</div><div class="cmsg bot typing"><b>👽🥔</b> …</div>`);
+      try { const chat = await coachAsk(ctx, text); l.innerHTML = coachLog(chat); ta.value = ''; }
+      catch (e) { l.querySelector('.typing')?.remove(); l.lastElementChild?.remove(); toast(e.message, 'error'); }
+      send.disabled = false; send.textContent = 'Ask'; showLeft();
+    };
+    ta.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send.click(); } };
+    box.querySelector('.cgot').onclick = async () => {
+      setOutcome(key, 'understood'); await clearStuck(it.qid);
+      box.querySelector('.cbody').innerHTML = `<p class="ok">Brilliant! 🌟 Lock it in with a few more like it: <a class="btn small primary" href="#/practice/${r.subject}?topic=${encodeURIComponent(r.subject === 'reading' ? 'mistakes' : it.topic)}">Try similar questions</a></p>`;
+    };
+    box.querySelector('.cstuck').onclick = async () => {
+      setOutcome(key, 'stuck'); await markStuck(it.qid, it.topic);
+      box.querySelector('.cbody').innerHTML = `<p>That's OK! 💛 It's on your re-try list and a grown-up will see it on the Parent page, so you can go through it together.</p>`;
+      toast('Added to your re-try list', 'ok');
+    };
+  });
+}
+
 function resultView(id) {
   const r = store.getResult(decodeURIComponent(id));
   if (!r) { $app.innerHTML = '<div class="card">Result not found. <a href="#/history">Back to history</a></div>'; return; }
@@ -566,7 +613,7 @@ function resultView(id) {
       <div class="qtext">${q.q}</div>
       <p><b>Your answer:</b> ${letter(it.chosen)}${it.chosen !== null ? `: ${optText(it.chosen)}` : ''}<br>
       <b>Correct answer:</b> ${letter(q.a)}: ${optText(q.a)}</p>
-      <div class="exp">${q.exp}</div>${reportBtn(it.qid)}</details>`;
+      <div class="exp">${q.exp}</div>${coachBox(r, it, n)}${reportBtn(it.qid)}</details>`;
   }).join('');
 
   $app.innerHTML = `
@@ -594,6 +641,8 @@ function resultView(id) {
     ${wrongTopics.length ? `<div class="card"><h2>📘 Concepts to review</h2><p class="muted">Based on the questions you missed. Read these before your next practice.</p>
       <div class="concepts">${wrongTopics.map(t => `<div class="concept-card"><h3>${esc(t)}</h3>${conceptHtml(t)}</div>`).join('')}</div></div>` : ''}
     <div class="card"><h2>Question-by-question explanations</h2><p class="muted">Wrong and blank answers are opened for you.</p>${review}</div>`;
+  wireReport();
+  wireCoach(r);
   celebrate();
 }
 
@@ -856,12 +905,15 @@ function settingsView() {
         <li>Generate, copy the token and paste it below. It is stored only in this browser.</li></ol></details>
       <div class="row3"><label>Owner<input id="owner" value="${esc(s.github.owner)}"></label><label>Repository<input id="repo" value="${esc(s.github.repo)}"></label><label>Branch<input id="branch" value="${esc(s.github.branch)}"></label></div>
       <label>Access token<input id="token" type="password" value="${esc(s.github.token)}" placeholder="github_pat_…" autocomplete="off"></label>
-      <h2>🤖 AI writing marker</h2>
+      <h2>🤖 AI writing marker and question coach</h2>
       <p class="muted">With a Claude API key, finished writing is marked by Claude against the same 7-criterion rubric as her external reports, with specific feedback for her. The piece is sent to Anthropic for marking (only the nickname, never her name). Costs about 5 US cents per piece.</p>
       <details><summary><b>How to get a key (parent, one time)</b></summary><ol>
         <li>Go to <b>console.anthropic.com</b>, sign in and add a little credit under <b>Billing</b> (US$5 is enough for about 100 pieces).</li>
         <li>Optional but recommended: <b>Settings → Limits</b>, set a monthly spend limit (e.g. US$10).</li>
         <li><b>API keys → Create key</b>, name it <i>magiselective writing</i>, copy it and paste it below. It is stored only in this browser, so add it on each computer she uses.</li></ol></details>
+      <h3>💬 Question coach</h3>
+      <p class="muted">The same key lets her ask Potalien about a question after a test (hints first, then the working). Chats stay on this computer and you can read them on the Parent page. About 1–3 US cents per question.</p>
+      <div class="row3"><label>Messages per question<input id="coachMsgs" type="number" min="1" max="20" value="${esc(String(s.coachMsgs ?? DEFAULT_MSGS))}"></label><label>Minutes per day (0 = no limit)<input id="coachMins" type="number" min="0" max="120" value="${esc(String(s.coachMins ?? DEFAULT_MINS))}"></label></div>
       <label>Claude API key<input id="claudeKey" type="password" value="${esc(s.claudeKey || '')}" placeholder="sk-ant-…" autocomplete="off"></label>
       <div class="btns"><button class="btn primary" id="save">Save settings</button><button class="btn" id="test">Test connection</button><button class="btn" id="sync">Sync now</button></div>
       <p id="msg"></p>
@@ -870,7 +922,7 @@ function settingsView() {
     </div>`;
   const val = id => document.getElementById(id).value.trim();
   const save = () => {
-    store.saveSettings({ nickname: val('nick') || 'Potalien', examDate: val('exam'), parentEmails: val('pemails'), claudeKey: val('claudeKey'),
+    store.saveSettings({ nickname: val('nick') || 'Potalien', examDate: val('exam'), parentEmails: val('pemails'), claudeKey: val('claudeKey'), coachMsgs: Number(val('coachMsgs')) || DEFAULT_MSGS, coachMins: val('coachMins') === '' ? DEFAULT_MINS : Number(val('coachMins')),
       github: { ...s.github, owner: val('owner'), repo: val('repo'), branch: val('branch') || 'main', token: val('token') } });
   };
   const msg = (t, ok) => { const m = document.getElementById('msg'); m.textContent = t; m.className = ok ? 'ok' : 'warn'; };

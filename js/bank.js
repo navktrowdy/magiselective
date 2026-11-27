@@ -73,6 +73,14 @@ export function questionHistory() {
   return { seen, last };
 }
 
+/** Questions she marked "still stuck" in the coach and hasn't answered correctly since. */
+export function stuckIds() {
+  const stuck = getProfile()?.stuck || []; if (!stuck.length) return new Set();
+  const results = getResults();
+  return new Set(stuck.filter(s => !results.some(r => (r.finishedAt || '') > s.at && (r.items || []).some(it => it.qid === s.qid && it.correct))).map(s => s.qid));
+}
+const isMistake = (id, last, stuck) => last.get(id) === false || stuck.has(id);
+
 const leastSeenFirst = (qs, seen) => shuffle(qs).sort((a, b) => (seen.get(a.id) || 0) - (seen.get(b.id) || 0));
 
 /** Pick n questions covering every strand, spread across topics, preferring unseen ones. */
@@ -116,7 +124,7 @@ export function buildTest(subject, mode, opts = {}) {
   if (mode === 'practice') {
     const count = opts.count || 10;
     if (opts.topic === 'mistakes') {
-      pool = pool.filter(q => last.get(q.id) === false);
+      const stuck = stuckIds(); pool = pool.filter(q => isMistake(q.id, last, stuck));
       return shuffle(pool).slice(0, count).map(q => q.id);
     }
     if (opts.topic === 'focus') {
@@ -155,7 +163,7 @@ function buildReading(mode, opts, seen) {
 
   if (mode === 'practice' && opts.topic === 'mistakes') {
     const { last } = questionHistory();
-    return banks.reading.filter(q => last.get(q.id) === false).map(q => q.id);
+    const stuck = stuckIds(); return banks.reading.filter(q => isMistake(q.id, last, stuck)).map(q => q.id);
   }
   if (mode === 'practice' && opts.topic && !['all', 'focus'].includes(opts.topic)) {
     const ps = ordered.filter(p => p.type === opts.topic);
@@ -216,5 +224,5 @@ export function weakTopics(subject, n = 3) {
 
 export function mistakesCount(subject) {
   const { last } = questionHistory();
-  return bankFor(subject).filter(q => last.get(q.id) === false).length;
+  const stuck = stuckIds(); return bankFor(subject).filter(q => isMistake(q.id, last, stuck)).length;
 }
