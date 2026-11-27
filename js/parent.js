@@ -2,7 +2,8 @@
 import { PACK, SUBJECTS, RUBRIC, RUBRIC_TOTAL } from './pack.js';
 import { BASELINE, EXTERNAL_TESTS, ROUTINE, WEEKLY_MINUTES } from './family.js';
 import * as store from './store.js';
-import { topicMastery, topicsFor, mistakesCount, unreportQuestion } from './bank.js';
+import { topicMastery, topicsFor, mistakesCount, unreportQuestion, getQuestion } from './bank.js';
+import { allChats, getStuck, minutesToday, deleteChats } from './coach.js';
 import { computeProgress } from './pet.js';
 import { isBreakDay, breakOn, studyDaysUntil, addDays, daysBetween, today, nextBreak, fmtShort } from './breaks.js';
 import { esc, pct, fmtDate, toast } from './util.js';
@@ -35,6 +36,8 @@ export function parentView() {
       ${reported.map(r => `<div class="reprow"><details class="rev wrong"><summary><span class="pill">${esc(r.q?.topic || '?')}</span> <code>${esc(r.key)}</code> <span class="muted">${fmtDate(r.at)}</span>${r.note ? ` · “${esc(r.note)}”` : ''}</summary>
         ${r.q ? `<div class="qtext">${r.q.q}</div><ol type="A">${r.q.opts.map((o, i) => `<li>${/<svg/.test(o) ? 'diagram' : esc(o)}${i === r.q.a ? ' <b>← marked correct</b>' : ''}</li>`).join('')}</ol><div class="exp">${r.q.exp}</div>` : '<p>Question no longer in the bank.</p>'}
         </details><button class="btn small" data-unreport="${esc(r.key)}">It's fine, bring it back</button></div>`).join('')}</div>` : ''}
+
+    ${coachCard()}
 
     <div class="card"><h2>💡 Suggested actions</h2>${tips.length ? `<ul class="tips">${tips.map(x => `<li>${x}</li>`).join('')}</ul>` : '<p>All on track. Nothing to flag right now.</p>'}</div>
 
@@ -105,3 +108,20 @@ export function parentView() {
     catch { prompt('Copy this summary:', summaryText()); }
   };
 }
+
+// 💬 What she asked the question coach (chat text is kept only on this computer; "still stuck" syncs).
+function coachCard() {
+  const chats = allChats(), stuck = getStuck();
+  if (!chats.length && !stuck.length) return '';
+  const qline = id => { const q = getQuestion(id); return q ? q.q.replace(/<svg[\s\S]*?<\/svg>/g, '[diagram]').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 160) : id; };
+  const tag = c => c.outcome === 'stuck' ? '<span class="chip warnchip">😕 still stuck</span>' : c.outcome === 'understood' ? '<span class="chip">✅ understood</span>' : '';
+  return `<div class="card"><h2>💬 Questions she asked the coach</h2>
+    <p class="muted">${chats.length} chat${chats.length === 1 ? '' : 's'} on this computer · ${Math.round(minutesToday())} min used today. Chat text stays on this computer only; "still stuck" questions show on every computer.</p>
+    ${stuck.length ? `<h3>😕 Still stuck (${stuck.length}): worth going through together</h3><ul>${stuck.map(s => `<li><span class="pill">${esc(s.topic || '')}</span> <code>${esc(s.qid)}</code> ${esc(qline(s.qid))} <span class="muted">${fmtDate(s.at)}</span></li>`).join('')}</ul>` : ''}
+    ${chats.slice(0, 30).map(c => `<details class="rev"><summary><span class="pill">${esc(c.topic || '')}</span> ${esc(qline(c.qid))} <span class="muted">${fmtDate(c.last || c.start)} · ${c.msgs.filter(m => m.role === 'user').length} question${c.msgs.filter(m => m.role === 'user').length === 1 ? '' : 's'}</span> ${tag(c)}</summary>
+      ${c.msgs.map(m => `<div class="cmsg ${m.role === 'user' ? 'kid' : 'bot'}">${m.role === 'user' ? '' : '<b>👽🥔</b> '}${esc(m.text).replace(/\n/g, '<br>')}</div>`).join('')}</details>`).join('')}
+    ${chats.length ? '<div class="btns"><button class="btn small" id="delchats">Delete chats on this computer</button></div>' : ''}</div>`;
+}
+document.addEventListener('click', e => {
+  if (e.target?.id === 'delchats' && confirm('Delete all coach chats saved on this computer?')) { deleteChats(); parentView(); }
+});

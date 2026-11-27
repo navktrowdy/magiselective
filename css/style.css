@@ -349,3 +349,13 @@ nav .brand { letter-spacing: -.01em; }
 .aifeedback blockquote.better { border-left-color: var(--good, #2e7d32); }
 .aifeedback .small, .muted.small { font-size: .85rem; }
 .qtext .box { border: 2px solid var(--line2); background: var(--card); border-radius: 10px; padding: 10px 14px; margin: 4px 0 12px; }
+/* 💬 question coach */
+.coach { margin-top: 10px; }
+.coach .clog { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+.cmsg { max-width: 85%; padding: 8px 12px; border-radius: 14px; line-height: 1.5; }
+.cmsg.kid { align-self: flex-end; background: var(--accent, #44704e); color: #fff; border-bottom-right-radius: 4px; }
+.cmsg.bot { align-self: flex-start; background: var(--soft, rgba(0,0,0,.05)); border-bottom-left-radius: 4px; }
+.cmsg.typing { opacity: .6; }
+.coach textarea { width: 100%; box-sizing: border-box; font: inherit; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line, #ccc); }
+.coach .cleft { font-size: .85em; }
+.chip.warnchip { background: #fbe1da; color: #a8432e; }
